@@ -2,7 +2,7 @@
 import 'package:bjp_app/config/app_theme_data.dart';
 import 'package:bjp_app/features/profile/presentation/screens/complete_profile_screen.dart';
 import 'package:bjp_app/features/auth/presentation/screens/login_screen.dart';
-import 'package:bjp_app/features/member/presentation/screens/home_screen.dart';
+import 'package:bjp_app/features/home/presentation/screens/home_screen.dart';
 import 'package:bjp_app/features/auth/presentation/screens/otp_verification_screen.dart';
 import 'package:bjp_app/features/programs/presentation/screens/program_timeline.dart';
 import 'package:flutter/material.dart';
