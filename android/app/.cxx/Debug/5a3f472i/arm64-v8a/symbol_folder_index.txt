@@ -1,0 +1,1 @@
+/home/mr/development/flutter_dev/under_dev/pro/bjp_app/build/app/intermediates/cxx/Debug/5a3f472i/obj/arm64-v8a
