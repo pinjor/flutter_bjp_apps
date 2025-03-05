@@ -9,6 +9,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../core/constants/api_constants.dart';
 import '../../../core/providers/providers.dart';
 import '../../../core/utils/in_memory_store.dart';
+import '../domain/register_input_model.dart';
 
 part 'auth_repository.g.dart';
 
@@ -61,16 +62,40 @@ class AuthRepository {
       lgr.i('Login response received: ${response.data}');
 
       final loginResponse = LoginResponseModel.fromJson(response.data);
-      if (loginResponse.token != null) {
+      if (response.statusCode == 200) {
         lgr.i('Token received: ${loginResponse.token}');
         await _saveToken(loginResponse.token!);
         _authStateController.value = loginResponse;
+        return loginResponse;
+      } else {
+        return null;
       }
-      return loginResponse;
     } catch (e) {
       print('Login error: $e');
       return null;
     }
+    // return null;
+  }
+
+  Future<void> register({required RegisterInputModel data}) async {
+    try {
+      final uri = Uri(
+        scheme: 'http',
+        port: ApiConstants.port,
+        host: ApiConstants.baseUrl,
+        path: ApiConstants.register,
+      );
+
+      lgr.i('Register request sending to: ${uri.toString()}');
+
+      final response = await _dioClient.post(
+        uri.toString(),
+        data: data.toJson(),
+      );
+
+      await _saveToken(response.data['token']);
+      
+    } catch (err) {}
   }
 
   Future<void> logout() async {

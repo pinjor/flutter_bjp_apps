@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../core/splash_screen.dart';
+import '../core/ui/splash_screen.dart';
 import '../core/utils/utils.dart';
 import '../features/auth/data/auth_repository.dart';
 import '../features/auth/domain/auth_state.dart';

@@ -13,9 +13,11 @@ class AuthState {
     this.isLoading = false,
     this.user,
     this.error,
-    this.status = AuthStatus.unknown,
+    required this.status,
   });
 
   // bool get isLoggedIn => user != null && user?.token != null; // previous implementation
   bool get isLoggedIn => status == AuthStatus.authenticated;
+
+  bool get isAdmin => user?.user?.isAdmin == 1;
 }

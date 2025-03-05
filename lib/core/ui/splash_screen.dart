@@ -1,6 +1,6 @@
 
-import '../config/app_colors.dart';
-import 'ui/app_icon_widget.dart';
+import '../../config/app_colors.dart';
+import 'app_icon_widget.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {

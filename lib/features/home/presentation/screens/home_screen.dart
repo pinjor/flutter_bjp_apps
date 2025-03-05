@@ -8,7 +8,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/assets_path.dart';
-import '../../../../core/constants/route_path.dart';
 import '../../../../core/ui/app_icon_widget.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -32,52 +31,46 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   int _selectedIndex = 0;
 
-  // Convert _widgetOptions to a method
-  List<Widget> _widgetOptions() {
-    return <Widget>[
-      Column(
-        children: [
-          Image.asset(
-            AssetsPath.manWithMoto,
-            width: double.infinity,
-            fit: BoxFit.fill,
-          ),
-          SizedBox(height: 10),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(),
-              onPressed: () {
-                _launchUrl(_url); // Call function properly
-              },
-              child: Text('ড্যাশবোর্ড', style: TextStyle(fontSize: 20)),
-            ),
-          ),
-        ],
-      ),
-      MemberScreen(),
-      ProgramSceduleScreen(),
-      ProfileEditingScreen(),
-    ];
+  List<Widget> _drawerOptions(bool isAdmin) {
+    return isAdmin
+        ? [
+          _buildDashboard(),
+          MemberScreen(),
+          ProgramSceduleScreen(),
+          ProfileEditingScreen(),
+        ]
+        : [_buildDashboard(), ProfileEditingScreen()];
   }
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-
-      switch (index) {
-        case 0:
-          _appBarTitle = 'ড্যাশবোর্ড';
-          break;
-        case 1:
-          _appBarTitle = 'সদস্য';
-          break;
-        case 2:
-          _appBarTitle = 'অনুষ্ঠানের সময়';
-          break;
-        case 3:
-          _appBarTitle = 'প্রোফাইল পরিবর্তন';
-          break;
+      if (ref.read(authControllerProvider).user?.user?.isAdmin == 1) {
+        // Admin mapping:
+        switch (index) {
+          case 0:
+            _appBarTitle = 'ড্যাশবোর্ড';
+            break;
+          case 1:
+            _appBarTitle = 'সদস্য';
+            break;
+          case 2:
+            _appBarTitle = 'অনুষ্ঠানের সময়';
+            break;
+          case 3:
+            _appBarTitle = 'প্রোফাইল পরিবর্তন';
+            break;
+        }
+      } else {
+        // Non-admin mapping:
+        switch (index) {
+          case 0:
+            _appBarTitle = 'ড্যাশবোর্ড';
+            break;
+          case 1:
+            _appBarTitle = 'প্রোফাইল পরিবর্তন';
+            break;
+        }
       }
     });
   }
@@ -89,6 +82,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authControllerProvider);
+    final isAdmin = authState.isAdmin;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.tealAccent,
@@ -109,7 +104,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ],
       ),
       body: SafeArea(
-        child: _widgetOptions()[_selectedIndex],
+        child: _drawerOptions(isAdmin)[_selectedIndex],
       ), // Call function properly
       drawer: Drawer(
         width: 250,
@@ -125,37 +120,72 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 Navigator.pop(context);
               },
             ),
-            ListTile(
-              leading: Icon(Icons.person_4),
-              title: Text('সদস্য'),
-              selected: _selectedIndex == 1,
-              onTap: () {
-                _onItemTapped(1);
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.edit),
-              title: Text('অনুষ্ঠানের সময়'),
-              selected: _selectedIndex == 2,
-              onTap: () {
-                _onItemTapped(2);
-                Navigator.pop(context);
-              },
-            ),
+            if (isAdmin) ...[
+              ListTile(
+                leading: Icon(Icons.person_4),
+                title: Text('সদস্য'),
+                selected: _selectedIndex == 1,
+                onTap: () {
+                  _onItemTapped(1);
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.schedule_sharp),
+                title: Text('অনুষ্ঠানের সময়'),
+                selected: _selectedIndex == 2,
+                onTap: () {
+                  _onItemTapped(2);
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.edit),
+                title: Text('প্রোফাইল পরিবর্তন'),
+                selected: _selectedIndex == 3,
+                onTap: () {
+                  _onItemTapped(3);
+                  Navigator.pop(context);
+                },
+              ),
+            ] else ...[
+              ListTile(
+                leading: Icon(Icons.edit),
+                title: Text('প্রোফাইল পরিবর্তন'),
+                selected: _selectedIndex == 1,
+                onTap: () {
+                  _onItemTapped(1);
 
-            ListTile(
-              leading: Icon(Icons.edit),
-              title: Text('প্রোফাইল পরিবর্তন'),
-              selected: _selectedIndex == 3,
-              onTap: () {
-                _onItemTapped(3);
-                Navigator.pop(context);
-              },
-            ),
+                  Navigator.pop(context);
+                },
+              ),
+            ],
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildDashboard() {
+    return Column(
+      children: [
+        Image.asset(
+          AssetsPath.manWithMoto,
+          width: double.infinity,
+          fit: BoxFit.fill,
+        ),
+        SizedBox(height: 10),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(),
+            onPressed: () {
+              _launchUrl(_url); // Call function properly
+            },
+            child: Text('ড্যাশবোর্ড', style: TextStyle(fontSize: 20)),
+          ),
+        ),
+      ],
     );
   }
 }

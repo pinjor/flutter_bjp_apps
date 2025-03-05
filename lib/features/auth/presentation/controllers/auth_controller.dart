@@ -17,9 +17,7 @@ class AuthController extends _$AuthController {
   AuthState build() {
     _authRepository = ref.watch(authRepositoryProvider);
     _checkInitialState(); // Check if user is already logged in e.g. current session or auth state
-    return AuthState(
-      status: AuthStatus.unknown,
-    );
+    return AuthState(status: AuthStatus.unknown);
   }
 
   Future<void> _checkInitialState() async {
@@ -31,15 +29,13 @@ class AuthController extends _$AuthController {
 
       state = AuthState(user: loginResonse, status: AuthStatus.authenticated);
     } else {
-      state = AuthState(
-        status: AuthStatus.unauthenticated,
-      );
+      state = AuthState(status: AuthStatus.unauthenticated);
       lgr.i('User not logged in yet');
     }
   }
 
   void login(String mobile, String password) async {
-    state = AuthState(isLoading: true);
+    state = AuthState(isLoading: true, status: AuthStatus.unauthenticated);
     try {
       final result = await _authRepository.login(
         mobile: mobile,
@@ -52,19 +48,26 @@ class AuthController extends _$AuthController {
           // error: 'Login failed: Invalid credentials'
           // message in bengali
           error: 'লগইন ব্যর্থ: ভুল মোবাইল নম্বর বা পাসওয়ার্ড',
+          status: AuthStatus.unauthenticated,
         );
       }
     } catch (e) {
-      state = AuthState(error: 'Login error: $e');
+      state = AuthState(
+        error: 'Login error: $e',
+        status: AuthStatus.unauthenticated,
+      );
     }
   }
 
   void logout() async {
-   try{
+    try {
       await _authRepository.logout();
       state = AuthState(status: AuthStatus.unauthenticated);
-    } catch(e){
-      state = AuthState(error: 'Logout error: $e');
-   }
+    } catch (e) {
+      state = AuthState(
+        error: 'Logout error: $e',
+        status: AuthStatus.authenticated,
+      );
+    }
   }
 }

@@ -3,7 +3,4 @@ class AppUser {
   final String token;
 
   AppUser({required this.id, required this.token});
-
-  
-  
 }
