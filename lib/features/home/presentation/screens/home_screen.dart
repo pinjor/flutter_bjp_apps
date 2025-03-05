@@ -1,22 +1,24 @@
+import 'package:bjp_app/core/utils/utils.dart';
+import 'package:bjp_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:bjp_app/features/member/presentation/screens/member_screen.dart';
 import 'package:bjp_app/features/profile/presentation/screens/profile_editing_screen.dart';
 import 'package:bjp_app/features/programs/presentation/screens/program_scedule_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/assets_path.dart';
 import '../../../../core/constants/route_path.dart';
 import '../../../../core/ui/app_icon_widget.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
-
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   final String _url = "https://rnd.egeneration.co/bjp/public/index.php";
 
   String _appBarTitle = 'ড্যাশবোর্ড';
@@ -56,7 +58,6 @@ class _HomeScreenState extends State<HomeScreen> {
       MemberScreen(),
       ProgramSceduleScreen(),
       ProfileEditingScreen(),
-
     ];
   }
 
@@ -81,10 +82,35 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void _logoutUser() {
+    ref.read(authControllerProvider.notifier).logout();
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _widgetOptions()[_selectedIndex], // Call function properly
+      appBar: AppBar(
+        backgroundColor: Colors.tealAccent,
+        title: Text(
+          _appBarTitle,
+          style: TextStyle(color: Colors.black, fontSize: 18),
+        ),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed:
+                () => showLogoutDialog(
+                  context: context,
+                  onPressed: () => _logoutUser(),
+                ),
+            icon: Icon(Icons.logout),
+          ),
+        ],
+      ),
+      body: SafeArea(
+        child: _widgetOptions()[_selectedIndex],
+      ), // Call function properly
       drawer: Drawer(
         width: 250,
         child: ListView(
@@ -127,25 +153,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.pop(context);
               },
             ),
-
           ],
         ),
-      ),
-      appBar: AppBar(
-        backgroundColor: Colors.tealAccent,
-        title: Text(
-          _appBarTitle,
-          style: TextStyle(color: Colors.black, fontSize: 18),
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, RoutePath.loginPath);
-            },
-            icon: Icon(Icons.logout),
-          ),
-        ],
       ),
     );
   }
