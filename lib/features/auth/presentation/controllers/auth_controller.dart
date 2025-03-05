@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bjp_app/features/auth/data/auth_repository.dart';
 import 'package:bjp_app/features/auth/domain/login_response_model.dart';
@@ -6,6 +7,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/utils/utils.dart';
 import '../../domain/auth_state.dart';
+import '../../domain/register_input_model.dart';
 
 part 'auth_controller.g.dart';
 
@@ -22,11 +24,14 @@ class AuthController extends _$AuthController {
 
   Future<void> _checkInitialState() async {
     final token = await _authRepository.getToken();
-    if (token != null) {
+    final userJson = await _authRepository.getUser();
+    if (token != null && userJson != null) {
       lgr.i('User already logged in, token: $token');
-      final loginResonse = LoginResponseModel(token: token);
+      final user = User.fromJson(jsonDecode(userJson));
+      final loginResonse = LoginResponseModel(user: user, token: token);
       _authRepository.setAuthStateController = loginResonse;
-
+      // user admin or not
+      lgr.i('user is: ${loginResonse.user?.isAdmin}');
       state = AuthState(user: loginResonse, status: AuthStatus.authenticated);
     } else {
       state = AuthState(status: AuthStatus.unauthenticated);
@@ -34,12 +39,17 @@ class AuthController extends _$AuthController {
     }
   }
 
-  void login(String mobile, String password) async {
+  void login({
+    required String mobileOrEmail,
+    required String password,
+    required bool isAdmin,
+  }) async {
     state = AuthState(isLoading: true, status: AuthStatus.unauthenticated);
     try {
       final result = await _authRepository.login(
-        mobile: mobile,
+        mobileOrEmail: mobileOrEmail,
         password: password,
+        isAdmin: isAdmin,
       );
       if (result != null && result.token != null) {
         state = AuthState(user: result, status: AuthStatus.authenticated);
@@ -54,6 +64,19 @@ class AuthController extends _$AuthController {
     } catch (e) {
       state = AuthState(
         error: 'Login error: $e',
+        status: AuthStatus.unauthenticated,
+      );
+    }
+  }
+
+  void register({required RegisterInputModel data}) async {
+    state = AuthState(isLoading: true, status: AuthStatus.unauthenticated);
+    try {
+      await _authRepository.register(data: data);
+      state = AuthState(status: AuthStatus.unauthenticated);
+    } catch (e) {
+      state = AuthState(
+        error: 'Register error: $e',
         status: AuthStatus.unauthenticated,
       );
     }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bjp_app/core/utils/utils.dart';
 import 'package:bjp_app/features/auth/domain/login_response_model.dart';
 import 'package:dio/dio.dart';
@@ -41,8 +43,9 @@ class AuthRepository {
   LoginResponseModel? get currentUser => _authStateController.value;
 
   Future<LoginResponseModel?> login({
-    required String mobile,
+    required String mobileOrEmail,
     required String password,
+    required bool isAdmin,
   }) async {
     lgr.i('Login request sending..: ');
     try {
@@ -51,12 +54,15 @@ class AuthRepository {
         scheme: 'http',
         port: ApiConstants.port,
         host: ApiConstants.baseUrl,
-        path: ApiConstants.login,
+        path: isAdmin ? ApiConstants.adminLogin : ApiConstants.login,
       );
       lgr.i('Login request sending to: ${uri.toString()}');
       final response = await _dioClient.post(
         uri.toString(),
-        data: {'phone_number': mobile, 'password': password},
+        data:
+            isAdmin
+                ? {'email': mobileOrEmail, 'password': password}
+                : {'phone_number': mobileOrEmail, 'password': password},
       );
 
       lgr.i('Login response received: ${response.data}');
@@ -64,7 +70,7 @@ class AuthRepository {
       final loginResponse = LoginResponseModel.fromJson(response.data);
       if (response.statusCode == 200) {
         lgr.i('Token received: ${loginResponse.token}');
-        await _saveToken(loginResponse.token!);
+        await _saveUser(loginResponse);
         _authStateController.value = loginResponse;
         return loginResponse;
       } else {
@@ -93,25 +99,33 @@ class AuthRepository {
         data: data.toJson(),
       );
 
-      await _saveToken(response.data['token']);
-      
+      // await _saveToken(response.data['token']);
     } catch (err) {}
   }
 
   Future<void> logout() async {
     try {
       await _secureStorage.delete(key: 'token');
+      await _secureStorage.delete(key: 'user');
       _authStateController.value = null;
     } catch (e) {
       debugPrint('Logout error: $e');
     }
   }
 
-  Future<void> _saveToken(String token) async {
-    await _secureStorage.write(key: 'token', value: token);
-  }
-
   Future<String?> getToken() async {
     return await _secureStorage.read(key: 'token');
+  }
+
+  Future<String?> getUser() async {
+    return await _secureStorage.read(key: 'user');
+  }
+
+  Future<void> _saveUser(LoginResponseModel response) async {
+    await _secureStorage.write(key: 'token', value: response.token);
+    await _secureStorage.write(
+      key: 'user',
+      value: jsonEncode(response.user?.toJson()),
+    );
   }
 }

@@ -1,8 +1,10 @@
 import 'package:bjp_app/core/utils/utils.dart';
+import 'package:bjp_app/features/auth/domain/auth_state.dart';
 import 'package:bjp_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:bjp_app/features/member/presentation/screens/member_screen.dart';
 import 'package:bjp_app/features/profile/presentation/screens/profile_editing_screen.dart';
 import 'package:bjp_app/features/programs/presentation/screens/program_scedule_screen.dart';
+import 'package:bjp_app/features/programs/presentation/widgets/time_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -31,15 +33,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   int _selectedIndex = 0;
 
-  List<Widget> _drawerOptions(bool isAdmin) {
+  List<Widget> _drawerOptions(bool isAdmin, AuthState authState) {
     return isAdmin
         ? [
-          _buildDashboard(),
+          _buildDashboard(authState),
           MemberScreen(),
           ProgramSceduleScreen(),
           ProfileEditingScreen(),
         ]
-        : [_buildDashboard(), ProfileEditingScreen()];
+        : [_buildDashboard(authState), ProfileEditingScreen()];
   }
 
   void _onItemTapped(int index) {
@@ -104,7 +106,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ],
       ),
       body: SafeArea(
-        child: _drawerOptions(isAdmin)[_selectedIndex],
+        child: _drawerOptions(isAdmin, authState)[_selectedIndex],
       ), // Call function properly
       drawer: Drawer(
         width: 250,
@@ -166,26 +168,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildDashboard() {
-    return Column(
-      children: [
-        Image.asset(
-          AssetsPath.manWithMoto,
-          width: double.infinity,
-          fit: BoxFit.fill,
-        ),
-        SizedBox(height: 10),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(),
-            onPressed: () {
-              _launchUrl(_url); // Call function properly
-            },
-            child: Text('ড্যাশবোর্ড', style: TextStyle(fontSize: 20)),
+  Widget _buildDashboard(AuthState authState) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Image.asset(
+            AssetsPath.manWithMoto,
+            width: double.infinity,
+            fit: BoxFit.fill,
           ),
-        ),
-      ],
+          SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(),
+              onPressed: () {
+                // _launchUrl(_url); // Call function properly
+              },
+              child: Text('ড্যাশবোর্ড', style: TextStyle(fontSize: 20)),
+            ),
+          ),
+          if (!authState.isAdmin) ...[TimeCard(), TimeCard()],
+        ],
+      ),
     );
   }
 }
