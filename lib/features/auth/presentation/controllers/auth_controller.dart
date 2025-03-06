@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:bjp_app/features/auth/data/auth_repository.dart';
 import 'package:bjp_app/features/auth/domain/login_response_model.dart';
+import 'package:bjp_app/features/auth/presentation/screens/login_screen.dart';
+import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/utils/utils.dart';
@@ -69,18 +71,56 @@ class AuthController extends _$AuthController {
     }
   }
 
-  void register({required RegisterInputModel data}) async {
-    state = AuthState(isLoading: true, status: AuthStatus.unauthenticated);
-    try {
-      await _authRepository.register(data: data);
-      state = AuthState(status: AuthStatus.unauthenticated);
-    } catch (e) {
+  // void register(
+  //   BuildContext context, {
+  //   required RegisterInputModel data,
+  // }) async {
+  //   state = AuthState(isLoading: true, status: AuthStatus.unauthenticated);
+
+  //   final result = await _authRepository.register(data: data);
+
+  //   result.fold((l) {
+  //     state = AuthState(
+  //       error: 'Registration error: $l',
+  //       status: AuthStatus.unauthenticated,
+  //     );
+  //     showMessageToUser(context: context, message: 'প্রবেশ করানো যায়নি, আবার চেষ্টা করুন');
+  //   }, (r) {
+  //     state = AuthState(status: AuthStatus.unauthenticated);
+  //     showMessageToUser(context: context, message: 'সফলভাবে নিবন্ধিত হয়েছে, লগইন করুন');
+  //     Navigator.of(context).pushReplacement(
+  //       MaterialPageRoute(builder: (context) => const LoginScreen()),
+  //     );
+
+  //   });
+  // }
+
+  void register(BuildContext context, {required RegisterInputModel data}) async {
+  state = AuthState(isLoading: true, status: AuthStatus.unauthenticated);
+
+  final result = await _authRepository.register(data: data);
+
+  result.fold(
+    (failure) async {
       state = AuthState(
-        error: 'Register error: $e',
+        error: 'Registration error: ${failure.message}',
         status: AuthStatus.unauthenticated,
       );
-    }
-  }
+      // Show the detailed error dialog:
+      await showErrorDialog(context, failure.message);
+    },
+    (r) {
+      state = AuthState(status: AuthStatus.unauthenticated);
+      showMessageToUser(
+          context: context, message: 'সফলভাবে নিবন্ধিত হয়েছে, লগইন করুন');
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+      );
+    },
+  );
+}
+
+
 
   void logout() async {
     try {

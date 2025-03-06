@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../core/ui/splash_screen.dart';
-import '../core/utils/utils.dart';
 import '../features/auth/data/auth_repository.dart';
 import '../features/auth/domain/auth_state.dart';
 import '../features/auth/presentation/screens/login_screen.dart';
@@ -21,20 +20,18 @@ final _rootNavKey = GlobalKey<NavigatorState>();
 GoRouter appRouter(Ref ref) {
   final authRepository = ref.watch(authRepositoryProvider);
   final authState = ref.watch(authControllerProvider);
-  lgr.i('value of authState: ${authState.status}');
+
   return GoRouter(
     navigatorKey: _rootNavKey,
     initialLocation: RoutePath.splashPath,
     refreshListenable: GoRouterRefreshStream(authRepository.authStateChanges),
     redirect: (context, state) {
-      lgr.i('authState: $authState');
       if (authState.status == AuthStatus.unknown) {
         return RoutePath.splashPath;
       }
-      lgr.i('i dont know what to do');
+
       // If auth state is known and current route is splash, redirect away:
       if (state.uri.path == RoutePath.splashPath) {
-        lgr.i('redirecting from splash');
         return authState.isLoggedIn
             ? RoutePath.homeScreenPath
             : RoutePath.loginPath;
@@ -43,7 +40,6 @@ GoRouter appRouter(Ref ref) {
       final isLoggedIn = authState.isLoggedIn;
       final isAuthPage = state.uri.path == RoutePath.loginPath;
       // state.uri.path == RoutePath.splashPath;
-      lgr.i('isLoggedIn: $isLoggedIn, isAuthPage: $isAuthPage');
 
       if (isLoggedIn && isAuthPage) {
         return RoutePath.homeScreenPath;

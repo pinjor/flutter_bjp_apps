@@ -1,14 +1,17 @@
 import 'dart:convert';
 
+import 'package:bjp_app/core/type_defs.dart';
 import 'package:bjp_app/core/utils/utils.dart';
 import 'package:bjp_app/features/auth/domain/login_response_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/constants/api_constants.dart';
+import '../../../core/failure.dart';
 import '../../../core/providers/providers.dart';
 import '../../../core/utils/in_memory_store.dart';
 import '../domain/register_input_model.dart';
@@ -83,7 +86,7 @@ class AuthRepository {
     // return null;
   }
 
-  Future<void> register({required RegisterInputModel data}) async {
+  FutureEitherVoid register({required RegisterInputModel data}) async {
     try {
       final uri = Uri(
         scheme: 'http',
@@ -99,8 +102,36 @@ class AuthRepository {
         data: data.toJson(),
       );
 
-      // await _saveToken(response.data['token']);
-    } catch (err) {}
+      lgr.i('Register response received: ${response.data}');
+
+      if (response.statusCode == 201) {
+        lgr.i('Register success');
+        return right(null);
+      } else {
+        // Handle unexpected status codes if necessary
+        lgr.f('Unexpected status code: ${response.statusCode}');
+        return left(Failure('Unexpected error occurred'));
+      }
+    } on DioException catch (err) {
+      if (err.response != null && err.response!.statusCode == 422) {
+        // Extract error messages from the response data
+        final errorData = err.response!.data['data'] as Map<String, dynamic>;
+        String errorMessage = '';
+        errorData.forEach((field, messages) {
+          errorMessage += '***${(messages as List).join(' ')}\n\n';
+        });
+
+        lgr.f('Register failed: $errorMessage');
+        return left(Failure(errorMessage.trim()));
+      } else {
+        // Handle other DioErrors or network issues
+        lgr.e('Register failed with error: ${err.message}');
+        return left(Failure('Register failed: ${err.message}'));
+      }
+    } catch (err) {
+      lgr.e('Register failed with unexpected error: $err');
+      return left(Failure('Register failed due to an unexpected error'));
+    }
   }
 
   Future<void> logout() async {
