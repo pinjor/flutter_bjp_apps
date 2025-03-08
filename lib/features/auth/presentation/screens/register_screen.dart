@@ -50,7 +50,7 @@ class _SignUpScreenState extends ConsumerState<RegisterScreen> {
   String? _selectedDistrictId;
 
   void _registerUser() {
-    if (_formKey.currentState!.validate()) {
+    // if (_formKey.currentState!.validate()) {
       FocusScope.of(context).unfocus();
 
       final name = _nameController.text.trim();
@@ -98,7 +98,7 @@ class _SignUpScreenState extends ConsumerState<RegisterScreen> {
           .register(context, data: newUser);
 
       lgr.i('User registered');
-    }
+    // }
   }
 
   Future<void> _selectDate() async {
