@@ -1,6 +1,7 @@
 class RoutePath {
   static const String splashPath = '/';
   static const String loginPath = '/login';
+  static const String registerPath = '/register';
   static const String programTimeline = '/program_timeline';
   static const String otpVerification = '/otp-verification';
   static const String completeProfile = '/complete-profile';

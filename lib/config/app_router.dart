@@ -1,6 +1,7 @@
 import 'package:bjp_app/config/route_refresh.dart';
 import 'package:bjp_app/core/constants/route_path.dart';
 import 'package:bjp_app/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:bjp_app/features/auth/presentation/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -38,7 +39,9 @@ GoRouter appRouter(Ref ref) {
       }
       // final isLoggedIn = authRepository.currentUser != null; // previous implementation
       final isLoggedIn = authState.isLoggedIn;
-      final isAuthPage = state.uri.path == RoutePath.loginPath;
+      final isAuthPage =
+          state.uri.path == RoutePath.loginPath ||
+          state.uri.path == RoutePath.registerPath;
       // state.uri.path == RoutePath.splashPath;
 
       if (isLoggedIn && isAuthPage) {
@@ -62,6 +65,13 @@ GoRouter appRouter(Ref ref) {
         path: RoutePath.loginPath,
         pageBuilder:
             (context, state) => MaterialPage(child: const LoginScreen()),
+      ),
+
+      GoRoute(
+        parentNavigatorKey: _rootNavKey,
+        path: RoutePath.registerPath,
+        pageBuilder:
+            (context, state) => MaterialPage(child: const RegisterScreen()),
       ),
 
       GoRoute(

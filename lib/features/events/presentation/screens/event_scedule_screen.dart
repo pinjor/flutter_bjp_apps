@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import '../../../../config/app_colors.dart';
 import '../../../../core/constants/assets.dart';
-import '../widgets/time_card.dart';
+import '../widgets/event_time_card.dart';
 
-class ProgramSceduleScreen extends StatefulWidget {
-  const ProgramSceduleScreen({super.key});
+class EventSceduleScreen extends StatefulWidget {
+  const EventSceduleScreen({super.key});
 
   @override
-  State<ProgramSceduleScreen> createState() => _ProgramSceduleScreenState();
+  State<EventSceduleScreen> createState() => _EventSceduleScreenState();
 }
 
-class _ProgramSceduleScreenState extends State<ProgramSceduleScreen> {
+class _EventSceduleScreenState extends State<EventSceduleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,9 +76,9 @@ class _ProgramSceduleScreenState extends State<ProgramSceduleScreen> {
             ),
           ),
           const SizedBox(height: 10),
-          // Multiple TimeCards
-          const TimeCard(),
-          const TimeCard(),
+          // Multiple EventTimeCards
+          const EventTimeCard(),
+          const EventTimeCard(),
         ],
       ),
     );

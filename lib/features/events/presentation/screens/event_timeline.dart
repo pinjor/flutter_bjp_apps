@@ -3,15 +3,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 
-class ProgramTimeline extends StatefulWidget {
-  const ProgramTimeline({super.key});
+class EventTimeline extends StatefulWidget {
+  const EventTimeline({super.key});
 
 
   @override
-  State<ProgramTimeline> createState() => _ProgramTimelineState();
+  State<EventTimeline> createState() => _EventTimelineState();
 }
 
-class _ProgramTimelineState extends State<ProgramTimeline> {
+class _EventTimelineState extends State<EventTimeline> {
   int _remainingSeconds = 3600; // 1 hour countdown
   late Timer _timer;
 

@@ -4,10 +4,9 @@ import 'package:bjp_app/features/auth/presentation/controllers/auth_controller.d
 import 'package:bjp_app/features/member/presentation/screens/member_screen.dart';
 import 'package:bjp_app/features/profile/presentation/screens/profile_editing_screen.dart';
 import 'package:bjp_app/features/events/presentation/screens/event_scedule_screen.dart';
-import 'package:bjp_app/features/events/presentation/widgets/time_card.dart';
+import 'package:bjp_app/features/events/presentation/widgets/event_time_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/assets_path.dart';
 import '../../../../core/ui/app_icon_widget.dart';
@@ -20,16 +19,16 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  final String _url = "https://rnd.egeneration.co/bjp/public/index.php";
+  // final String _url = "https://rnd.egeneration.co/bjp/public/index.php";
 
   String _appBarTitle = 'ড্যাশবোর্ড';
 
-  Future<void> _launchUrl(String url) async {
-    final Uri uri = Uri.parse(url);
-    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
-      throw Exception('Could not launch $uri');
-    }
-  }
+  // Future<void> _launchUrl(String url) async {
+  //   final Uri uri = Uri.parse(url);
+  //   if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+  //     throw Exception('Could not launch $uri');
+  //   }
+  // }
 
   int _selectedIndex = 0;
 
@@ -38,7 +37,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ? [
           _buildDashboard(authState),
           MemberScreen(),
-          ProgramSceduleScreen(),
+          EventSceduleScreen(),
           ProfileEditingScreen(),
         ]
         : [_buildDashboard(authState), ProfileEditingScreen()];
@@ -86,6 +85,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authControllerProvider);
     final isAdmin = authState.isAdmin;
+    // final eventListState = ref.watch(eventControllerProvider);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.tealAccent,
@@ -188,7 +189,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: Text('ড্যাশবোর্ড', style: TextStyle(fontSize: 20)),
             ),
           ),
-          if (!authState.isAdmin) ...[TimeCard(), TimeCard()],
+          if (!authState.isAdmin) ...[EventTimeCard(), EventTimeCard()],
         ],
       ),
     );

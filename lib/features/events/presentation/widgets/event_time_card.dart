@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import '../../../../config/app_colors.dart';
 import '../../../../core/constants/assets.dart';
 
-class TimeCard extends StatefulWidget {
-  const TimeCard({super.key});
+class EventTimeCard extends StatefulWidget {
+  const EventTimeCard({super.key});
 
   @override
-  State<TimeCard> createState() => _TimeCardState();
+  State<EventTimeCard> createState() => _EventTimeCardState();
 }
 
-class _TimeCardState extends State<TimeCard> {
+class _EventTimeCardState extends State<EventTimeCard> {
   late DateTime _targetDate;
   Duration _remainingTime = Duration.zero;
   Timer? _timer;
