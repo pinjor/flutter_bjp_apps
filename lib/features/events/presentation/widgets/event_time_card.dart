@@ -1,11 +1,16 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import '../../../../config/app_colors.dart';
 import '../../../../core/constants/assets.dart';
+import '../../domain/event_model.dart';
+import '../../../../core/constants/api_constants.dart';
 
 class EventTimeCard extends StatefulWidget {
-  const EventTimeCard({super.key});
+  const EventTimeCard({super.key, required this.eventModel});
+
+  final EventModel eventModel;
 
   @override
   State<EventTimeCard> createState() => _EventTimeCardState();
@@ -15,12 +20,19 @@ class _EventTimeCardState extends State<EventTimeCard> {
   late DateTime _targetDate;
   Duration _remainingTime = Duration.zero;
   Timer? _timer;
+  bool _isDateFormattingInitialized = false;
 
   @override
   void initState() {
     super.initState();
-    // Setting target date to 7 days from now
-    _targetDate = DateTime.now().add(const Duration(days: 7));
+    // Initialize Bengali date formatting.
+    initializeDateFormatting('bn', null).then((_) {
+      setState(() {
+        _isDateFormattingInitialized = true;
+      });
+    });
+    // Parse the event date from the model.
+    _targetDate = DateTime.parse(widget.eventModel.date!);
     _startTimer();
   }
 
@@ -43,96 +55,32 @@ class _EventTimeCardState extends State<EventTimeCard> {
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(10),
-      // height: 110,
-      child: Column(
-        children: [
-          Stack(
-            children: [
-              Positioned.fill(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.asset(
-                    Assets.imagesPictureOfMan,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              // // Overlay for darkening effect
-              // Positioned.fill(
-              //   child: Container(color: Colors.black.withOpacity(0.1)),
-              // ),
-              // Time holders
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      _buildTimeHolder(context, time: '০৭', timeType: 'দিন'),
-                      _buildTimeHolder(context, time: '০৫', timeType: 'ঘণ্টা'),
-                      _buildTimeHolder(context, time: '১৫', timeType: 'মিনিট'),
-                      _buildTimeHolder(context, time: '১০', timeType: 'সেকেন্ড'),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+  // Helper: Convert English digits in a string to Bengali digits.
+  String convertToBengaliDigits(String input) {
+    final Map<String, String> bengaliDigits = {
+      '0': '০',
+      '1': '১',
+      '2': '২',
+      '3': '৩',
+      '4': '৪',
+      '5': '৫',
+      '6': '৬',
+      '7': '৭',
+      '8': '৮',
+      '9': '৯',
+    };
+    String output = '';
+    for (int i = 0; i < input.length; i++) {
+      String ch = input[i];
+      output += bengaliDigits[ch] ?? ch;
+    }
+    return output;
+  }
 
-          SizedBox(height: 15),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                spacing: 5,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('২১ ফেব্রুয়ারী, ২০২৫', style: TextStyle(fontSize: 12)),
-                  Text('২১ ফেব্রুয়ারী, ২০২৫', style: TextStyle(fontSize: 12)),
-                  Text('বনানী, ঢাকা', style: TextStyle(fontSize: 12)),
-                ],
-              ),
-              GestureDetector(
-                onTap: (){},
-                child: Container(
-                  // height: 40,
-                  // width: 120,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 15,
-                    vertical: 7,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.themeColor,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'পরিবর্তন করুন',
-                      style: TextStyle(fontSize: 12, color: Colors.white),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-
-          Container(
-            height: 6,
-            decoration: BoxDecoration(
-              color: AppColors.themeColor,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            margin: EdgeInsets.symmetric(horizontal: 125),
-          ),
-        ],
-      ),
-    );
+  // Formats the DateTime into a Bengali date string.
+  String formatDateToBengali(DateTime date) {
+    String formatted = DateFormat.yMMMMd('bn').format(date);
+    return convertToBengaliDigits(formatted);
   }
 
   Widget _buildTimeHolder(
@@ -165,9 +113,9 @@ class _EventTimeCardState extends State<EventTimeCard> {
           ),
           Container(
             height: 30,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
-              borderRadius: const BorderRadius.only(
+              borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(2),
                 bottomRight: Radius.circular(2),
               ),
@@ -181,6 +129,140 @@ class _EventTimeCardState extends State<EventTimeCard> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Countdown components.
+    int days = _remainingTime.inDays;
+    int hours = _remainingTime.inHours % 24;
+    int minutes = _remainingTime.inMinutes % 60;
+    int seconds = _remainingTime.inSeconds % 60;
+
+    String daysStr = convertToBengaliDigits(days.toString().padLeft(2, '0'));
+    String hoursStr = convertToBengaliDigits(hours.toString().padLeft(2, '0'));
+    String minutesStr = convertToBengaliDigits(
+      minutes.toString().padLeft(2, '0'),
+    );
+    String secondsStr = convertToBengaliDigits(
+      seconds.toString().padLeft(2, '0'),
+    );
+
+    return Container(
+      margin: const EdgeInsets.all(10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Background image with countdown overlay.
+          Stack(
+            children: [
+              Positioned.fill(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(
+                    widget.eventModel.image!.isNotEmpty
+                        ? '${ApiConstants.baseUrl}/${widget.eventModel.image}'
+                        : 'https://via.placeholder.com/150',
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        Assets.imagesPictureOfMan,
+                        fit: BoxFit.cover,
+                      );
+                    },
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildTimeHolder(context, time: daysStr, timeType: 'দিন'),
+                      _buildTimeHolder(
+                        context,
+                        time: hoursStr,
+                        timeType: 'ঘণ্টা',
+                      ),
+                      _buildTimeHolder(
+                        context,
+                        time: minutesStr,
+                        timeType: 'মিনিট',
+                      ),
+                      _buildTimeHolder(
+                        context,
+                        time: secondsStr,
+                        timeType: 'সেকেন্ড',
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            // mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 18,
+                  vertical: 5,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.themeColor,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: const Text(
+                  'ইভেন্ট',
+                  style: TextStyle(fontSize: 10, color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 5),
+          // Event title.
+          Text(
+            widget.eventModel.title!,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          // Optional description.
+          if (widget.eventModel.description!.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: Text(
+                widget.eventModel.description!,
+                style: const TextStyle(fontSize: 14),
+              ),
+            ),
+          const SizedBox(height: 10),
+          // Formatted date.
+          Text(
+            _isDateFormattingInitialized
+                ? formatDateToBengali(_targetDate)
+                : 'তারিখ লোড হচ্ছে...',
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+          ),
+          // Address.
+          Text(
+            widget.eventModel.address!,
+            style: const TextStyle(fontSize: 14),
+          ),
+          const SizedBox(height: 10),
+          
+          // Separator.
+          Container(
+            height: 6,
+            margin: const EdgeInsets.symmetric(horizontal: 125),
+            decoration: BoxDecoration(
+              color: AppColors.themeColor,
+              borderRadius: BorderRadius.circular(10),
             ),
           ),
         ],

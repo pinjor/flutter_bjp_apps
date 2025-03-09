@@ -1,3 +1,4 @@
+import 'package:bjp_app/core/ui/custom_loader.dart';
 import 'package:bjp_app/core/utils/utils.dart';
 import 'package:bjp_app/features/auth/domain/auth_state.dart';
 import 'package:bjp_app/features/auth/presentation/controllers/auth_controller.dart';
@@ -10,6 +11,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constants/assets_path.dart';
 import '../../../../core/ui/app_icon_widget.dart';
+import '../../../events/domain/event_model.dart';
+import '../../../events/presentation/controllers/event_controller.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -19,35 +22,39 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  // final String _url = "https://rnd.egeneration.co/bjp/public/index.php";
-
   String _appBarTitle = 'ড্যাশবোর্ড';
-
-  // Future<void> _launchUrl(String url) async {
-  //   final Uri uri = Uri.parse(url);
-  //   if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
-  //     throw Exception('Could not launch $uri');
-  //   }
-  // }
-
   int _selectedIndex = 0;
 
-  List<Widget> _drawerOptions(bool isAdmin, AuthState authState) {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(eventControllerProvider.notifier).fetchEvents(context);
+    });
+  }
+
+  List<Widget> _drawerOptions(
+    bool isAdmin,
+    AuthState authState, {
+    required AsyncValue<List<EventModel>?> events,
+  }) {
     return isAdmin
         ? [
-          _buildDashboard(authState),
+          _buildDashboard(authState, eventListState: events),
           MemberScreen(),
           EventSceduleScreen(),
           ProfileEditingScreen(),
         ]
-        : [_buildDashboard(authState), ProfileEditingScreen()];
+        : [
+          _buildDashboard(authState, eventListState: events),
+          ProfileEditingScreen(),
+        ];
   }
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
       if (ref.read(authControllerProvider).user?.user?.isAdmin == 1) {
-        // Admin mapping:
         switch (index) {
           case 0:
             _appBarTitle = 'ড্যাশবোর্ড';
@@ -63,7 +70,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             break;
         }
       } else {
-        // Non-admin mapping:
         switch (index) {
           case 0:
             _appBarTitle = 'ড্যাশবোর্ড';
@@ -85,7 +91,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authControllerProvider);
     final isAdmin = authState.isAdmin;
-    // final eventListState = ref.watch(eventControllerProvider);
+    final eventListState = ref.watch(eventControllerProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -107,8 +113,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ],
       ),
       body: SafeArea(
-        child: _drawerOptions(isAdmin, authState)[_selectedIndex],
-      ), // Call function properly
+        child:
+            _drawerOptions(
+              isAdmin,
+              authState,
+              events: eventListState,
+            )[_selectedIndex],
+      ),
       drawer: Drawer(
         width: 250,
         child: ListView(
@@ -158,7 +169,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 selected: _selectedIndex == 1,
                 onTap: () {
                   _onItemTapped(1);
-
                   Navigator.pop(context);
                 },
               ),
@@ -169,7 +179,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildDashboard(AuthState authState) {
+  Widget _buildDashboard(
+    AuthState authState, {
+    required AsyncValue<List<EventModel>?> eventListState,
+  }) {
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -184,12 +197,30 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(),
               onPressed: () {
-                // _launchUrl(_url); // Call function properly
+                // _launchUrl(_url); // Uncomment if needed
               },
               child: Text('ড্যাশবোর্ড', style: TextStyle(fontSize: 20)),
             ),
           ),
-          if (!authState.isAdmin) ...[EventTimeCard(), EventTimeCard()],
+          if (!authState.isAdmin) ...[
+            eventListState.when(
+              data: (events) {
+                if (events == null || events.isEmpty) {
+                  return Text('কোন ইভেন্ট পাওয়া যায়নি');
+                }
+                return ListView.builder(
+                  itemCount: events.length,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return EventTimeCard(eventModel: events[index]);
+                  },
+                );
+              },
+              error: (err, st) => Text('ইভেন্ট লোড করতে ব্যর্থ হয়েছে: $err'),
+              loading: () => CustomLoader(),
+            ),
+          ],
         ],
       ),
     );

@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:bjp_app/features/auth/data/auth_repository.dart';
 import 'package:bjp_app/features/auth/domain/login_response_model.dart';
-import 'package:bjp_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -71,30 +70,6 @@ class AuthController extends _$AuthController {
       );
     }
   }
-
-  // void register(
-  //   BuildContext context, {
-  //   required RegisterInputModel data,
-  // }) async {
-  //   state = AuthState(isLoading: true, status: AuthStatus.unauthenticated);
-
-  //   final result = await _authRepository.register(data: data);
-
-  //   result.fold((l) {
-  //     state = AuthState(
-  //       error: 'Registration error: $l',
-  //       status: AuthStatus.unauthenticated,
-  //     );
-  //     showMessageToUser(context: context, message: 'প্রবেশ করানো যায়নি, আবার চেষ্টা করুন');
-  //   }, (r) {
-  //     state = AuthState(status: AuthStatus.unauthenticated);
-  //     showMessageToUser(context: context, message: 'সফলভাবে নিবন্ধিত হয়েছে, লগইন করুন');
-  //     Navigator.of(context).pushReplacement(
-  //       MaterialPageRoute(builder: (context) => const LoginScreen()),
-  //     );
-
-  //   });
-  // }
 
   void register(
     BuildContext context, {

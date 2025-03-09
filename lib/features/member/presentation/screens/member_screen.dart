@@ -1,17 +1,19 @@
 import 'package:bjp_app/core/ui/customlisttile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show Clipboard, ClipboardData;
-import 'package:url_launcher/url_launcher.dart'; // Import url_launcher
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class MemberScreen extends StatefulWidget {
+import '../controllers/member_controller.dart'; // Import url_launcher
+
+class MemberScreen extends ConsumerStatefulWidget {
   const MemberScreen({super.key});
 
-
   @override
-  State<MemberScreen> createState() => _MemberScreenState();
+  ConsumerState<MemberScreen> createState() => _MemberScreenState();
 }
 
-class _MemberScreenState extends State<MemberScreen> {
+class _MemberScreenState extends ConsumerState<MemberScreen> {
   final TextEditingController _mobileController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _userIdController = TextEditingController();
@@ -89,39 +91,11 @@ class _MemberScreenState extends State<MemberScreen> {
   }
 
   // Function to copy the mobile number to clipboard and open dialer
-  void _copyToClipboard(String mobile) async {
-    // Copy the number to the clipboard
-    await Clipboard.setData(ClipboardData(text: mobile))
-        .then((_) async {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text("মোবাইল নম্বর কপি হয়েছে!")));
-
-          // Open the phone dialer with the copied number
-          final Uri phoneUri = Uri(scheme: 'tel', path: mobile);
-          if (await canLaunchUrl(phoneUri)) {
-            await launchUrl(phoneUri);
-          } else {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text("ডায়ালার খুলতে ব্যর্থ!")));
-          }
-        })
-        .catchError((error) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text("কপি করতে ব্যর্থ: $error")));
-        });
-  }
+  void _copyToClipboard(String mobile) async {}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('সদস্য'),
-      //   centerTitle: true,
-      //   //backgroundColor: Color(0xFF00B1B0),
-      // ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -258,7 +232,12 @@ class _MemberScreenState extends State<MemberScreen> {
                                     ), // Reduce spacing between buttons
                                     ElevatedButton(
                                       onPressed: () {
-                                        _showDetailsDialog(filteredData[index]);
+                                        // _showDetailsDialog(filteredData[index]);
+                                        ref
+                                            .read(
+                                              memberControllerProvider.notifier,
+                                            )
+                                            .fetchMembers(context);
                                       },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Color(0xFF00B1B0),

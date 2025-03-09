@@ -1,78 +1,77 @@
-/* 
-
-{
-            "id": 5,
-            "title": "উন্নয়ন, জনকল্যাণ ও সামার জন্য ১",
-            "description": "আমরা প্রতিটি নাগরিকের কল্যাণ ও সমানাধিকারের জন্য কাজ করে যাচ্ছি, যাতে সবার জন্য একটি সমৃদ্ধ ও সুরক্ষিত ভবিষ্যৎ নিশ্চিত করা যায়।",
-            "date": "2025-03-19 00:00:00",
-            "image": "events/mZeMMs7t9vtjYMy7mBZXq9vRSi6dGF4zP0qSIDfc.jpg",
-            "created_at": "2025-03-04T06:10:00.000000Z",
-            "updated_at": "2025-03-04T06:10:00.000000Z",
-            "division_id": "f47ea481-c504-4dc6-9bf5-350bbb200719",
-            "district_id": "0bc234e0-3bf7-40bb-beb2-97de020d2468",
-            "upazila_id": "c9f5cdb1-4589-4958-944a-6786de7a2468",
-            "division_name": null,
-            "district_name": null,
-            "upazila_name": null,
-            "address": "Dhamrai Govt. College"
-        }
-
-*/
+import 'dart:convert';
 
 class EventModel {
-  final int id;
-  final String title;
-  final String description;
-  final String date;
-  final String image;
-  final String createdAt;
-  final String updatedAt;
-  final String divisionId;
-  final String districtId;
-  final String upazilaId;
-  final String divisionName;
-  final String districtName;
-  final String upazilaName;
-  final String address;
+  final int? id;
+  final String? title;
+  final String? description;
+  final String? date;
+  final String? image;
+  final String? createdAt;
+  final String? updatedAt;
+  final String? divisionId;
+  final String? districtId;
+  final String? upazilaId;
+  final String? divisionName;
+  final String? districtName;
+  final String? upazilaName;
+  final String? address;
 
   EventModel({
-    required this.id,
-    required this.title,
-    required this.description,
-    required this.date,
-    required this.image,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.divisionId,
-    required this.districtId,
-    required this.upazilaId,
-    required this.divisionName,
-    required this.districtName,
-    required this.upazilaName,
-    required this.address,
+    this.id,
+    this.title,
+    this.description,
+    this.date,
+    this.image,
+    this.createdAt,
+    this.updatedAt,
+    this.divisionId,
+    this.districtId,
+    this.upazilaId,
+    this.divisionName,
+    this.districtName,
+    this.upazilaName,
+    this.address,
   });
 
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'title': title,
+      'description': description,
+      'date': date,
+      'image': image,
+      'created_at': createdAt,
+      'updated_at': updatedAt,
+      'division_id': divisionId,
+      'district_id': districtId,
+      'upazila_id': upazilaId,
+      'division_name': divisionName,
+      'district_name': districtName,
+      'upazila_name': upazilaName,
+      'address': address,
+    };
+  }
 
-  // fromJson
-
-  factory EventModel.fromJson(Map<String, dynamic> json) {
+  factory EventModel.fromMap(Map<String, dynamic> map) {
     return EventModel(
-      id: json['id'],
-      title: json['title'],
-      description: json['description'],
-      date: json['date'],
-      image: json['image'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
-      divisionId: json['division_id'],
-      districtId: json['district_id'],
-      upazilaId: json['upazila_id'],
-      divisionName: json['division_name'],
-      districtName: json['district_name'],
-      upazilaName: json['upazila_name'],
-      address: json['address'],
+      id: map['id'] != null ? map['id'] as int : null,
+      title: map['title'] != null ? map['title'] as String : null,
+      description: map['description'] != null ? map['description'] as String : null,
+      date: map['date'] != null ? map['date'] as String : null,
+      image: map['image'] != null ? map['image'] as String : null,
+      createdAt: map['created_at'] != null ? map['created_at'] as String : null,
+      updatedAt: map['updated_at'] != null ? map['updated_at'] as String : null,
+      divisionId: map['division_id'] != null ? map['division_id'] as String : null,
+      districtId: map['district_id'] != null ? map['district_id'] as String : null,
+      upazilaId: map['upazila_id'] != null ? map['upazila_id'] as String : null,
+      divisionName: map['division_name'] != null ? map['division_name'] as String : null,
+      districtName: map['district_name'] != null ? map['district_name'] as String : null,
+      upazilaName: map['upazila_name'] != null ? map['upazila_name'] as String : null,
+      address: map['address'] != null ? map['address'] as String : null,
     );
   }
 
- 
+  String toJson() => json.encode(toMap());
+
+  factory EventModel.fromJson(String source) => EventModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

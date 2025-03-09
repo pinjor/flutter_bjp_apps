@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/utils/utils.dart';
-import '../../../events/data/event_repository.dart';
 import '../../data/division_district_map_data.dart';
 import '../../domain/district.dart';
 import '../controllers/auth_controller.dart';
