@@ -1,5 +1,6 @@
 import 'package:bjp_app/config/app_colors.dart';
 import 'package:bjp_app/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:bjp_app/features/auth/presentation/screens/otp_verification_screen.dart';
 import 'package:bjp_app/features/auth/presentation/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -125,12 +126,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     keyboardType: TextInputType.text,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 183.0),
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text('পাসওয়ার্ড ভুলে গেছেন ?'),
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          //! maybe this should be changed 
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => OtpVeificationScreen(),
+                            ),
+                          );
+                        },
+                        child: Text('পাসওয়ার্ড ভুলে গেছেন ?', 
+                        style: TextStyle(
+                          fontSize: 12
+                        ),
+                        
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(height: 16.0),
                   if (authState.isLoading)

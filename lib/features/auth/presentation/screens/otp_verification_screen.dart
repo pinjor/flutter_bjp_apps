@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:otp_timer_button/otp_timer_button.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
@@ -19,7 +20,15 @@ class _OtpVeificationScreenState extends State<OtpVeificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            context.pop();
+            
+          },
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: SingleChildScrollView(
@@ -65,7 +74,10 @@ class _OtpVeificationScreenState extends State<OtpVeificationScreen> {
                 ElevatedButton(
                   onPressed: () {
                     //if (_formKey.currentState!.validate()) {}
-                    Navigator.pushNamed(context, RoutePath.newPasswordScreenPath);
+                    Navigator.pushNamed(
+                      context,
+                      RoutePath.newPasswordScreenPath,
+                    );
                   },
                   child: Text('পরবর্তী', style: TextStyle(color: Colors.white)),
                 ),

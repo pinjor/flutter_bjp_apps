@@ -1,5 +1,6 @@
 import 'package:bjp_app/core/ui/custom_loader.dart';
 import 'package:bjp_app/core/utils/utils.dart';
+import 'package:bjp_app/features/announcement/presentation/screens/announcement_screen.dart';
 import 'package:bjp_app/features/auth/domain/auth_state.dart';
 import 'package:bjp_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:bjp_app/features/member/presentation/screens/member_screen.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constants/assets_path.dart';
 import '../../../../core/ui/app_icon_widget.dart';
+import '../../../announcement/presentation/screens/create_announcement_screen.dart';
 import '../../../events/domain/event_model.dart';
 import '../../../events/presentation/controllers/event_controller.dart';
 
@@ -41,12 +43,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return isAdmin
         ? [
           _buildDashboard(authState, eventListState: events),
+          AnnouncementScreen(),
+          CreateAnnouncementScreen(),
           MemberScreen(),
           EventSceduleScreen(),
           ProfileEditingScreen(),
         ]
         : [
           _buildDashboard(authState, eventListState: events),
+          AnnouncementScreen(),
           ProfileEditingScreen(),
         ];
   }
@@ -59,13 +64,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           case 0:
             _appBarTitle = 'ড্যাশবোর্ড';
             break;
-          case 1:
+          // announcements
+          case 1: 
+            _appBarTitle = 'ঘোষণা';
+            break;
+          case 2: 
+            _appBarTitle = 'ঘোষণা তৈরি করুন';
+            break;
+          // create announcements
+          case 3:
             _appBarTitle = 'সদস্য';
             break;
-          case 2:
+          case 4:
             _appBarTitle = 'অনুষ্ঠানের সময়';
             break;
-          case 3:
+          case 5:
             _appBarTitle = 'প্রোফাইল পরিবর্তন';
             break;
         }
@@ -74,7 +87,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           case 0:
             _appBarTitle = 'ড্যাশবোর্ড';
             break;
+          // announcements
           case 1:
+            _appBarTitle = 'ঘোষণা';
+            break;
+          case 2:
             _appBarTitle = 'প্রোফাইল পরিবর্তন';
             break;
         }
@@ -134,19 +151,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 Navigator.pop(context);
               },
             ),
+            // announcements
+            ListTile(
+              leading: Icon(Icons.announcement),
+              title: Text('ঘোষণা'),
+              selected: _selectedIndex == 1,
+              onTap: () {
+                _onItemTapped(1);
+                Navigator.pop(context);
+              },
+            ),
             if (isAdmin) ...[
+              // create announcements
               ListTile(
-                leading: Icon(Icons.person_4),
-                title: Text('সদস্য'),
-                selected: _selectedIndex == 1,
-                onTap: () {
-                  _onItemTapped(1);
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.schedule_sharp),
-                title: Text('অনুষ্ঠানের সময়'),
+                leading: Icon(Icons.add),
+                title: Text('ঘোষণা তৈরি করুন'),
                 selected: _selectedIndex == 2,
                 onTap: () {
                   _onItemTapped(2);
@@ -154,11 +173,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 },
               ),
               ListTile(
-                leading: Icon(Icons.edit),
-                title: Text('প্রোফাইল পরিবর্তন'),
+                leading: Icon(Icons.person_4),
+                title: Text('সদস্য'),
                 selected: _selectedIndex == 3,
                 onTap: () {
                   _onItemTapped(3);
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.schedule_sharp),
+                title: Text('অনুষ্ঠানের সময়'),
+                selected: _selectedIndex == 4,
+                onTap: () {
+                  _onItemTapped(4);
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.edit),
+                title: Text('প্রোফাইল পরিবর্তন'),
+                selected: _selectedIndex == 5,
+                onTap: () {
+                  _onItemTapped(5);
                   Navigator.pop(context);
                 },
               ),
@@ -166,9 +203,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ListTile(
                 leading: Icon(Icons.edit),
                 title: Text('প্রোফাইল পরিবর্তন'),
-                selected: _selectedIndex == 1,
+                selected: _selectedIndex == 2,
                 onTap: () {
-                  _onItemTapped(1);
+                  _onItemTapped(2);
                   Navigator.pop(context);
                 },
               ),
@@ -199,7 +236,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               onPressed: () {
                 // _launchUrl(_url); // Uncomment if needed
               },
-              child: Text('ড্যাশবোর্ড', style: TextStyle(fontSize: 20)),
+              child: Text('সদস্য হন', style: TextStyle(fontSize: 20)),
             ),
           ),
           if (!authState.isAdmin) ...[

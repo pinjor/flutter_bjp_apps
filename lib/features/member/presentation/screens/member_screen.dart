@@ -1,10 +1,11 @@
-import 'package:bjp_app/core/ui/customlisttile.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show Clipboard, ClipboardData;
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-import '../controllers/member_controller.dart'; // Import url_launcher
+import '../../../../core/ui/customlisttile.dart';
+import '../../../../core/utils/utils.dart';
+import '../../domain/member_model.dart';
+import '../controllers/member_controller.dart';
 
 class MemberScreen extends ConsumerStatefulWidget {
   const MemberScreen({super.key});
@@ -18,91 +19,52 @@ class _MemberScreenState extends ConsumerState<MemberScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _userIdController = TextEditingController();
 
-  // Dropdown value for Division
+  // Dropdown value for Division (stores division ID)
   String? _selectedDivision;
 
-  // Data for members list
-  List<Map<String, String>> data = [
-    {
-      "userId": "1001",
-      "name": "আব্দুল জলিল",
-      "mobile": "0123456789",
-      "division": "ঢাকা",
-    },
-    {
-      "userId": "1002",
-      "name": "মাহমুদুল হাসান",
-      "mobile": "0987654321",
-      "division": "চট্টগ্রাম",
-    },
-    {
-      "userId": "1003",
-      "name": "রবিউল ইসলাম",
-      "mobile": "0123987654",
-      "division": "রাজশাহী",
-    },
-    {
-      "userId": "1004",
-      "name": "আফরিন হক",
-      "mobile": "0125478963",
-      "division": "ঢাকা",
-    },
-    {
-      "userId": "1005",
-      "name": "মো. হাবিবুর রহমান",
-      "mobile": "0986541230",
-      "division": "বরিশাল",
-    },
-  ];
+  // Mapping for display purposes (Bangla name -> division ID)
+  final Map<String, String> _divisionMap = {
+    'ঢাকা': 'f47ea481-c504-4dc6-9bf5-350bbb200719',
+    'চট্টগ্রাম': '2be20dd7-39d9-4cc3-bfaa-f13761210051',
+    'বরিশাল': 'a0a290a7-4f6f-4e21-8550-58f45cc122d8',
+    'খুলনা': 'cd7e4fe4-9e2d-452c-96ae-6632bd4069ed',
+    'ময়মনসিংহ': '3ec0a8e8-7552-4a23-8774-07702414d2cb',
+    'রাজশাহী': 'b65f7d01-b5f9-4bd6-a124-4b7bb6d13641',
+    'রংপুর': '8d02cf87-d0db-4112-b961-dcaceb68c084',
+    'সিলেট': '9d15504f-4f19-4403-b2c3-ed686797864c',
+  };
 
-  // Filtered data for search results
-  List<Map<String, String>> filteredData = [];
+  String _getDivisionName(String divisionId) {
+    return _divisionMap.keys.firstWhere(
+      (key) => _divisionMap[key] == divisionId,
+      orElse: () => 'Unknown',
+    );
+  }
+
+  // Function to copy the mobile number to clipboard and show a snackbar.
+  void _copyToClipboard(String mobile) async {
+    await Clipboard.setData(ClipboardData(text: mobile));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text("মোবাইল নম্বর কপি করা হয়েছে")));
+  }
 
   @override
   void initState() {
     super.initState();
-    filteredData = List.from(data); // Initialize filtered data with all data
-  }
-
-  // Function for search action
-  void _searchData() {
-    setState(() {
-      filteredData =
-          data.where((member) {
-            final userIdMatch =
-                _userIdController.text.isEmpty ||
-                member["userId"]!.toLowerCase().contains(
-                  _userIdController.text.toLowerCase(),
-                );
-            final mobileMatch =
-                _mobileController.text.isEmpty ||
-                member["mobile"]!.contains(_mobileController.text);
-            final nameMatch =
-                _nameController.text.isEmpty ||
-                member["name"]!.toLowerCase().contains(
-                  _nameController.text.toLowerCase(),
-                );
-            final divisionMatch =
-                _selectedDivision == null ||
-                member["division"] == _selectedDivision;
-            return userIdMatch && mobileMatch && nameMatch && divisionMatch;
-          }).toList();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(memberControllerProvider.notifier).fetchMembers(context);
     });
   }
 
-  // Function to copy the mobile number to clipboard and open dialer
-  void _copyToClipboard(String mobile) async {}
-
   @override
   Widget build(BuildContext context) {
+    final membersListState = ref.watch(memberControllerProvider);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Search Section
-            // Text("খুঁজুন",
-            //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             SizedBox(height: 20),
 
             // User ID TextField
@@ -144,14 +106,12 @@ class _MemberScreenState extends ConsumerState<MemberScreen> {
                 border: OutlineInputBorder(),
               ),
               items:
-                  ['ঢাকা', 'চট্টগ্রাম', 'রাজশাহী', 'বরিশাল']
-                      .map(
-                        (division) => DropdownMenuItem(
-                          value: division,
-                          child: Text(division),
-                        ),
-                      )
-                      .toList(),
+                  _divisionMap.entries.map((entry) {
+                    return DropdownMenuItem(
+                      value: entry.value, // Store the division ID
+                      child: Text(entry.key), // Display Bangla division name
+                    );
+                  }).toList(),
               onChanged: (value) {
                 setState(() {
                   _selectedDivision = value;
@@ -164,7 +124,15 @@ class _MemberScreenState extends ConsumerState<MemberScreen> {
             ElevatedButton(
               onPressed: () {
                 FocusScope.of(context).unfocus(); // Dismiss keyboard
-                _searchData(); // Perform search
+                ref
+                    .read(memberControllerProvider.notifier)
+                    .searchMembers(
+                      context,
+                      userId: _userIdController.text,
+                      mobile: _mobileController.text,
+                      name: _nameController.text,
+                      division: _selectedDivision,
+                    );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFF00B1B0),
@@ -174,77 +142,75 @@ class _MemberScreenState extends ConsumerState<MemberScreen> {
             ),
             SizedBox(height: 20),
 
-            // Results Table
+            // Results Table Header
             Text(
               "তালিকা",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10),
 
-            // Table/List of Results
+            // List of Results
             Expanded(
-              child:
-                  filteredData.isEmpty
-                      ? Center(child: Text("কোন ফলাফল পাওয়া যায়নি"))
+              child: membersListState.when(
+                data: (members) {
+                  lgr.i('member length: ${members.length}');
+                  return members.isEmpty
+                      ? Center(
+                        child: Text(
+                          "কোন সদস্য পাওয়া যায়নি",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      )
                       : ListView.builder(
-                        itemCount: filteredData.length,
+                        itemCount: members.length,
                         itemBuilder: (context, index) {
+                          final member = members[index];
                           return Card(
                             margin: EdgeInsets.symmetric(vertical: 8),
                             child: CustomListTile(
-                              height:
-                                  130, // Set custom height for the list tile
+                              height: 130,
                               title: Text(
-                                filteredData[index]['name']!,
+                                member.name!,
                                 style: TextStyle(fontSize: 16),
                               ),
                               subTitle: Text(
-                                "বিভাগ: ${filteredData[index]['division']}",
+                                "বিভাগ: ${_getDivisionName(member.divisionId!)}",
                                 style: TextStyle(fontSize: 14),
                               ),
                               trailing: SizedBox(
-                                width:
-                                    120, // Constrain the width of the trailing widget
+                                width: 120,
                                 child: Column(
-                                  mainAxisSize:
-                                      MainAxisSize.min, // Use minimum space
+                                  mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     ElevatedButton(
                                       onPressed:
                                           () => _copyToClipboard(
-                                            filteredData[index]['mobile']!,
+                                            member.phoneNumber!,
                                           ),
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Color(0xFF00B1B0),
                                         padding: EdgeInsets.symmetric(
                                           horizontal: 8,
                                           vertical: 4,
-                                        ), // Reduce padding
+                                        ),
                                       ),
                                       child: Text(
                                         "নম্বর কপি করুন",
                                         style: TextStyle(fontSize: 12),
                                       ),
                                     ),
-                                    SizedBox(
-                                      height: 4,
-                                    ), // Reduce spacing between buttons
+                                    SizedBox(height: 4),
                                     ElevatedButton(
                                       onPressed: () {
-                                        // _showDetailsDialog(filteredData[index]);
-                                        ref
-                                            .read(
-                                              memberControllerProvider.notifier,
-                                            )
-                                            .fetchMembers(context);
+                                        _showDetailsDialog(member);
                                       },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Color(0xFF00B1B0),
                                         padding: EdgeInsets.symmetric(
                                           horizontal: 8,
                                           vertical: 4,
-                                        ), // Reduce padding
+                                        ),
                                       ),
                                       child: Text(
                                         "বিস্তারিত",
@@ -257,7 +223,20 @@ class _MemberScreenState extends ConsumerState<MemberScreen> {
                             ),
                           );
                         },
-                      ),
+                      );
+                },
+                error: (err, st) {
+                  return Center(
+                    child: Text(
+                      "তথ্য পাওয়া যায়নি",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  );
+                },
+                loading: () {
+                  return Center(child: CircularProgressIndicator());
+                },
+              ),
             ),
           ],
         ),
@@ -265,19 +244,19 @@ class _MemberScreenState extends ConsumerState<MemberScreen> {
     );
   }
 
-  void _showDetailsDialog(Map<String, String> member) {
+  void _showDetailsDialog(MemberModel member) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(member['name']!),
+          title: Text(member.name!),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("মোবাইল: ${member['mobile']}"),
+              Text("মোবাইল: ${member.phoneNumber}"),
               SizedBox(height: 10),
-              Text("বিভাগ: ${member['division']}"),
+              Text("বিভাগ: ${_getDivisionName(member.divisionId!)}"),
             ],
           ),
           actions: [

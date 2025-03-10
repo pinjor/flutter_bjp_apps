@@ -26,9 +26,9 @@ class EventController extends _$EventController {
 
     result.fold(
       (failure) {
-        state = AsyncValue.error(failure, StackTrace.current);
+        state = AsyncValue.error(failure.message, StackTrace.current);
         // You might want to show an error message to the user.
-        showMessageToUser(context: context, message: failure.message);
+        // showMessageToUser(context: context, message: failure.message);
       },
       (eventModels) {
         state = AsyncValue.data(eventModels);

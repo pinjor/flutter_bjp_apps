@@ -208,7 +208,7 @@ class _EventTimeCardState extends State<EventTimeCard> {
           ),
           const SizedBox(height: 10),
           Row(
-            // mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(
@@ -222,6 +222,15 @@ class _EventTimeCardState extends State<EventTimeCard> {
                 child: const Text(
                   'ইভেন্ট',
                   style: TextStyle(fontSize: 10, color: Colors.white),
+                ),
+              ),
+              // formatted date.
+              Text(
+                _isDateFormattingInitialized
+                    ? formatDateToBengali(_targetDate)
+                    : 'তারিখ লোড হচ্ছে...',
+                style: const TextStyle(
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ],
@@ -241,21 +250,13 @@ class _EventTimeCardState extends State<EventTimeCard> {
                 style: const TextStyle(fontSize: 14),
               ),
             ),
-          const SizedBox(height: 10),
-          // Formatted date.
-          Text(
-            _isDateFormattingInitialized
-                ? formatDateToBengali(_targetDate)
-                : 'তারিখ লোড হচ্ছে...',
-            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-          ),
+          const SizedBox(height: 5),
           // Address.
           Text(
             widget.eventModel.address!,
-            style: const TextStyle(fontSize: 14),
           ),
-          const SizedBox(height: 10),
-          
+          const SizedBox(height: 14),
+
           // Separator.
           Container(
             height: 6,

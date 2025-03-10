@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class CustomListTile extends StatelessWidget {
   final Widget? leading; // Optional leading widget
-  final Text? title; // Required title text
-  final Text? subTitle; // Optional subtitle text
+  final Widget? title; // Required title widget (changed from Text?)
+  final Widget? subTitle; // Optional subtitle widget (changed from Text?)
   final Function? onTap; // Optional tap event handler
   final Function? onLongPress; // Optional long press event handler
   final Function? onDoubleTap; // Optional double tap event handler
@@ -32,9 +32,11 @@ class CustomListTile extends StatelessWidget {
       color: tileColor, // Set background color if provided
       child: InkWell(
         // Tappable area with event handlers
-        onTap: () => onTap, // Tap event handler
-        onDoubleTap: () => onDoubleTap, // Double tap event handler
-        onLongPress: () => onLongPress, // Long press event handler
+        onTap: onTap as void Function()?, // Tap event handler
+        onDoubleTap:
+            onDoubleTap as void Function()?, // Double tap event handler
+        onLongPress:
+            onLongPress as void Function()?, // Long press event handler
         child: SizedBox(
           // Constrain the size of the list tile
           height: height, // Set custom height from constructor
@@ -52,12 +54,16 @@ class CustomListTile extends StatelessWidget {
                   // Column layout for title and subtitle
                   crossAxisAlignment:
                       CrossAxisAlignment.start, // Align text left
+                  mainAxisAlignment:
+                      MainAxisAlignment.center, // Center vertically
                   children: [
                     title ?? const SizedBox(), // Display title or empty space
-                    const SizedBox(
-                        height: 10), // Spacing between title and subtitle
-                    subTitle ??
-                        const SizedBox(), // Display subtitle or empty space
+                    if (subTitle != null) ...[
+                      const SizedBox(
+                        height: 4,
+                      ), // Spacing between title and subtitle
+                      subTitle!, // Display subtitle
+                    ],
                   ],
                 ),
               ),
@@ -65,7 +71,7 @@ class CustomListTile extends StatelessWidget {
                 // Padding for the trailing widget
                 padding: const EdgeInsets.all(12.0),
                 child: trailing, // Display trailing widget
-              )
+              ),
             ],
           ),
         ),

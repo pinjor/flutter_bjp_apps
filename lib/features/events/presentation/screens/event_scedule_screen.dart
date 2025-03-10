@@ -28,7 +28,7 @@ class _EventSceduleScreenState extends ConsumerState<EventSceduleScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    width: 120,
+                    width: 140,
                     height: 220,
                     decoration: BoxDecoration(
                       color: AppColors.themeColor,

@@ -42,6 +42,7 @@ class EventRepository {
       lgr.i('fetching events from: ${uri.toString()}');
       final token = await _secureStorage.read(key: 'token');
       lgr.e('token: $token');
+      lgr.i('sending request to fetch events to ${uri.toString()}');
       final response = await _dioClient.get(
         uri.toString(),
         options: Options(
