@@ -1,10 +1,10 @@
+import 'package:bjp_app/features/auth/presentation/screens/new_password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:otp_timer_button/otp_timer_button.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../../../config/app_colors.dart';
-import '../../../../core/constants/route_path.dart';
 
 class OtpVeificationScreen extends StatefulWidget {
   const OtpVeificationScreen({super.key});
@@ -25,7 +25,6 @@ class _OtpVeificationScreenState extends State<OtpVeificationScreen> {
           icon: Icon(Icons.arrow_back),
           onPressed: () {
             context.pop();
-            
           },
         ),
       ),
@@ -73,10 +72,11 @@ class _OtpVeificationScreenState extends State<OtpVeificationScreen> {
                 SizedBox(height: 16.0),
                 ElevatedButton(
                   onPressed: () {
-                    //if (_formKey.currentState!.validate()) {}
-                    Navigator.pushNamed(
+                    Navigator.push(
                       context,
-                      RoutePath.newPasswordScreenPath,
+                      MaterialPageRoute(
+                        builder: (context) => NewPasswordScreen(),
+                      ),
                     );
                   },
                   child: Text('পরবর্তী', style: TextStyle(color: Colors.white)),

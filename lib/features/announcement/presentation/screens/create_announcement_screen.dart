@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/utils/utils.dart';
+import '../controllers/announcement_controller.dart';
 
 class CreateAnnouncementScreen extends ConsumerStatefulWidget {
   const CreateAnnouncementScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _CreateAnnouncementScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _CreateAnnouncementScreenState();
 }
 
-class _CreateAnnouncementScreenState extends ConsumerState<CreateAnnouncementScreen> {
-final TextEditingController _nameController = TextEditingController();
+class _CreateAnnouncementScreenState
+    extends ConsumerState<CreateAnnouncementScreen> {
+  final TextEditingController _nameController = TextEditingController();
+
+
+  final _formKey = GlobalKey<FormState>();
+
+
   final Map<String, String> _divisionMap = {
     'সমস্ত বিভাগ': '1234',
     'ঢাকা': 'f47ea481-c504-4dc6-9bf5-350bbb200719',
@@ -22,74 +31,95 @@ final TextEditingController _nameController = TextEditingController();
     'সিলেট': '9d15504f-4f19-4403-b2c3-ed686797864c',
   };
 
+  void _createAnnouncement() {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    ref
+        .read(announcementControllerProvider.notifier)
+        .createAnnouncement(
+          context,
+          _nameController.text.trim(),
+          _selectedDivisionId!,
+        );
+
+    _nameController.clear();
+    _selectedDivisionId = null;
+  }
+
   String? _selectedDivisionId;
+
   @override
   Widget build(BuildContext context) {
+    final annoucementState = ref.watch(announcementControllerProvider);
     return Scaffold(
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(25, 100, 25, 25),
-            child: DropdownButtonFormField<String>(
-              value: _selectedDivisionId,
-              decoration: InputDecoration(
-                hintText: 'বিভাগ*',
-                labelText: 'বিভাগ',
-                border: OutlineInputBorder(),
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(25, 100, 25, 25),
+                child: DropdownButtonFormField<String>(
+                  value: _selectedDivisionId,
+                  decoration: InputDecoration(
+                    hintText: 'বিভাগ*',
+                    labelText: 'বিভাগ',
+                    border: OutlineInputBorder(),
+                  ),
+                  items:
+                      _divisionMap.entries.map((entry) {
+                        return DropdownMenuItem(
+                          value: entry.value, // Store the division ID
+                          child: Text(entry.key), // Display Bangla division name
+                        );
+                      }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedDivisionId = value;
+                    });
+                  },
+                  validator: (String? value) {
+                    if (value == null) {
+                      return 'বিভাগ দিন';
+                    }
+                    return null;
+                  },
+                ),
               ),
-              items:
-                  _divisionMap.entries.map((entry) {
-                    return DropdownMenuItem(
-                      value: entry.value, // Store the division ID
-                      child: Text(entry.key), // Display Bangla division name
-                    );
-                  }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  _selectedDivisionId = value;
-                  // Reset the district selection when division changes.
-                  //_selectedDistrictId = null;
-                });
-              },
-              validator: (String? value) {
-                if (value == null) {
-                  return 'বিভাগ দিন';
-                }
-                return null;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(25, 0, 25, 25),
-            child: TextFormField(
-              controller: _nameController,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              maxLines: 5,
-              decoration: InputDecoration(
-                label: Text('ঘোষণা *'),
-                hintText: 'এখানে লিখুন',
+              Padding(
+                padding: const EdgeInsets.fromLTRB(25, 0, 25, 25),
+                child: TextFormField(
+                  controller: _nameController,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  maxLines: 5,
+                  decoration: InputDecoration(
+                    label: Text('ঘোষণা *'),
+                    hintText: 'এখানে লিখুন',
+                  ),
+                  keyboardType: TextInputType.text,
+                  validator: (String? value) {
+                    if (value?.trim().isEmpty ?? true) {
+                      return 'ঘোষণা লিঘুন';
+                    }
+                    return null;
+                  },
+                ),
               ),
-              keyboardType: TextInputType.text,
-              validator: (String? value) {
-                if (value?.trim().isEmpty ?? true) {
-                  return 'ঘোষণা দিন';
-                }
-                return null;
-              },
-            ),
-          ),
-
-          Padding(
-            padding: const EdgeInsets.all(25.0),
-            child: ElevatedButton(
-              onPressed: () {},
-              child: Text(
-                'ঘোষণা তৈরি করুন',
-                style: TextStyle(color: Colors.white),
+              Padding(
+                padding: const EdgeInsets.all(25.0),
+                child: ElevatedButton(
+                  onPressed:    _createAnnouncement,
+                  child: Text(
+                    'ঘোষণা তৈরি করুন',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

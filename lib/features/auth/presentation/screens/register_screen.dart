@@ -2,9 +2,11 @@ import 'package:bjp_app/features/auth/domain/register_input_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/database/district_sub_district_map.dart';
+import '../../../../core/database/sub_district.dart';
 import '../../../../core/utils/utils.dart';
-import '../../data/division_district_map_data.dart';
-import '../../domain/district.dart';
+import '../../../../core/database/division_district_map_data.dart';
+import '../../../../core/database/district.dart';
 import '../controllers/auth_controller.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
@@ -34,34 +36,24 @@ class _SignUpScreenState extends ConsumerState<RegisterScreen> {
     return double.tryParse(s) != null;
   }
 
-  final Map<String, String> _divisionMap = {
-    'ঢাকা': 'f47ea481-c504-4dc6-9bf5-350bbb200719',
-    'চট্টগ্রাম': '2be20dd7-39d9-4cc3-bfaa-f13761210051',
-    'বরিশাল': 'a0a290a7-4f6f-4e21-8550-58f45cc122d8',
-    'খুলনা': 'cd7e4fe4-9e2d-452c-96ae-6632bd4069ed',
-    'ময়মনসিংহ': '3ec0a8e8-7552-4a23-8774-07702414d2cb',
-    'রাজশাহী': 'b65f7d01-b5f9-4bd6-a124-4b7bb6d13641',
-    'রংপুর': '8d02cf87-d0db-4112-b961-dcaceb68c084',
-    'সিলেট': '9d15504f-4f19-4403-b2c3-ed686797864c',
-  };
-
   String? _selectedDivisionId;
   String? _selectedDistrictId;
+  String? _selectedUpazilaId;
 
   void _registerUser() {
     // if (_formKey.currentState!.validate()) {
-      FocusScope.of(context).unfocus();
+    FocusScope.of(context).unfocus();
 
-      final name = _nameController.text.trim();
-      final nid = _nidController.text.trim();
-      final email = _emailController.text.trim();
-      final dob = _dobController.text.trim();
-      final phoneNumber = _phoneNumberController.text.trim();
-      final subDistrict = _subDistrictController.text.trim();
-      final password = _passwordController.text.trim();
-      final confirmPassword = _confirmPasswordController.text.trim();
+    final name = _nameController.text.trim();
+    final nid = _nidController.text.trim();
+    final email = _emailController.text.trim();
+    final dob = _dobController.text.trim();
+    final phoneNumber = _phoneNumberController.text.trim();
+    final subDistrict = _subDistrictController.text.trim();
+    final password = _passwordController.text.trim();
+    final confirmPassword = _confirmPasswordController.text.trim();
 
-      lgr.i('''
+    lgr.i('''
       all given values are:
 
       name: $name
@@ -77,26 +69,24 @@ class _SignUpScreenState extends ConsumerState<RegisterScreen> {
 
 ''');
 
-      final newUser = RegisterInputModel(
-        name: name,
-        nid: nid,
-        email: email,
-        dob: dob,
-        phone: phoneNumber,
-        division: _selectedDivisionId!,
-        district: _selectedDistrictId!,
-        upazila: subDistrict,
-        password: password,
-        confirmPassword: confirmPassword,
-      );
+    final newUser = RegisterInputModel(
+      name: name,
+      nid: nid,
+      email: email,
+      dob: dob,
+      phone: phoneNumber,
+      division: _selectedDivisionId!,
+      district: _selectedDistrictId!,
+      upazila: _selectedUpazilaId!,
+      password: password,
+      confirmPassword: confirmPassword,
+    );
 
-      lgr.i('newUser: ${newUser.toJson()}');
+    lgr.i('newUser: ${newUser.toJson()}');
 
-      ref
-          .read(authControllerProvider.notifier)
-          .register(context, data: newUser);
+    ref.read(authControllerProvider.notifier).register(context, data: newUser);
 
-      lgr.i('User registered');
+    lgr.i('User registered');
     // }
   }
 
@@ -121,7 +111,10 @@ class _SignUpScreenState extends ConsumerState<RegisterScreen> {
         _selectedDivisionId != null
             ? (divisionDistrictsMap[_selectedDivisionId] ?? [])
             : [];
-
+    final List<SubDistrict> subDistrictsForSelectedDistrict =
+        _selectedDistrictId != null
+            ? (districtSubdistrictMap[_selectedDistrictId] ?? [])
+            : [];
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -265,7 +258,7 @@ class _SignUpScreenState extends ConsumerState<RegisterScreen> {
                     border: OutlineInputBorder(),
                   ),
                   items:
-                      _divisionMap.entries.map((entry) {
+                      divisionMap.entries.map((entry) {
                         return DropdownMenuItem(
                           value: entry.value, // Store the division ID
                           child: Text(
@@ -325,20 +318,40 @@ class _SignUpScreenState extends ConsumerState<RegisterScreen> {
                 ),
 
                 SizedBox(height: 20.0),
-                TextFormField(
-                  controller: _subDistrictController,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                DropdownButtonFormField<String>(
+                  value: _selectedUpazilaId,
                   decoration: InputDecoration(
-                    label: Text('উপজেলা'),
-                    hintText: 'এখানে লিখুন',
+                    hintText: 'উপজেলা*',
+                    labelText: 'উপজেলা',
+                    border: OutlineInputBorder(),
                   ),
-                  keyboardType: TextInputType.name,
-                  // validator: (String? value) {
-                  //   if (value?.trim().isEmpty ?? true) {
-                  //     return 'উপজেলা দিন';
-                  //   }
-                  //   return null;
-                  // },
+                  // If no division is selected, disable the dropdown.
+                  onChanged:
+                      _selectedDivisionId == null
+                          ? null
+                          : (value) {
+                            setState(() {
+                              _selectedUpazilaId = value;
+                            });
+                          },
+                  items:
+                      subDistrictsForSelectedDistrict.map((district) {
+                        return DropdownMenuItem(
+                          value: district.id, // district ID is stored
+                          child: Text(
+                            district.name,
+                          ), // district name is displayed
+                        );
+                      }).toList(),
+                  validator: (value) {
+                    if (_selectedDistrictId == null) {
+                      return 'প্রথমে জেলা নির্বাচন করুন';
+                    }
+                    if (value == null) {
+                      return 'উপজেলা দিন';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(height: 20.0),
                 TextFormField(

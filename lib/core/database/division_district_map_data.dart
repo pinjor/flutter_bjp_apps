@@ -1,9 +1,19 @@
+import 'district.dart';
 
-import '../domain/district.dart';
+final Map<String, String> divisionMap = {
+  'ঢাকা': 'f47ea481-c504-4dc6-9bf5-350bbb200719',
+  'চট্টগ্রাম': '2be20dd7-39d9-4cc3-bfaa-f13761210051',
+  'বরিশাল': 'a0a290a7-4f6f-4e21-8550-58f45cc122d8',
+  'খুলনা': 'cd7e4fe4-9e2d-452c-96ae-6632bd4069ed',
+  'ময়মনসিংহ': '3ec0a8e8-7552-4a23-8774-07702414d2cb',
+  'রাজশাহী': 'b65f7d01-b5f9-4bd6-a124-4b7bb6d13641',
+  'রংপুর': '8d02cf87-d0db-4112-b961-dcaceb68c084',
+  'সিলেট': '9d15504f-4f19-4403-b2c3-ed686797864c',
+};
 
 final Map<String, List<District>> divisionDistrictsMap = {
-  // বরিশাল বিভাগ: Division ID: a0a290a7-4f6f-4e21-8550-58f45cc122d8
-  'a0a290a7-4f6f-4e21-8550-58f45cc122d8': [
+  // বরিশাল বিভাগ
+  divisionMap['বরিশাল']!: [
     District(id: '80dc1b41-f32f-414f-aaa6-63354000549b', name: 'বরিশাল'),
     District(id: '2a4c157a-0016-476c-bd65-3d14b519ea10', name: 'বরগুনা'),
     District(id: '9626d329-58c3-4ccd-8260-679e5a61b74b', name: 'ভোলা'),
@@ -12,8 +22,8 @@ final Map<String, List<District>> divisionDistrictsMap = {
     District(id: 'e12bcfef-1ccc-4012-8eda-08e222965fbd', name: 'পিরোজপুর'),
   ],
 
-  // চট্টগ্রাম বিভাগ: Division ID: 2be20dd7-39d9-4cc3-bfaa-f13761210051
-  '2be20dd7-39d9-4cc3-bfaa-f13761210051': [
+  // চট্টগ্রাম বিভাগ
+  divisionMap['চট্টগ্রাম']!: [
     District(
       id: '31e97adf-159f-42a7-ad59-af8f72fa0eab',
       name: 'ব্রাহ্মণবাড়িয়া',
@@ -27,11 +37,11 @@ final Map<String, List<District>> divisionDistrictsMap = {
     District(id: '045ac952-92a6-4272-8bb8-d5d06996520b', name: 'রাঙ্গামাটি'),
     District(id: '1838bb2e-2afa-4b39-80e2-9b6faffd2e14', name: 'বন্দরবান'),
     District(id: '1fbd0359-d3d1-4a46-8eae-5ecb897b4d2c', name: 'চট্টগ্রাম'),
-    District(id: 'b826a067-7c91-48b5-99b7-aa3d0498a243', name: "কক্সবাজার"),
+    District(id: 'b826a067-7c91-48b5-99b7-aa3d0498a243', name: 'কক্সবাজার'),
   ],
 
-  // ঢাকা বিভাগ: Division ID: 0bc234e0-3bf7-40bb-beb2-97de020d2468
-  'f47ea481-c504-4dc6-9bf5-350bbb200719': [
+  // ঢাকা বিভাগ
+  divisionMap['ঢাকা']!: [
     District(id: '0bc234e0-3bf7-40bb-beb2-97de020d2468', name: 'ঢাকা'),
     District(id: '08c5efa8-4fec-42b5-bc65-d6cf74fe07ea', name: 'গাজীপুর'),
     District(id: '3eb69540-c877-4f09-831b-78b9dd962be0', name: 'কিশোরগঞ্জ'),
@@ -47,8 +57,8 @@ final Map<String, List<District>> divisionDistrictsMap = {
     District(id: '30ddde4c-5cca-4dba-856c-5366b8616746', name: 'শরীয়তপুর'),
   ],
 
-  // খুলনা বিভাগ: Division ID: cd7e4fe4-9e2d-452c-96ae-6632bd4069ed
-  'cd7e4fe4-9e2d-452c-96ae-6632bd4069ed': [
+  // খুলনা বিভাগ
+  divisionMap['খুলনা']!: [
     District(id: '2806e73e-b618-40f2-8b99-b880a423e6f7', name: 'খুলনা'),
     District(id: '63756d04-d2b8-4e6e-a411-5284ce7ca36c', name: 'সাতক্ষীরা'),
     District(id: '48a83988-029a-4cdb-aa0a-f34304fdfbdd', name: 'যশোর'),
@@ -61,18 +71,16 @@ final Map<String, List<District>> divisionDistrictsMap = {
     District(id: '9fbe2a17-715d-4a5c-820c-f98dc3f3aadb', name: 'বাগেরহাট'),
   ],
 
-  // Mymensingh Division (Division ID: 82e2e447-c54c-4022-b677-baed010eeb20 is for district "Mymensingh",
-  // but you might have a separate division id for Mymensingh division.
-  // For this example, let's assume the division ID for Mymensingh division is "82e2e447-c54c-4022-b677-baed010eeb20")
-  '3ec0a8e8-7552-4a23-8774-07702414d2cb': [
+  // ময়মনসিংহ বিভাগ
+  divisionMap['ময়মনসিংহ']!: [
     District(id: '82e2e447-c54c-4022-b677-baed010eeb20', name: 'ময়মনসিংহ'),
     District(id: '7a88bf80-344d-4be2-88ed-b6e2526d82a0', name: 'জামালপুর'),
     District(id: '4404d9c9-8968-4d62-bb4a-5444c6aec358', name: 'নেত্রকোনা'),
     District(id: 'df9181c3-f509-4dfe-ba9e-fa5559d1fbfa', name: 'শেরপুর'),
   ],
 
-  // Rajshahi Division (Assuming division ID for Rajshahi division is "b65f7d01-b5f9-4bd6-a124-4b7bb6d13641")
-  'b65f7d01-b5f9-4bd6-a124-4b7bb6d13641': [
+  // রাজশাহী বিভাগ
+  divisionMap['রাজশাহী']!: [
     District(id: '5a41c5ff-27eb-4832-bea4-437db20d2c2c', name: 'নাটোর'),
     District(id: '4e904d43-2799-4a4f-9e23-f2cb32ae0199', name: 'রাজশাহী'),
     District(id: '1bb79c90-a70d-432e-80ee-9d4e0e32a820', name: 'সিরাজগঞ্জ'),
@@ -83,8 +91,8 @@ final Map<String, List<District>> divisionDistrictsMap = {
     District(id: '27ece738-b583-4950-83a1-4c2a83415f4c', name: 'জয়পুরহাট'),
   ],
 
-  // Rangpur Division (Assuming division ID for Rangpur division is "8d02cf87-d0db-4112-b961-dcaceb68c084")
-  '8d02cf87-d0db-4112-b961-dcaceb68c084': [
+  // রংপুর বিভাগ
+  divisionMap['রংপুর']!: [
     District(id: '36b45df7-7a04-4bff-bd94-51f7513dfd17', name: 'দিনাজপুর'),
     District(id: '8314769a-699f-453d-9bf4-2cf5d4b47bbc', name: 'কুড়িগ্রাম'),
     District(id: 'db24d25d-e2af-4794-952b-bd99ae3070bb', name: 'গাইবান্ধা'),
@@ -95,8 +103,8 @@ final Map<String, List<District>> divisionDistrictsMap = {
     District(id: '16b7f796-98fa-4643-a2d6-c27c82aafdce', name: 'ঠাকুরগাঁও'),
   ],
 
-  // Sylhet Division (Assuming division ID for Sylhet division is "9d15504f-4f19-4403-b2c3-ed686797864c")
-  '9d15504f-4f19-4403-b2c3-ed686797864c': [
+  // সিলেট বিভাগ
+  divisionMap['সিলেট']!: [
     District(id: 'e2c6d245-9eeb-4c84-a2b0-050548f77351', name: 'হবিগঞ্জ'),
     District(id: 'e1f0ea51-82ee-4369-a894-b9daba60087c', name: 'মৌলভীবাজার'),
     District(id: '583085fd-be05-4e93-845c-fde8dbec0ede', name: 'সুনামগঞ্জ'),

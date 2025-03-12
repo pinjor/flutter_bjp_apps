@@ -236,7 +236,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               onPressed: () {
                 // _launchUrl(_url); // Uncomment if needed
               },
-              child: Text('সদস্য হন', style: TextStyle(fontSize: 20)),
+              child: Text('Website', style: TextStyle(fontSize: 20)),
             ),
           ),
           if (!authState.isAdmin) ...[

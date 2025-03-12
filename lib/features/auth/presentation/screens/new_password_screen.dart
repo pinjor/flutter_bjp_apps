@@ -1,50 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-import '../../../../core/constants/route_path.dart';
 
-class NewPasswordScreen extends StatefulWidget {
+class NewPasswordScreen extends ConsumerStatefulWidget {
   const NewPasswordScreen({super.key});
 
-
   @override
-  State<NewPasswordScreen> createState() => _NewPasswordScreenState();
+  ConsumerState<NewPasswordScreen> createState() => _NewPasswordScreenState();
 }
 
-class _NewPasswordScreenState extends State<NewPasswordScreen> {
-  Map<String, String> formValues = {"phone_number": "", "password": ""};
-  bool loading = false;
-
+class _NewPasswordScreenState extends ConsumerState<NewPasswordScreen> {
   // Track password visibility
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
 
-  InputOnChange(MapKey, Textvalue) {
-    setState(() {
-      formValues.update(MapKey, (value) => Textvalue);
-    });
-  }
+  final TextEditingController _passwordController = TextEditingController();
 
-  formOnSubmit() async {
-    if (formValues['phone_number']!.isEmpty) {
-      print('Phone number error');
-    } else if (formValues['password']!.isEmpty) {
-      print('Password error');
-    } else {
-      setState(() {
-        loading = true;
-      });
-      // bool response = await loginRequest(formValues);
-
-      // if (response == true) {}
-      // setState(() {
-      //   loading = false;
-      // });
-    }
-  }
-
-  final TextEditingController _passwordTEController = TextEditingController();
-
-  final TextEditingController _confirmPasswordTEController =
+  final TextEditingController _confirmPasswordController =
       TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -66,7 +39,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                 ),
                 SizedBox(height: 50.0),
                 TextFormField(
-                  controller: _passwordTEController,
+                  controller: _passwordController,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   decoration: InputDecoration(
                     label: Text('পাসওয়ার্ড'),
@@ -92,13 +65,10 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                     }
                     return null;
                   },
-                  onChanged: (Textvalue) {
-                    InputOnChange("phone_number", Textvalue);
-                  },
                 ),
                 SizedBox(height: 40.0),
                 TextFormField(
-                  controller: _confirmPasswordTEController,
+                  controller: _confirmPasswordController,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   decoration: InputDecoration(
                     label: Text('পাসওয়ার্ড নিশ্চিত করুন'),
@@ -120,19 +90,17 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                   keyboardType: TextInputType.text,
                   obscureText:
                       !_isConfirmPasswordVisible, // Toggle obscure text
-                  onChanged: (Textvalue) {
-                    InputOnChange("password", Textvalue);
-                  },
+                
                 ),
                 SizedBox(height: 16.0),
                 ElevatedButton(
                   onPressed: () {
                     FocusScope.of(context).unfocus();
-                    formOnSubmit();
-                    Navigator.pushReplacementNamed(
-                      context,
-                      RoutePath.loginPath, //'/program_timeline'
-                    );
+                    // Navigator.pushReplacementNamed(
+                    //   context,
+                    //   RoutePath.loginPath, //'/program_timeline'
+                    // );
+                    context.pop();
                   },
                   child: Text('পরবর্তী', style: TextStyle(color: Colors.white)),
                 ),

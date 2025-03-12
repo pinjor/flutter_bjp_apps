@@ -8,4 +8,7 @@ class ApiConstants {
   static const String getAllCourses = '/api/get-all-courses';
   static const String getAllEvents = '/api/events';
   static const String getAllMembers = '/api/members';
+  static const String getAllAnnouncements = '/api/announcements';
+  static const String updateProfile = '/api/profile/update';
+  
 }

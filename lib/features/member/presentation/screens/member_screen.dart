@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../core/database/district.dart';
+import '../../../../core/database/division_district_map_data.dart';
 import '../../../../core/ui/customlisttile.dart';
 import '../../../../core/utils/utils.dart';
 import '../../domain/member_model.dart';
@@ -22,23 +25,22 @@ class _MemberScreenState extends ConsumerState<MemberScreen> {
   // Dropdown value for Division (stores division ID)
   String? _selectedDivision;
 
-  // Mapping for display purposes (Bangla name -> division ID)
-  final Map<String, String> _divisionMap = {
-    'ঢাকা': 'f47ea481-c504-4dc6-9bf5-350bbb200719',
-    'চট্টগ্রাম': '2be20dd7-39d9-4cc3-bfaa-f13761210051',
-    'বরিশাল': 'a0a290a7-4f6f-4e21-8550-58f45cc122d8',
-    'খুলনা': 'cd7e4fe4-9e2d-452c-96ae-6632bd4069ed',
-    'ময়মনসিংহ': '3ec0a8e8-7552-4a23-8774-07702414d2cb',
-    'রাজশাহী': 'b65f7d01-b5f9-4bd6-a124-4b7bb6d13641',
-    'রংপুর': '8d02cf87-d0db-4112-b961-dcaceb68c084',
-    'সিলেট': '9d15504f-4f19-4403-b2c3-ed686797864c',
-  };
-
-  String _getDivisionName(String divisionId) {
-    return _divisionMap.keys.firstWhere(
-      (key) => _divisionMap[key] == divisionId,
-      orElse: () => 'Unknown',
+  String _getDivisionName(String? divisionId) {
+    return divisionMap.keys.firstWhere(
+      (key) => divisionMap[key] == divisionId,
+      orElse: () => 'অজানা',
     );
+  }
+
+  String _getDistrictName(String? districtId) {
+    return divisionDistrictsMap.entries
+        .map((entry) => entry.value)
+        .expand((element) => element)
+        .firstWhere(
+          (district) => district.id == districtId,
+          orElse: () => District(id: '0', name: 'অজানা'),
+        )
+        .name;
   }
 
   // Function to copy the mobile number to clipboard and show a snackbar.
@@ -47,6 +49,16 @@ class _MemberScreenState extends ConsumerState<MemberScreen> {
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(SnackBar(content: Text("মোবাইল নম্বর কপি করা হয়েছে")));
+  }
+
+  // Function to launch the phone dialer with the given mobile number.
+  Future<void> _openDialer(String phoneNumber) async {
+    final Uri url = Uri(scheme: 'tel', path: phoneNumber);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw Exception('Could not launch $url');
+    }
   }
 
   @override
@@ -106,7 +118,7 @@ class _MemberScreenState extends ConsumerState<MemberScreen> {
                 border: OutlineInputBorder(),
               ),
               items:
-                  _divisionMap.entries.map((entry) {
+                  divisionMap.entries.map((entry) {
                     return DropdownMenuItem(
                       value: entry.value, // Store the division ID
                       child: Text(entry.key), // Display Bangla division name
@@ -173,9 +185,20 @@ class _MemberScreenState extends ConsumerState<MemberScreen> {
                                 member.name!,
                                 style: TextStyle(fontSize: 16),
                               ),
-                              subTitle: Text(
-                                "বিভাগ: ${_getDivisionName(member.divisionId!)}",
-                                style: TextStyle(fontSize: 14),
+                              subTitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // phone number
+                                  Text(
+                                    "মোবাইল: ${member.phoneNumber}",
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                  // division
+                                  Text(
+                                    "বিভাগ: ${_getDivisionName(member.divisionId!)}",
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                ],
                               ),
                               trailing: SizedBox(
                                 width: 120,
@@ -184,10 +207,11 @@ class _MemberScreenState extends ConsumerState<MemberScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     ElevatedButton(
-                                      onPressed:
-                                          () => _copyToClipboard(
-                                            member.phoneNumber!,
-                                          ),
+                                      onPressed: () {
+                                        _copyToClipboard(member.phoneNumber!);
+
+                                        _openDialer(member.phoneNumber!);
+                                      },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Color(0xFF00B1B0),
                                         padding: EdgeInsets.symmetric(
@@ -254,9 +278,11 @@ class _MemberScreenState extends ConsumerState<MemberScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("মোবাইল: ${member.phoneNumber}"),
-              SizedBox(height: 10),
-              Text("বিভাগ: ${_getDivisionName(member.divisionId!)}"),
+              // id, email, district, upazila
+              Text("ব্যবহারকারী আইডি: ${member.userId}"),
+              Text("ইমেইল: ${member.email}"),
+              Text("জেলা: ${_getDistrictName(member.districtId!)}"),
+              Text("উপজেলা: অজানা"),
             ],
           ),
           actions: [
