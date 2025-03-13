@@ -63,6 +63,7 @@ class AnnouncementController extends _$AnnouncementController {
 
     result.fold(
       (failure) {
+        lgr.e('failed to create announcement: ${failure.message}');
         state = AsyncValue.error(failure, StackTrace.current);
         showMessageToUser(context: context, message: failure.message);
       },

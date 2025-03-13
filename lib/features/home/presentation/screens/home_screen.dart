@@ -65,10 +65,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             _appBarTitle = 'ড্যাশবোর্ড';
             break;
           // announcements
-          case 1: 
+          case 1:
             _appBarTitle = 'ঘোষণা';
             break;
-          case 2: 
+          case 2:
             _appBarTitle = 'ঘোষণা তৈরি করুন';
             break;
           // create announcements
@@ -152,25 +152,30 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               },
             ),
             // announcements
-            ListTile(
-              leading: Icon(Icons.announcement),
-              title: Text('ঘোষণা'),
-              selected: _selectedIndex == 1,
-              onTap: () {
-                _onItemTapped(1);
-                Navigator.pop(context);
-              },
-            ),
             if (isAdmin) ...[
-              // create announcements
-              ListTile(
-                leading: Icon(Icons.add),
-                title: Text('ঘোষণা তৈরি করুন'),
-                selected: _selectedIndex == 2,
-                onTap: () {
-                  _onItemTapped(2);
-                  Navigator.pop(context);
-                },
+              ExpansionTile(
+                leading: Icon(Icons.announcement),
+                title: Text('ঘোষণা'),
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.list),
+                    title: Text('ঘোষণা তালিকা'),
+                    selected: _selectedIndex == 1,
+                    onTap: () {
+                      _onItemTapped(1);
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.add),
+                    title: Text('ঘোষণা তৈরি করুন'),
+                    selected: _selectedIndex == 2,
+                    onTap: () {
+                      _onItemTapped(2);
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
               ),
               ListTile(
                 leading: Icon(Icons.person_4),
@@ -200,6 +205,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 },
               ),
             ] else ...[
+              ListTile(
+                leading: Icon(Icons.announcement),
+                title: Text('ঘোষণা'),
+                selected: _selectedIndex == 1,
+                onTap: () {
+                  _onItemTapped(1);
+                  Navigator.pop(context);
+                },
+              ),
               ListTile(
                 leading: Icon(Icons.edit),
                 title: Text('প্রোফাইল পরিবর্তন'),

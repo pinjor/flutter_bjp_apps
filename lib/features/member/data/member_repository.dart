@@ -28,59 +28,15 @@ class MemberRepository {
   MemberRepository({
     required Dio dioClient,
     required FlutterSecureStorage secureStorage,
-  }) : _dioClient = dioClient,
-       _secureStorage = secureStorage;
+  })  : _dioClient = dioClient,
+        _secureStorage = secureStorage;
 
+  /// Fetches all members (no filters applied)
   FutureEither<List<MemberModel>> fetchMembers() async {
-    try {
-      final uri = Uri(
-        scheme: 'http',
-        port: ApiConstants.port,
-        host: ApiConstants.baseUrl,
-        path: ApiConstants.getAllMembers,
-      );
-      lgr.i('fetching members from: ${uri.toString()}');
-      final token = await _secureStorage.read(key: 'token');
-      lgr.i('got token: $token');
-      final response = await _dioClient.get(
-        uri.toString(),
-        options: Options(
-          headers: {
-            'Accept': 'application/json',
-            'Authorization': 'Bearer $token',
-          },
-        ),
-      );
-      lgr.i('got response: $response');
-
-      if (response.statusCode == 200) {
-        lgr.i('statusCode: 200 : ${response.data}');
-        final List<dynamic> memberList = response.data['data'];
-        final List<MemberModel> members =
-            memberList
-                .map(
-                  (member) =>
-                      MemberModel.fromMap(member as Map<String, dynamic>),
-                )
-                .toList();
-        lgr.w('got membersList: $members');
-        return right(members);
-      } else {
-        return left(Failure('সদস্যদের তথ্য আনতে গিয়ে একটি ত্রুটি ঘটেছে'));
-      }
-    } on DioException catch (err) {
-      if (err.response != null && err.response!.statusCode == 401) {
-        lgr.w(
-          '${err.response!.statusCode} ${err.response!.statusMessage}\n${err.response!.data}',
-        );
-      }
-      return left(Failure('You are not authorized to view this content'));
-    } catch (err) {
-      lgr.e('Error: $err');
-      return left(Failure('সদস্যদের তথ্য আনতে গিয়ে একটি ত্রুটি ঘটেছে'));
-    }
+    return searchMembers(); // Calls searchMembers with no parameters
   }
 
+  /// Fetches a member by unique ID
   FutureEither<List<MemberModel>> fetchMemberById(String id) async {
     try {
       final uri = Uri(
@@ -92,7 +48,6 @@ class MemberRepository {
       );
 
       final token = await _secureStorage.read(key: 'token');
-
       final response = await _dioClient.get(
         uri.toString(),
         options: Options(
@@ -104,27 +59,26 @@ class MemberRepository {
       );
 
       if (response.statusCode == 200) {
-        // final member = MemberModel.fromMap(response.data['data']);
-        // return right(member);
-         final List<dynamic> memberList = response.data['data'];
-        final List<MemberModel> members =
-            memberList
-                .map(
-                  (member) =>
-                      MemberModel.fromMap(member as Map<String, dynamic>),
-                )
-                .toList();
-        return right(members);
-
+        final List<dynamic> memberList = response.data['data'];
+        final List<MemberModel> members = memberList
+            .map((member) => MemberModel.fromMap(member as Map<String, dynamic>))
+            .toList();
+        return right(members); // Returns a list, typically with one member
       } else {
         return left(Failure('সদস্যদের তথ্য আনতে গিয়ে একটি ত্রুটি ঘটেছে'));
       }
+    } on DioException catch (err) {
+      if (err.response != null && err.response!.statusCode == 401) {
+        lgr.w('${err.response!.statusCode} ${err.response!.statusMessage}\n${err.response!.data}');
+      }
+      return left(Failure('You are not authorized to view this content'));
     } catch (err) {
       lgr.e('Error: $err');
       return left(Failure('সদস্যদের তথ্য আনতে গিয়ে একটি ত্রুটি ঘটেছে'));
     }
   }
 
+  /// Fetches a member by unique mobile number
   FutureEither<List<MemberModel>> fetchMemberByMobile(String mobile) async {
     try {
       final uri = Uri(
@@ -136,7 +90,6 @@ class MemberRepository {
       );
 
       final token = await _secureStorage.read(key: 'token');
-
       final response = await _dioClient.get(
         uri.toString(),
         options: Options(
@@ -149,22 +102,16 @@ class MemberRepository {
 
       if (response.statusCode == 200) {
         final List<dynamic> memberList = response.data['data'];
-        final List<MemberModel> members =
-            memberList
-                .map(
-                  (member) =>
-                      MemberModel.fromMap(member as Map<String, dynamic>),
-                )
-                .toList();
-        return right(members);
+        final List<MemberModel> members = memberList
+            .map((member) => MemberModel.fromMap(member as Map<String, dynamic>))
+            .toList();
+        return right(members); // Returns a list, typically with one member
       } else {
         return left(Failure('সদস্যদের তথ্য আনতে গিয়ে একটি ত্রুটি ঘটেছে'));
       }
     } on DioException catch (err) {
       if (err.response != null && err.response!.statusCode == 401) {
-        lgr.w(
-          '${err.response!.statusCode} ${err.response!.statusMessage}\n${err.response!.data}',
-        );
+        lgr.w('${err.response!.statusCode} ${err.response!.statusMessage}\n${err.response!.data}');
       }
       return left(Failure('You are not authorized to view this content'));
     } catch (err) {
@@ -173,15 +120,34 @@ class MemberRepository {
     }
   }
 
-  // Fetch members by name
-  FutureEither<List<MemberModel>> fetchMembersByName(String name) async {
+  /// General search method for combinations of name, division, district, and subdistrict
+  FutureEither<List<MemberModel>> searchMembers({
+    String? name,
+    String? divisionId,
+    String? districtId,
+    String? subdistrictId,
+  }) async {
     try {
+      final Map<String, String> queryParams = {};
+      if (name != null && name.isNotEmpty) {
+        queryParams['name'] = name;
+      }
+      if (divisionId != null && divisionId.isNotEmpty) {
+        queryParams['division_id'] = divisionId;
+      }
+      if (districtId != null && districtId.isNotEmpty) {
+        queryParams['district_id'] = districtId;
+      }
+      if (subdistrictId != null && subdistrictId.isNotEmpty) {
+        queryParams['subdistrict_id'] = subdistrictId;
+      }
+
       final uri = Uri(
         scheme: 'http',
         port: ApiConstants.port,
         host: ApiConstants.baseUrl,
         path: ApiConstants.getAllMembers,
-        queryParameters: {'name': name},
+        queryParameters: queryParams.isEmpty ? null : queryParams,
       );
 
       final token = await _secureStorage.read(key: 'token');
@@ -197,104 +163,18 @@ class MemberRepository {
 
       if (response.statusCode == 200) {
         final List<dynamic> memberList = response.data['data'];
-        final List<MemberModel> members =
-            memberList
-                .map(
-                  (member) =>
-                      MemberModel.fromMap(member as Map<String, dynamic>),
-                )
-                .toList();
+        final List<MemberModel> members = memberList
+            .map((member) => MemberModel.fromMap(member as Map<String, dynamic>))
+            .toList();
         return right(members);
       } else {
         return left(Failure('সদস্যদের তথ্য আনতে গিয়ে একটি ত্রুটি ঘটেছে'));
       }
-    } catch (err) {
-      lgr.e('Error: $err');
-      return left(Failure('সদস্যদের তথ্য আনতে গিয়ে একটি ত্রুটি ঘটেছে'));
-    }
-  }
-
-  // Fetch members by division
-  FutureEither<List<MemberModel>> fetchMembersByDivision(
-    String divisionId,
-  ) async {
-    try {
-      final uri = Uri(
-        scheme: 'http',
-        port: ApiConstants.port,
-        host: ApiConstants.baseUrl,
-        path: ApiConstants.getAllMembers,
-        queryParameters: {'division_id': divisionId},
-      );
-
-      final token = await _secureStorage.read(key: 'token');
-      final response = await _dioClient.get(
-        uri.toString(),
-        options: Options(
-          headers: {
-            'Accept': 'application/json',
-            'Authorization': 'Bearer $token'
-          },
-        ),
-      );
-
-      if (response.statusCode == 200) {
-        final List<dynamic> memberList = response.data['data'];
-        final List<MemberModel> members =
-            memberList
-                .map(
-                  (member) =>
-                      MemberModel.fromMap(member as Map<String, dynamic>),
-                )
-                .toList();
-        return right(members);
-      } else {
-        return left(Failure('সদস্যদের তথ্য আনতে গিয়ে একটি ত্রুটি ঘটেছে'));
+    } on DioException catch (err) {
+      if (err.response != null && err.response!.statusCode == 401) {
+        lgr.w('${err.response!.statusCode} ${err.response!.statusMessage}\n${err.response!.data}');
       }
-    } catch (err) {
-      lgr.e('Error: $err');
-      return left(Failure('সদস্যদের তথ্য আনতে গিয়ে একটি ত্রুটি ঘটেছে'));
-    }
-  }
-
-  // Fetch members by both name and division
-  FutureEither<List<MemberModel>> fetchMembersByNameAndDivision(
-    String name,
-    String divisionId,
-  ) async {
-    try {
-      final uri = Uri(
-        scheme: 'http',
-        port: ApiConstants.port,
-        host: ApiConstants.baseUrl,
-        path: ApiConstants.getAllMembers,
-        queryParameters: {'name': name, 'division_id': divisionId},
-      );
-
-      final token = await _secureStorage.read(key: 'token');
-      final response = await _dioClient.get(
-        uri.toString(),
-        options: Options(
-          headers: {
-            'Accept': 'application/json',
-            'Authorization': 'Bearer $token',
-          },
-        ),
-      );
-
-      if (response.statusCode == 200) {
-        final List<dynamic> memberList = response.data['data'];
-        final List<MemberModel> members =
-            memberList
-                .map(
-                  (member) =>
-                      MemberModel.fromMap(member as Map<String, dynamic>),
-                )
-                .toList();
-        return right(members);
-      } else {
-        return left(Failure('সদস্যদের তথ্য আনতে গিয়ে একটি ত্রুটি ঘটেছে'));
-      }
+      return left(Failure('You are not authorized to view this content'));
     } catch (err) {
       lgr.e('Error: $err');
       return left(Failure('সদস্যদের তথ্য আনতে গিয়ে একটি ত্রুটি ঘটেছে'));

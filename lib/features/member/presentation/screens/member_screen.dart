@@ -4,7 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/database/district.dart';
+import '../../../../core/database/district_sub_district_map.dart';
 import '../../../../core/database/division_district_map_data.dart';
+import '../../../../core/database/sub_district.dart';
 import '../../../../core/ui/customlisttile.dart';
 import '../../../../core/utils/utils.dart';
 import '../../domain/member_model.dart';
@@ -23,7 +25,10 @@ class _MemberScreenState extends ConsumerState<MemberScreen> {
   final TextEditingController _userIdController = TextEditingController();
 
   // Dropdown value for Division (stores division ID)
-  String? _selectedDivision;
+
+  String? _selectedDivisionId;
+  String? _selectedDistrictId;
+  String? _selectedUpazilaId;
 
   String _getDivisionName(String? divisionId) {
     return divisionMap.keys.firstWhere(
@@ -43,12 +48,52 @@ class _MemberScreenState extends ConsumerState<MemberScreen> {
         .name;
   }
 
+  String _getSubdistrictName(String? subdistrictId) {
+    if (subdistrictId == null) return 'অজানা';
+    for (var entry in districtSubdistrictMap.entries) {
+      for (var subdistrict in entry.value) {
+        if (subdistrict.id == subdistrictId) {
+          return subdistrict.name;
+        }
+      }
+    }
+    return 'অজানা';
+  }
+
+  void _showDetailsDialog(MemberModel member) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(member.name!),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("ব্যবহারকারী আইডি: ${member.userId}"),
+              Text("ইমেইল: ${member.email}"),
+              Text("জেলা: ${_getDistrictName(member.districtId!)}"),
+              Text("উপজেলা: ${_getSubdistrictName(member.upazilaId)}"),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("ঠিক আছে"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   // Function to copy the mobile number to clipboard and show a snackbar.
   void _copyToClipboard(String mobile) async {
     await Clipboard.setData(ClipboardData(text: mobile));
+    if (!context.mounted) return;
     ScaffoldMessenger.of(
       context,
-    ).showSnackBar(SnackBar(content: Text("মোবাইল নম্বর কপি করা হয়েছে")));
+    ).showSnackBar(SnackBar(content: Text('মোবাইল নম্বর কপি করা হয়েছে')));
   }
 
   // Function to launch the phone dialer with the given mobile number.
@@ -59,6 +104,21 @@ class _MemberScreenState extends ConsumerState<MemberScreen> {
     } else {
       throw Exception('Could not launch $url');
     }
+  }
+
+  void _findMember() {
+    FocusScope.of(context).unfocus(); // Dismisses keyboard
+    ref
+        .read(memberControllerProvider.notifier)
+        .searchMembers(
+          context,
+          userId: _userIdController.text.trim(),
+          mobile: _mobileController.text.trim(),
+          name: _nameController.text.trim(),
+          divisionId: _selectedDivisionId,
+          districtId: _selectedDistrictId,
+          subdistrictId: _selectedUpazilaId,
+        );
   }
 
   @override
@@ -72,13 +132,22 @@ class _MemberScreenState extends ConsumerState<MemberScreen> {
   @override
   Widget build(BuildContext context) {
     final membersListState = ref.watch(memberControllerProvider);
+
+    final List<District> districtsForSelectedDivision =
+        _selectedDivisionId != null
+            ? (divisionDistrictsMap[_selectedDivisionId] ?? [])
+            : [];
+    final List<SubDistrict> subDistrictsForSelectedDistrict =
+        _selectedDistrictId != null
+            ? (districtSubdistrictMap[_selectedDistrictId] ?? [])
+            : [];
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             SizedBox(height: 20),
-
+        
             // User ID TextField
             TextField(
               controller: _userIdController,
@@ -88,7 +157,7 @@ class _MemberScreenState extends ConsumerState<MemberScreen> {
               ),
             ),
             SizedBox(height: 10),
-
+        
             // Mobile Number TextField
             TextField(
               controller: _mobileController,
@@ -99,7 +168,7 @@ class _MemberScreenState extends ConsumerState<MemberScreen> {
               keyboardType: TextInputType.phone,
             ),
             SizedBox(height: 10),
-
+        
             // Name TextField
             TextField(
               controller: _nameController,
@@ -109,10 +178,10 @@ class _MemberScreenState extends ConsumerState<MemberScreen> {
               ),
             ),
             SizedBox(height: 10),
-
+        
             // Division Dropdown
             DropdownButtonFormField<String>(
-              value: _selectedDivision,
+              value: _selectedDivisionId,
               decoration: InputDecoration(
                 labelText: 'বিভাগ',
                 border: OutlineInputBorder(),
@@ -126,26 +195,85 @@ class _MemberScreenState extends ConsumerState<MemberScreen> {
                   }).toList(),
               onChanged: (value) {
                 setState(() {
-                  _selectedDivision = value;
+                  _selectedDivisionId = value;
                 });
               },
             ),
             SizedBox(height: 20),
-
+        
+            DropdownButtonFormField<String>(
+              value: _selectedDistrictId,
+              decoration: InputDecoration(
+                hintText: 'জেলা*',
+                labelText: 'জেলা',
+                border: OutlineInputBorder(),
+              ),
+              // If no division is selected, disable the dropdown.
+              onChanged:
+                  _selectedDivisionId == null
+                      ? null
+                      : (value) {
+                        setState(() {
+                          _selectedDistrictId = value;
+                        });
+                      },
+              items:
+                  districtsForSelectedDivision.map((district) {
+                    return DropdownMenuItem(
+                      value: district.id, // district ID is stored
+                      child: Text(district.name), // district name is displayed
+                    );
+                  }).toList(),
+              validator: (value) {
+                if (_selectedDivisionId == null) {
+                  return 'প্রথমে বিভাগ নির্বাচন করুন';
+                }
+                if (value == null) {
+                  return 'জেলা দিন';
+                }
+                return null;
+              },
+            ),
+        
+            SizedBox(height: 20.0),
+            DropdownButtonFormField<String>(
+              value: _selectedUpazilaId,
+              decoration: InputDecoration(
+                hintText: 'উপজেলা*',
+                labelText: 'উপজেলা',
+                border: OutlineInputBorder(),
+              ),
+              // If no division is selected, disable the dropdown.
+              onChanged:
+                  _selectedDivisionId == null
+                      ? null
+                      : (value) {
+                        setState(() {
+                          _selectedUpazilaId = value;
+                        });
+                      },
+              items:
+                  subDistrictsForSelectedDistrict.map((district) {
+                    return DropdownMenuItem(
+                      value: district.id, // district ID is stored
+                      child: Text(district.name), // district name is displayed
+                    );
+                  }).toList(),
+              validator: (value) {
+                if (_selectedDistrictId == null) {
+                  return 'প্রথমে জেলা নির্বাচন করুন';
+                }
+                if (value == null) {
+                  return 'উপজেলা দিন';
+                }
+                return null;
+              },
+            ),
+            SizedBox(height: 20.0),
+        
             // Search Button
             ElevatedButton(
-              onPressed: () {
-                FocusScope.of(context).unfocus(); // Dismiss keyboard
-                ref
-                    .read(memberControllerProvider.notifier)
-                    .searchMembers(
-                      context,
-                      userId: _userIdController.text,
-                      mobile: _mobileController.text,
-                      name: _nameController.text,
-                      division: _selectedDivision,
-                    );
-              },
+              onPressed: _findMember,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFF00B1B0),
                 padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
@@ -153,14 +281,14 @@ class _MemberScreenState extends ConsumerState<MemberScreen> {
               child: Text("অনুসন্ধান করুন", style: TextStyle(fontSize: 16)),
             ),
             SizedBox(height: 20),
-
+        
             // Results Table Header
             Text(
               "তালিকা",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10),
-
+        
             // List of Results
             Expanded(
               child: membersListState.when(
@@ -209,7 +337,7 @@ class _MemberScreenState extends ConsumerState<MemberScreen> {
                                     ElevatedButton(
                                       onPressed: () {
                                         _copyToClipboard(member.phoneNumber!);
-
+                        
                                         _openDialer(member.phoneNumber!);
                                       },
                                       style: ElevatedButton.styleFrom(
@@ -265,34 +393,6 @@ class _MemberScreenState extends ConsumerState<MemberScreen> {
           ],
         ),
       ),
-    );
-  }
-
-  void _showDetailsDialog(MemberModel member) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(member.name!),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // id, email, district, upazila
-              Text("ব্যবহারকারী আইডি: ${member.userId}"),
-              Text("ইমেইল: ${member.email}"),
-              Text("জেলা: ${_getDistrictName(member.districtId!)}"),
-              Text("উপজেলা: অজানা"),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text("ঠিক আছে"),
-            ),
-          ],
-        );
-      },
     );
   }
 }

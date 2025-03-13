@@ -8,43 +8,45 @@ import '../../domain/member_model.dart';
 
 part 'member_controller.g.dart';
 
-@riverpod  
+@riverpod
 class MemberController extends _$MemberController {
   late final MemberRepository _memberRepository;
 
-  @override 
-  AsyncValue<List<MemberModel>> build(){
+  @override
+  AsyncValue<List<MemberModel>> build() {
     _memberRepository = ref.watch(memberRepositoryProvider);
     return AsyncValue.data([]);
   }
 
-  void fetchMembers(BuildContext context) async{
+  /// Fetches all members for initial load
+  void fetchMembers(BuildContext context) async {
     state = AsyncValue.loading();
-    lgr.i('fetching members');
-    final result = await _memberRepository.fetchMembers();
-
+    lgr.i('Fetching members');
+    final result = await _memberRepository.searchMembers();
     result.fold(
-      (failure){
+      (failure) {
         state = AsyncValue.error(failure, StackTrace.current);
         showMessageToUser(context: context, message: failure.message);
       },
-      (memberModels){
-        state = AsyncValue.data(memberModels);
+      (members) {
+        state = AsyncValue.data(members);
       },
     );
   }
 
-  // New method to search members based on user inputs.
+  /// Searches members based on user inputs
   void searchMembers(
     BuildContext context, {
     String? userId,
     String? mobile,
     String? name,
-    String? division,
+    String? divisionId,
+    String? districtId,
+    String? subdistrictId,
   }) async {
     state = AsyncValue.loading();
 
-    // If user ID is provided, use fetchMemberById (assumed unique)
+    // Handle search by unique user ID
     if (userId != null && userId.isNotEmpty) {
       final int? id = int.tryParse(userId);
       if (id == null) {
@@ -58,14 +60,14 @@ class MemberController extends _$MemberController {
           state = AsyncValue.error(failure, StackTrace.current);
           showMessageToUser(context: context, message: failure.message);
         },
-        (member) {
-          state = AsyncValue.data(member);
+        (members) {
+          state = AsyncValue.data(members);
         },
       );
       return;
     }
 
-    // Else if mobile is provided, use fetchMemberByMobile (assumed unique)
+    // Handle search by unique mobile number
     if (mobile != null && mobile.isNotEmpty) {
       final result = await _memberRepository.fetchMemberByMobile(mobile);
       result.fold(
@@ -73,21 +75,6 @@ class MemberController extends _$MemberController {
           state = AsyncValue.error(failure, StackTrace.current);
           showMessageToUser(context: context, message: failure.message);
         },
-        (member) {
-          state = AsyncValue.data(member);
-        },
-      );
-      return;
-    }
-
-    // If both name and division are provided, use the combined search.
-    if ((name != null && name.isNotEmpty) && (division != null && division.isNotEmpty)) {
-      final result = await _memberRepository.fetchMembersByNameAndDivision(name, division);
-      result.fold(
-        (failure) {
-          state = AsyncValue.error(failure, StackTrace.current);
-          showMessageToUser(context: context, message: failure.message);
-        },
         (members) {
           state = AsyncValue.data(members);
         },
@@ -95,37 +82,21 @@ class MemberController extends _$MemberController {
       return;
     }
 
-    // Else if only name is provided.
-    if (name != null && name.isNotEmpty) {
-      final result = await _memberRepository.fetchMembersByName(name);
-      result.fold(
-        (failure) {
-          state = AsyncValue.error(failure, StackTrace.current);
-          showMessageToUser(context: context, message: failure.message);
-        },
-        (members) {
-          state = AsyncValue.data(members);
-        },
-      );
-      return;
-    }
-
-    // Else if only division is provided.
-    if (division != null && division.isNotEmpty) {
-      final result = await _memberRepository.fetchMembersByDivision(division);
-      result.fold(
-        (failure) {
-          state = AsyncValue.error(failure, StackTrace.current);
-          showMessageToUser(context: context, message: failure.message);
-        },
-        (members) {
-          state = AsyncValue.data(members);
-        },
-      );
-      return;
-    }
-
-    // If no search criteria provided, fetch all members.
-    fetchMembers(context);
+    // Handle all other combinations using searchMembers
+    final result = await _memberRepository.searchMembers(
+      name: name,
+      divisionId: divisionId,
+      districtId: districtId,
+      subdistrictId: subdistrictId,
+    );
+    result.fold(
+      (failure) {
+        state = AsyncValue.error(failure, StackTrace.current);
+        showMessageToUser(context: context, message: failure.message);
+      },
+      (members) {
+        state = AsyncValue.data(members);
+      },
+    );
   }
 }

@@ -144,8 +144,14 @@ class AnnouncementRepository {
 
       lgr.i('response: ${response.data}');
       return right(null);
+    } on DioException catch (err) {
+      if (err.response != null && err.response!.statusCode == 422) {
+        lgr.e('error: ${err.response!.data['errors']}');
+        lgr.i('returning left');
+        return left(Failure(err.response!.data['errors']));
+      }
+      return left(Failure(err.response!.data['errors']));
     } catch (err) {
-
       lgr.f('error: $err');
       return left(Failure('ঘোষণা তৈরি করা যায়নি'));
     }

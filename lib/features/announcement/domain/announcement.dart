@@ -53,15 +53,15 @@ class Announcement {
       'id': id,
       'title': title,
       'content': content,
-      'userId': userId,
-      'divisionId': divisionId,
-      'districtId': districtId,
-      'upazilaId': upazilaId,
-      'divisionName': divisionName,
-      'districtName': districtName,
-      'upazilaName': upazilaName,
-      'createdAt': createdAt,
-      'updatedAt': updatedAt,
+      'user_id': userId,
+      'division_id': divisionId,
+      'district_id': districtId,
+      'upazila_id': upazilaId,
+      'division_name': divisionName,
+      'district_name': districtName,
+      'upazila_name': upazilaName,
+      'created_at': createdAt,
+      'updated_at': updatedAt,
     };
   }
 
@@ -70,20 +70,20 @@ class Announcement {
       id: map['id'] != null ? map['id'] as int : null,
       title: map['title'] != null ? map['title'] as String : null,
       content: map['content'] != null ? map['content'] as String : null,
-      userId: map['userId'] != null ? map['userId'] as int : null,
+      userId: map['user_id'] != null ? map['user_id'] as int : null,
       divisionId:
-          map['divisionId'] != null ? map['divisionId'] as String : null,
+          map['division_id'] != null ? map['division_id'] as String : null,
       districtId:
-          map['districtId'] != null ? map['districtId'] as String : null,
-      upazilaId: map['upazilaId'] != null ? map['upazilaId'] as String : null,
+          map['district_id'] != null ? map['district_id'] as String : null,
+      upazilaId: map['upazila_id'] != null ? map['upazila_id'] as String : null,
       divisionName:
-          map['divisionName'] != null ? map['divisionName'] as String : null,
+          map['division_name'] != null ? map['division_name'] as String : null,
       districtName:
-          map['districtName'] != null ? map['districtName'] as String : null,
+          map['district_name'] != null ? map['district_name'] as String : null,
       upazilaName:
-          map['upazilaName'] != null ? map['upazilaName'] as String : null,
-      createdAt: map['createdAt'] != null ? map['createdAt'] as String : null,
-      updatedAt: map['updatedAt'] != null ? map['updatedAt'] as String : null,
+          map['upazila_name'] != null ? map['upazila_name'] as String : null,
+      createdAt: map['created_at'] != null ? map['created_at'] as String : null,
+      updatedAt: map['updated_at'] != null ? map['updated_at'] as String : null,
     );
   }
 

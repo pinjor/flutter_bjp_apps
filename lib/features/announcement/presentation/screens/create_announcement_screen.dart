@@ -20,7 +20,6 @@ class _CreateAnnouncementScreenState
 
 
   final Map<String, String> _divisionMap = {
-    'সমস্ত বিভাগ': '1234',
     'ঢাকা': 'f47ea481-c504-4dc6-9bf5-350bbb200719',
     'চট্টগ্রাম': '2be20dd7-39d9-4cc3-bfaa-f13761210051',
     'বরিশাল': 'a0a290a7-4f6f-4e21-8550-58f45cc122d8',
@@ -44,6 +43,8 @@ class _CreateAnnouncementScreenState
           _selectedDivisionId!,
         );
 
+    FocusScope.of(context).unfocus();
+    _formKey.currentState!.reset();
     _nameController.clear();
     _selectedDivisionId = null;
   }
@@ -52,7 +53,6 @@ class _CreateAnnouncementScreenState
 
   @override
   Widget build(BuildContext context) {
-    final annoucementState = ref.watch(announcementControllerProvider);
     return Scaffold(
       body: Form(
         key: _formKey,

@@ -25,7 +25,6 @@ class _SignUpScreenState extends ConsumerState<RegisterScreen> {
 
   final TextEditingController _dobController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
-  final TextEditingController _subDistrictController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
@@ -49,7 +48,6 @@ class _SignUpScreenState extends ConsumerState<RegisterScreen> {
     final email = _emailController.text.trim();
     final dob = _dobController.text.trim();
     final phoneNumber = _phoneNumberController.text.trim();
-    final subDistrict = _subDistrictController.text.trim();
     final password = _passwordController.text.trim();
     final confirmPassword = _confirmPasswordController.text.trim();
 

@@ -1,7 +1,9 @@
+import 'package:bjp_app/core/database/division_district_map_data.dart';
 import 'package:bjp_app/features/announcement/domain/announcement.dart';
 import 'package:bjp_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../core/ui/customlisttile.dart';
 import '../controllers/announcement_controller.dart';
@@ -29,6 +31,22 @@ class _AnnouncementScreenState extends ConsumerState<AnnouncementScreen> {
     ref
         .read(announcementControllerProvider.notifier)
         .deleteAnnouncement(context, id);
+  }
+
+  String? _getDivisionFromId(String? id) {
+    return divisionMap.keys.firstWhere(
+      (key) => divisionMap[key] == id,
+      orElse: () => 'অজানা',
+    );
+  }
+
+  String _getDate(String? date) {
+    if (date != null) {
+      final parsedDate = DateTime.parse(date);
+      final formattedDate = DateFormat('dd MMMM yyyy').format(parsedDate);
+      return formattedDate;
+    }
+    return 'অজানা';
   }
 
   void _showAnnouncementDetails(Announcement announcement) {
@@ -91,7 +109,9 @@ class _AnnouncementScreenState extends ConsumerState<AnnouncementScreen> {
               : ListView.builder(
                 itemCount: announcements.length,
                 itemBuilder: (context, index) {
-                  final announcement = announcements[index];
+                  // final announcement = announcements[index];
+                  final announcement = announcements.reversed.toList()[index];
+
                   return Card(
                     margin: EdgeInsets.symmetric(vertical: 8),
                     child: CustomListTile(
@@ -104,14 +124,16 @@ class _AnnouncementScreenState extends ConsumerState<AnnouncementScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "বিভাগ: ${announcement.divisionId ?? 'অজানা বিভাগ'}",
+                            "বিভাগ: ${_getDivisionFromId(announcement.divisionId)}",
                             style: TextStyle(fontSize: 14),
                           ),
                           SizedBox(
                             height: 4,
                           ), // Add spacing between subtitle and created_at
                           Text(
-                            "তারিখ: ${announcement.createdAt ?? 'অজানা তারিখ'}",
+                            announcement.createdAt != null
+                                ? _getDate(announcement.createdAt)
+                                : 'তারিখ: অজানা',
                             style: TextStyle(fontSize: 14, color: Colors.black),
                           ),
                         ],
