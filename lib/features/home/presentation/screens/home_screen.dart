@@ -47,7 +47,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           CreateAnnouncementScreen(),
           MemberScreen(),
           EventSceduleScreen(),
-          ProfileEditingScreen(),
         ]
         : [
           _buildDashboard(authState, eventListState: events),
@@ -77,9 +76,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             break;
           case 4:
             _appBarTitle = 'অনুষ্ঠানের সময়';
-            break;
-          case 5:
-            _appBarTitle = 'প্রোফাইল পরিবর্তন';
             break;
         }
       } else {

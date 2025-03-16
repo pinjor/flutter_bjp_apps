@@ -7,7 +7,7 @@ part of 'announcement_controller.dart';
 // **************************************************************************
 
 String _$announcementControllerHash() =>
-    r'37a7ecd98e6229f0e01249122e8db678f3fee277';
+    r'675b060aaececf15d3ef56adb6fe4c4974b4354c';
 
 /// See also [AnnouncementController].
 @ProviderFor(AnnouncementController)

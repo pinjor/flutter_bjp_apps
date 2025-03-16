@@ -86,7 +86,11 @@ class AuthController extends _$AuthController {
           status: AuthStatus.unauthenticated,
         );
         // Show the detailed error dialog:
-        await showErrorDialog(context, failure.message);
+        await showErrorDialog(
+          context,
+          errorMessage: failure.message,
+          title: 'নিবন্ধন ব্যর্থ',
+        );
       },
       (r) {
         state = AuthState(status: AuthStatus.unauthenticated);
@@ -94,11 +98,25 @@ class AuthController extends _$AuthController {
           context: context,
           message: 'সফলভাবে নিবন্ধিত হয়েছে, লগইন করুন',
         );
-        // Navigator.of(context).pop();
         context.pop();
       },
     );
   }
+
+  void sendOTP(BuildContext context, {required String email}) async {}
+
+  void verifyOTP(
+    BuildContext context, {
+    required String otp,
+    required String email,
+  }) async {}
+
+  void resetPassword(
+    BuildContext context, {
+    required String password,
+    required String email,
+    required String otp,
+  }) async {}
 
   void logout() async {
     try {

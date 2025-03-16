@@ -6,7 +6,7 @@ part of 'member_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$memberControllerHash() => r'ea298fd7f6e0b644f2a623bf1a6207418459cd25';
+String _$memberControllerHash() => r'38b1f03e132ac62acc489550a3ef804795bd38b3';
 
 /// See also [MemberController].
 @ProviderFor(MemberController)

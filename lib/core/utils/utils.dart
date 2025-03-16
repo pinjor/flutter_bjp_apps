@@ -15,14 +15,16 @@ void showMessageToUser({
     );
 }
 
-
-
-Future<void> showErrorDialog(BuildContext context, String errorMessage) async {
+Future<void> showErrorDialog(
+  BuildContext context, {
+  required String errorMessage,
+  required String title,
+}) async {
   return showDialog<void>(
     context: context,
     builder: (BuildContext dialogContext) {
       return AlertDialog(
-        title: Text('নিবন্ধন ব্যর্থ'),
+        title: Text(title),
         content: Text(errorMessage),
         actions: <Widget>[
           TextButton(
@@ -36,9 +38,6 @@ Future<void> showErrorDialog(BuildContext context, String errorMessage) async {
     },
   );
 }
-
-
-
 
 void showLogoutDialog({
   required BuildContext context,

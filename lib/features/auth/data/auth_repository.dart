@@ -134,6 +134,96 @@ class AuthRepository {
     }
   }
 
+  FutureEitherVoid sendOTP({required String email}) async {
+    try {
+      final uri = Uri(
+        scheme: 'http',
+        port: ApiConstants.port,
+        host: ApiConstants.baseUrl,
+        path: ApiConstants.forgotPassword,
+      );
+
+      final response = await _dioClient.post(
+        uri.toString(),
+        data: {'email': email},
+      );
+
+      if (response.statusCode == 200) {
+        return right(null);
+      }
+
+      return left(Failure('Send OTP failed'));
+    } catch (err) {
+      lgr.e('Send OTP failed with error: $err');
+      return left(Failure('Send OTP failed: $err'));
+    }
+  }
+
+  FutureEitherVoid verifyOTP({
+    required String otp,
+    required String email,
+  }) async {
+    try {
+      final uri = Uri(
+        scheme: 'http',
+        port: ApiConstants.port,
+        host: ApiConstants.baseUrl,
+        path: ApiConstants.verifyOtp,
+      );
+
+      lgr.i('Verify OTP request sending to: ${uri.toString()}');
+
+      final response = await _dioClient.post(
+        uri.toString(),
+        data: {'otp': otp, 'email': email},
+      );
+
+      if (response.statusCode == 200) {
+        return right(null);
+      } else {
+        return left(Failure('Verify OTP failed'));
+      }
+    } catch (err) {
+      lgr.e('Verify OTP failed with error: $err');
+      return left(Failure('Verify OTP failed: $err'));
+    }
+  }
+
+  FutureEitherVoid resetPassword({
+    required String email,
+    required String otp,
+    required String password,
+  }) async {
+    try {
+      final uri = Uri(
+        scheme: 'http',
+        port: ApiConstants.port,
+        host: ApiConstants.baseUrl,
+        path: ApiConstants.resetPassword,
+      );
+
+      final response = await _dioClient.post(
+        uri.toString(),
+
+        data: {
+          'email': email,
+          'otp': otp,
+          'password': password,
+          'password_confirmation': password,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return right(null);
+      }
+
+      return left(Failure('Password reset failed'));
+    } catch (err) {
+      lgr.e('Password reset failed with error: $err');
+      return left(Failure('Password reset failed: $err'));
+    }
+  }
+
   Future<void> logout() async {
     try {
       await _secureStorage.delete(key: 'token');

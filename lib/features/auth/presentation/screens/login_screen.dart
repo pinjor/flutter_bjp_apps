@@ -1,5 +1,6 @@
 import 'package:bjp_app/config/app_colors.dart';
 import 'package:bjp_app/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:bjp_app/features/auth/presentation/screens/enter_email_screen.dart';
 import 'package:bjp_app/features/auth/presentation/screens/otp_verification_screen.dart';
 import 'package:bjp_app/features/auth/presentation/screens/register_screen.dart';
 import 'package:flutter/material.dart';
@@ -135,7 +136,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => OtpVeificationScreen(),
+                              builder: (context) => EnterEmailScreen(),
                             ),
                           );
                         },
