@@ -1,16 +1,24 @@
+import 'package:bjp_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+class ResetPasswordScreen extends ConsumerStatefulWidget {
+  const ResetPasswordScreen({
+    super.key,
+    required this.email,
+    required this.otp,
+  });
 
-class NewPasswordScreen extends ConsumerStatefulWidget {
-  const NewPasswordScreen({super.key});
+  final String email;
+  final String otp;
 
   @override
-  ConsumerState<NewPasswordScreen> createState() => _NewPasswordScreenState();
+  ConsumerState<ResetPasswordScreen> createState() =>
+      _ResetPasswordScreenState();
 }
 
-class _NewPasswordScreenState extends ConsumerState<NewPasswordScreen> {
+class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
   // Track password visibility
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
@@ -20,6 +28,21 @@ class _NewPasswordScreenState extends ConsumerState<NewPasswordScreen> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  void _setNewPassword() {
+    if (!_formKey.currentState!.validate()) return;
+
+    final password = _passwordController.text;
+
+    ref
+        .read(authControllerProvider.notifier)
+        .resetPassword(
+          context,
+          password: password,
+          email: widget.email,
+          otp: widget.otp,
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,21 +110,20 @@ class _NewPasswordScreenState extends ConsumerState<NewPasswordScreen> {
                       },
                     ),
                   ),
+
+                  validator: (value) {
+                    if (value != _passwordController.text) {
+                      return 'পাসওয়ার্ড মেলেনি';
+                    }
+                    return null;
+                  },
                   keyboardType: TextInputType.text,
                   obscureText:
                       !_isConfirmPasswordVisible, // Toggle obscure text
-                
                 ),
                 SizedBox(height: 16.0),
                 ElevatedButton(
-                  onPressed: () {
-                    FocusScope.of(context).unfocus();
-                    // Navigator.pushReplacementNamed(
-                    //   context,
-                    //   RoutePath.loginPath, //'/program_timeline'
-                    // );
-                    context.pop();
-                  },
+                  onPressed: _setNewPassword,
                   child: Text('পরবর্তী', style: TextStyle(color: Colors.white)),
                 ),
               ],

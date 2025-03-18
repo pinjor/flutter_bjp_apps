@@ -1,8 +1,8 @@
-import 'package:bjp_app/features/auth/presentation/screens/new_password_screen.dart';
-import 'package:bjp_app/features/auth/presentation/screens/otp_verification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
+import '../controllers/auth_controller.dart';
 
 class EnterEmailScreen extends ConsumerStatefulWidget {
   const EnterEmailScreen({super.key});
@@ -16,14 +16,18 @@ class _EnterEmailScreenState extends ConsumerState<EnterEmailScreen> {
   final _formKey = GlobalKey<FormState>();
 
   void _sendOTPToEmail() {
-    if (_formKey.currentState!.validate()) {
-      final email = _emailController.text.trim();
-      // Send OTP to email
-    }
+    if (!_formKey.currentState!.validate()) return;
+
+    final email = _emailController.text.trim();
+    ref
+        .read(authControllerProvider.notifier)
+        .sendOTPToEmail(context, email: email);
   }
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authControllerProvider);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -64,8 +68,11 @@ class _EnterEmailScreenState extends ConsumerState<EnterEmailScreen> {
                 ),
                 SizedBox(height: 20.0),
                 ElevatedButton(
-                  onPressed: _sendOTPToEmail,
-                  child: Text('পরবর্তী'),
+                  onPressed: authState.isLoading ? null : _sendOTPToEmail,
+                  child:
+                      authState.isLoading
+                          ? CircularProgressIndicator()
+                          : Text('পরবর্তী'),
                 ),
               ],
             ),

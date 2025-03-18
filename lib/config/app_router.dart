@@ -10,6 +10,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../core/ui/splash_screen.dart';
 import '../features/auth/data/auth_repository.dart';
 import '../features/auth/domain/auth_state.dart';
+import '../features/auth/presentation/screens/enter_email_screen.dart';
 import '../features/auth/presentation/screens/login_screen.dart';
 import '../features/home/presentation/screens/home_screen.dart';
 
@@ -64,7 +65,9 @@ GoRouter appRouter(Ref ref) {
         parentNavigatorKey: _rootNavKey,
         path: RoutePath.loginPath,
         pageBuilder:
-            (context, state) => MaterialPage(child: const LoginScreen()),
+            (context, state) => MaterialPage(
+              child: const LoginScreen(),
+            ),
       ),
 
       GoRoute(
@@ -74,6 +77,27 @@ GoRouter appRouter(Ref ref) {
             (context, state) => MaterialPage(child: const RegisterScreen()),
       ),
 
+      GoRoute(
+        parentNavigatorKey: _rootNavKey,
+        path: RoutePath.enterEmailScreenPath,
+        pageBuilder:
+            (context, state) => MaterialPage(child: const EnterEmailScreen()),
+      ),
+
+      // GoRoute(
+      //   parentNavigatorKey: _rootNavKey,
+      //   path: RoutePath.verifyOtpScreenPath,
+      //   pageBuilder:
+      //       (context, state) =>
+      //           MaterialPage(child: const OtpVeificationScreen()),
+      // ),
+      // GoRoute(
+      //   parentNavigatorKey: _rootNavKey,
+      //   path: RoutePath.setNewPasswordScreenPath,
+      //   pageBuilder:
+      //       (context, state) =>
+      //           MaterialPage(child: const ResetPasswordScreen()),
+      // ),
       GoRoute(
         parentNavigatorKey: _rootNavKey,
         path: RoutePath.homeScreenPath,
