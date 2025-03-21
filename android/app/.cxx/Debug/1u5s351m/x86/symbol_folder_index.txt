@@ -1,0 +1,1 @@
+/home/mr/flutter_bjp_app/build/app/intermediates/cxx/Debug/1u5s351m/obj/x86

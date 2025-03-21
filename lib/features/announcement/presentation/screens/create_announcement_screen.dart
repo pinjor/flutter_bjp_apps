@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../core/utils/utils.dart';
 import '../controllers/announcement_controller.dart';
 
 class CreateAnnouncementScreen extends ConsumerStatefulWidget {
