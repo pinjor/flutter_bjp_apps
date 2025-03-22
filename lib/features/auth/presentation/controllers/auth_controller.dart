@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:bjp_app/core/constants/route_path.dart';
 import 'package:bjp_app/features/auth/data/auth_repository.dart';
 import 'package:bjp_app/features/auth/domain/login_response_model.dart';
 import 'package:bjp_app/features/auth/presentation/screens/otp_verification_screen.dart';

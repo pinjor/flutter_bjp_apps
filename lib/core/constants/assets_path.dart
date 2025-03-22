@@ -10,4 +10,11 @@ class AssetsPath {
   static const String manWithMoto = '$_imagePath/image.png';
 
   static const String manWithAll = '$_imagePath/man_with_All.png';
+
+  static const String Join_to_change = '$_imagePath/Join_to_change.png';
+  static const String our_journey = '$_imagePath/our_journey.png';
+
+  static const String imagetwo = '$_imagePath/imagetwo.png';
+
+
 }
