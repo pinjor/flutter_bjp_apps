@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> ba4cbc8ef70ccddbbfba27181798a1682309ac02
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -58,18 +54,21 @@ class EventRepository {
       lgr.i('got response: $response');
 
       if (response.statusCode == 200) {
-      lgr.i('statusCode: 200 : ${response.data}');
-      // Access the "data" key, which contains the list of events
-      final List<dynamic> eventList = response.data['data'];
-      // Map the list to EventModel objects
-      final eventModelList = eventList
-          .map((event) => EventModel.fromMap(event as Map<String, dynamic>))
-          .toList();
-      lgr.i('got eventModelList: $eventModelList');
-      return right(eventModelList);
-    } else {
-      return left(Failure('ইভেন্ট গুলি পাওয়া যায়নি'));
-    }
+        lgr.i('statusCode: 200 : ${response.data}');
+        // Access the "data" key, which contains the list of events
+        final List<dynamic> eventList = response.data['data'];
+        // Map the list to EventModel objects
+        final eventModelList =
+            eventList
+                .map(
+                  (event) => EventModel.fromMap(event as Map<String, dynamic>),
+                )
+                .toList();
+        lgr.i('got eventModelList: $eventModelList');
+        return right(eventModelList);
+      } else {
+        return left(Failure('ইভেন্ট গুলি পাওয়া যায়নি'));
+      }
     } on DioException catch (err) {
       if (err.response != null && err.response!.statusCode == 401) {
         lgr.w(

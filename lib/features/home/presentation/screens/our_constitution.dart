@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 
-class OurConstitution extends StatefulWidget {
+class OurConstitution extends StatelessWidget {
   const OurConstitution({super.key});
 
   @override
-  State<OurConstitution> createState() => _OurConstitutionState();
-}
-
-class _OurConstitutionState extends State<OurConstitution> {
-  @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: PDF(
+        enableSwipe: true,
+        swipeHorizontal: true,
+        autoSpacing: false,
+        pageFling: false,
+        backgroundColor: Colors.grey,
+        onError: (error) {
+          print(error.toString());
+        },
+        onPageError: (page, error) {
+          print('$page: ${error.toString()}');
+        },
+      ).fromAsset('assets/images/our_constitution.pdf'),
+    );
   }
 }

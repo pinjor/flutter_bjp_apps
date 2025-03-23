@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:bjp_app/config/app_colors.dart';
 import 'package:bjp_app/core/ui/custom_loader.dart';
 import 'package:bjp_app/core/utils/utils.dart';
@@ -8,16 +6,13 @@ import 'package:bjp_app/features/auth/domain/auth_state.dart';
 import 'package:bjp_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:bjp_app/features/events/presentation/screens/event_scedule_screen.dart';
 import 'package:bjp_app/features/events/presentation/widgets/event_time_card.dart';
+import 'package:bjp_app/features/home/presentation/screens/our_constitution.dart';
 import 'package:bjp_app/features/home/presentation/screens/our_introduction.dart';
 import 'package:bjp_app/features/leadership_training/presentation/screens/leadership_training_screen.dart';
 import 'package:bjp_app/features/member/presentation/screens/member_screen.dart';
 import 'package:bjp_app/features/profile/presentation/screens/profile_editing_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path_provider/path_provider.dart';
-
 import '../../../../core/constants/assets_path.dart';
 import '../../../../core/ui/app_icon_widget.dart';
 import '../../../announcement/presentation/screens/create_announcement_screen.dart';
@@ -35,31 +30,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   String _appBarTitle = 'ড্যাশবোর্ড';
   int _selectedIndex = 0;
 
-  // This is the function to open the PDF
-  // Future<void> openPDF(BuildContext context) async {
-  //   try {
-  //     final byteData = await rootBundle.load('assets/images/our_constitution.pdf');
-  //     final tempDir = await getTemporaryDirectory();
-  //     final file = File('${tempDir.path}/our_constitution.pdf');
-  //     await file.writeAsBytes(byteData.buffer.asUint8List());
-  //
-  //     // Print path for verification
-  //     print("PDF Path: ${file.path}");
-  //
-  //     if (!mounted) return;
-  //     Navigator.push(
-  //       context,
-  //       MaterialPageRoute(
-  //         builder: (context) => PDFViewerPage(path: file.path),
-  //       ),
-  //     );
-  //   } catch (e) {
-  //     if (!mounted) return;
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(content: Text('Failed to open PDF: $e')),
-  //     );
-  //   }
-  // }
+
 
   @override
   void initState() {
@@ -85,8 +56,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         : [
           _buildDashboard(authState, eventListState: events),
           AnnouncementScreen(),
-      //PDFViewerPage(path: pdfPath),
+      OurConstitution(),
           ProfileEditingScreen(),
+
         ];
   }
 
@@ -122,10 +94,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           case 1:
             _appBarTitle = 'ঘোষণা';
             break;
-          // case 3:
-          //   _appBarTitle = 'আমাদের সংবিধান';
-          //   break;
           case 2:
+            _appBarTitle = 'আমাদের সংবিধান';
+            break;
+          case 3:
             _appBarTitle = 'প্রোফাইল পরিবর্তন';
             break;
         }
@@ -258,11 +230,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               //   },
               // ),
               ListTile(
-                leading: Icon(Icons.edit),
-                title: Text('প্রোফাইল পরিবর্তন'),
+                leading: Icon(Icons.picture_as_pdf),
+                title: Text('আমাদের সংবিধান'),
                 selected: _selectedIndex == 2,
                 onTap: () {
                   _onItemTapped(2);
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.edit),
+                title: Text('প্রোফাইল পরিবর্তন'),
+                selected: _selectedIndex == 3,
+                onTap: () {
+                  _onItemTapped(3);
                   Navigator.pop(context);
                 },
               ),
@@ -344,16 +325,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
 
           SizedBox(height: 20),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-          //   child: ElevatedButton(
-          //     style: ElevatedButton.styleFrom(),
-          //     onPressed: () {
-          //       // _launchUrl(_url); // Uncomment if needed
-          //     },
-          //     child: Text('Website', style: TextStyle(fontSize: 20)),
-          //   ),
-          // ),
+
           Stack(
             children: [
               Image.asset(
@@ -537,25 +509,3 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 }
 
-// class PDFViewerPage extends StatelessWidget {
-//   final String path;
-//
-//   const PDFViewerPage({super.key, required this.path});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: const Text("Our Constitution")),
-//       body: PDFView(
-//         filePath: path,
-//         enableSwipe: true, // Allow swipe navigation
-//         swipeHorizontal: false, // Vertical swipe only
-//         autoSpacing: true, // Adjust spacing to fit the screen
-//         pageFling: true, // Enable fast scrolling
-//         onError: (error) {
-//           print("PDF Error: $error");
-//         },
-//       ),
-//     );
-//   }
-// }
