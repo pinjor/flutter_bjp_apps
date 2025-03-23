@@ -10,9 +10,11 @@ import 'package:bjp_app/features/home/presentation/screens/our_constitution.dart
 import 'package:bjp_app/features/home/presentation/screens/our_introduction.dart';
 import 'package:bjp_app/features/leadership_training/presentation/screens/leadership_training_screen.dart';
 import 'package:bjp_app/features/member/presentation/screens/member_screen.dart';
+import 'package:bjp_app/features/our_discussion/presentation/screens/our_discussion.dart';
 import 'package:bjp_app/features/profile/presentation/screens/profile_editing_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../../core/constants/assets_path.dart';
 import '../../../../core/ui/app_icon_widget.dart';
 import '../../../announcement/presentation/screens/create_announcement_screen.dart';
@@ -29,8 +31,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   String _appBarTitle = 'ড্যাশবোর্ড';
   int _selectedIndex = 0;
-
-
 
   @override
   void initState() {
@@ -56,9 +56,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         : [
           _buildDashboard(authState, eventListState: events),
           AnnouncementScreen(),
-      OurConstitution(),
+          OurConstitution(),
           ProfileEditingScreen(),
-
         ];
   }
 
@@ -448,10 +447,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ),
                 ),
               ),
-              // SizedBox(
-              //   height: 200,
-              // ), // Adds space between TextField and ElevatedButton
-              // ElevatedButton widget
               Padding(
                 padding: EdgeInsets.fromLTRB(170, 118, 110, 0),
                 child: ElevatedButton(
@@ -476,7 +471,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     'লিডারশিপ ট্রেনিং', // Text inside the button
                     style: TextStyle(
                       fontSize: 10,
-                      color: Colors.black,
+                      color: Colors.white,
                     ), // Font size inside button
                   ),
                 ),
@@ -503,9 +498,174 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               loading: () => CustomLoader(),
             ),
           ],
+
+          SizedBox(height: 20),
+          SizedBox(
+            width: 330,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  'আপনাদের মতামত',
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24),
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        height: 350,
+                        width: 250,
+                        child: GestureDetector(
+                          onTap: () {
+                            // Fixed: Added function wrapper
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => OurDiscussion(),
+                              ),
+                            );
+                          },
+                          child: Card(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(10, 0, 150, 5),
+                                  child: ElevatedButton(
+                                    onPressed: () {},
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppColors.themeColor,
+                                      padding:
+                                          EdgeInsets
+                                              .zero, // Fixed: Proper comma placement
+                                      minimumSize: Size(180, 20),
+                                    ),
+                                    child: Text(
+                                      'আলোচনা',
+                                      style: TextStyle(fontSize: 10),
+                                    ),
+                                  ),
+                                ),
+
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                    height: 250,
+                                    width: 250,
+                                    child: Image.asset(AssetsPath.discussion),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 350,
+                        width: 250,
+                        child: GestureDetector(
+                          onTap: () {
+                            // Fixed: Added function wrapper
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => OurDiscussion(),
+                              ),
+                            );
+                          },
+                          child: Card(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(10, 0, 150, 5),
+                                  child: ElevatedButton(
+                                    onPressed: () {},
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppColors.themeColor,
+                                      padding:
+                                          EdgeInsets
+                                              .zero, // Fixed: Proper comma placement
+                                      minimumSize: Size(180, 20),
+                                    ),
+                                    child: Text(
+                                      'আলোচনা',
+                                      style: TextStyle(fontSize: 10),
+                                    ),
+                                  ),
+                                ),
+
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                    height: 250,
+                                    width: 250,
+                                    child: Image.asset(AssetsPath.discussion),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 350,
+                        width: 250,
+                        child: GestureDetector(
+                          onTap: () {
+                            // Fixed: Added function wrapper
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => OurDiscussion(),
+                              ),
+                            );
+                          },
+                          child: Card(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(10, 0, 150, 5),
+                                  child: ElevatedButton(
+                                    onPressed: () {},
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppColors.themeColor,
+                                      padding:
+                                          EdgeInsets
+                                              .zero, // Fixed: Proper comma placement
+                                      minimumSize: Size(180, 20),
+                                    ),
+                                    child: Text(
+                                      'আলোচনা',
+                                      style: TextStyle(fontSize: 10),
+                                    ),
+                                  ),
+                                ),
+
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                    height: 250,
+                                    width: 250,
+                                    child: Image.asset(AssetsPath.discussion),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 }
-
