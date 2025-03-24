@@ -1,3 +1,4 @@
+import 'package:bjp_app/core/constants/api_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:bjp_app/config/app_colors.dart';
@@ -10,6 +11,13 @@ class FileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final fileDownloadUrl =
+        Uri(
+          scheme: 'http',
+          host: ApiConstants.baseUrl,
+          port: ApiConstants.port,
+          path: '/storage/${file.filePath}',
+        ).toString();
     // Extract file extension for type display
     final fileType = file.fileName.split('.').last.toUpperCase();
 
@@ -22,10 +30,10 @@ class FileCard extends StatelessWidget {
         ScaffoldMessenger.of(context)
           ..clearSnackBars()
           ..showSnackBar(
-            
             SnackBar(
               duration: Duration(seconds: 2),
-              content: Text('ফাইল ডাউনলোড করা যাই নি'),),
+              content: Text('ফাইল ডাউনলোড করা যাই নি'),
+            ),
           );
       }
     }
@@ -34,7 +42,7 @@ class FileCard extends StatelessWidget {
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
-        onTap: () => downloadFile('/storage/${file.filePath}', context),
+        onTap: () => downloadFile(fileDownloadUrl, context),
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Column(
