@@ -2,8 +2,7 @@
 class Assets {
   Assets._();
 
-  static const String assetsImagesOurConstitution =
-      'assets/images/our_constitution.pdf';
+  static const String assetsImagesOurConstitution = 'assets/images/our_constitution.pdf';
   static const String imagesBjp = 'assets/images/bjp.svg';
   static const String imagesCourseOne = 'assets/images/course_one.png';
   static const String imagesCourseTwo = 'assets/images/course_two.png';
@@ -12,15 +11,13 @@ class Assets {
   static const String imagesImagetwo = 'assets/images/imagetwo.png';
   static const String imagesJoinToChange = 'assets/images/Join_to_change.png';
   static const String imagesLogo = 'assets/images/logo.png';
-  static const String imagesOurConstitution =
-      'assets/images/our_constitution.pdf';
+  static const String imagesOurConstitution = 'assets/images/our_constitution.pdf';
   static const String imagesOurJourney = 'assets/images/our_journey.png';
+  static const String imagesPhoto2 = 'assets/images/photo2.png';
+  static const String imagesPhoto3 = 'assets/images/photo3.png';
   static const String imagesPic = 'assets/images/pic.png';
   static const String imagesPictureOfMan = 'assets/images/picture_of_man.jpeg';
   static const String imagesPictureOfMans = 'assets/images/picture_of_mans.png';
   static const String imagesSplash = 'assets/images/Splash.png';
 
-  static const String course_two = 'assets/images/course_two.png';
-
-  static const String course_one = 'assets/images/course_one.png';
 }

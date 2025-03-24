@@ -9,6 +9,8 @@ import 'package:bjp_app/features/events/presentation/widgets/event_time_card.dar
 import 'package:bjp_app/features/home/presentation/screens/our_constitution.dart';
 import 'package:bjp_app/features/home/presentation/screens/our_introduction.dart';
 import 'package:bjp_app/features/leadership_training/presentation/screens/leadership_training_screen.dart';
+import 'package:bjp_app/features/media/presentation/screens/image_screen.dart';
+import 'package:bjp_app/features/media/presentation/screens/video_screen.dart';
 import 'package:bjp_app/features/member/presentation/screens/member_screen.dart';
 import 'package:bjp_app/features/our_discussion/presentation/screens/our_discussion.dart';
 import 'package:bjp_app/features/profile/presentation/screens/profile_editing_screen.dart';
@@ -57,6 +59,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           _buildDashboard(authState, eventListState: events),
           AnnouncementScreen(),
           OurConstitution(),
+      AlbumScreen(),
+      VideoAlbumScreen(),
           ProfileEditingScreen(),
         ];
   }
@@ -97,6 +101,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             _appBarTitle = 'আমাদের সংবিধান';
             break;
           case 3:
+            _appBarTitle = 'ছবি';
+            break;
+          case 4:
+            _appBarTitle = 'ভিডিও';
+            break;
+          case 5:
             _appBarTitle = 'প্রোফাইল পরিবর্তন';
             break;
         }
@@ -219,15 +229,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   Navigator.pop(context);
                 },
               ),
-              // ListTile(
-              //   leading: Icon(Icons.edit),
-              //   title: Text('আমাদের সংবিধান'),
-              //   selected: _selectedIndex == 3,
-              //   onTap: () async {
-              //     await openPDF(context);
-              //     Navigator.pop(context); // Close drawer after opening PDF
-              //   },
-              // ),
+
               ListTile(
                 leading: Icon(Icons.picture_as_pdf),
                 title: Text('আমাদের সংবিধান'),
@@ -237,12 +239,36 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   Navigator.pop(context);
                 },
               ),
+              ExpansionTile(
+                leading: Icon(Icons.perm_media),
+                title: Text('মিডিয়া'),
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.picture_in_picture_sharp),
+                    title: Text('ছবি'),
+                    selected: _selectedIndex == 3,
+                    onTap: () {
+                      _onItemTapped(3);
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.video_collection),
+                    title: Text('ভিডিও'),
+                    selected: _selectedIndex == 4,
+                    onTap: () {
+                      _onItemTapped(4);
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
               ListTile(
                 leading: Icon(Icons.edit),
                 title: Text('প্রোফাইল পরিবর্তন'),
-                selected: _selectedIndex == 3,
+                selected: _selectedIndex == 5,
                 onTap: () {
-                  _onItemTapped(3);
+                  _onItemTapped(5);
                   Navigator.pop(context);
                 },
               ),
