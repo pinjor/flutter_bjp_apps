@@ -49,7 +49,7 @@ class OurIntroduction extends StatelessWidget {
                     'আন্দালিব রহমান পার্থ, চেয়ারম্যান, বাংলাদেশ জাতীয় পার্টি (বিজেপি)। তিনি একজন রাজনীতিবিদ, শিক্ষাবিদ, আইনজীবী ও সাবেক সংসদ সদস্য।',
                     style: TextStyle(
                       fontSize: 14,
-                      color: Colors.black.withOpacity(0.9),
+                      color: Colors.black,
                     ),
                   ),
                   SizedBox(height: 10),
@@ -57,7 +57,7 @@ class OurIntroduction extends StatelessWidget {
                     'শিক্ষা জীবন',
                     style: TextStyle(
                       fontSize: 24,
-                      color: Colors.black.withOpacity(0.9),
+                      color: Colors.black,
                     ),
                   ),
                   const SizedBox(height: 10),

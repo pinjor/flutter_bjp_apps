@@ -11,7 +11,7 @@ class AssetsPath {
 
   static const String manWithAll = '$_imagePath/man_with_All.png';
 
-  static const String Join_to_change = '$_imagePath/Join_to_change.png';
+  static const String join_to_change = '$_imagePath/Join_to_change.png';
   static const String our_journey = '$_imagePath/our_journey.png';
 
   static const String imagetwo = '$_imagePath/imagetwo.png';
@@ -21,4 +21,8 @@ class AssetsPath {
   static const String course_one = '$_imagePath/course_one.png';
 
   static const String course_two = '$_imagePath/course_two.png';
+
+
+  static const String discussion_two = '$_imagePath/discussion_three.png';
+  static const String discussion_three = '$_imagePath/discussion_two.png';
 }

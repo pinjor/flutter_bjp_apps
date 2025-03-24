@@ -86,6 +86,8 @@ flutter:
   assets:
     - assets/images/
     - assets/images/our_constitution.pdf
+    - assets/images/discussion_two.png
+    - assets/images/discussion_three.png
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
