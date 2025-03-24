@@ -9,6 +9,8 @@ import 'package:bjp_app/features/events/presentation/widgets/event_time_card.dar
 import 'package:bjp_app/features/home/presentation/screens/our_constitution.dart';
 import 'package:bjp_app/features/home/presentation/screens/our_introduction.dart';
 import 'package:bjp_app/features/leadership_training/presentation/screens/leadership_training_screen.dart';
+import 'package:bjp_app/features/media/presentation/screens/image_screen.dart';
+import 'package:bjp_app/features/media/presentation/screens/video_screen.dart';
 import 'package:bjp_app/features/member/presentation/screens/member_screen.dart';
 import 'package:bjp_app/features/our_discussion/presentation/screens/our_discussion.dart';
 import 'package:bjp_app/features/profile/presentation/screens/profile_editing_screen.dart';
@@ -57,6 +59,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           _buildDashboard(authState, eventListState: events),
           AnnouncementScreen(),
           OurConstitution(),
+          AlbumScreen(),
+          VideoAlbumScreen(),
           ProfileEditingScreen(),
         ];
   }
@@ -97,6 +101,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             _appBarTitle = 'আমাদের সংবিধান';
             break;
           case 3:
+            _appBarTitle = 'ছবি';
+            break;
+          case 4:
+            _appBarTitle = 'ভিডিও';
+            break;
+          case 5:
             _appBarTitle = 'প্রোফাইল পরিবর্তন';
             break;
         }
@@ -219,15 +229,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   Navigator.pop(context);
                 },
               ),
-              // ListTile(
-              //   leading: Icon(Icons.edit),
-              //   title: Text('আমাদের সংবিধান'),
-              //   selected: _selectedIndex == 3,
-              //   onTap: () async {
-              //     await openPDF(context);
-              //     Navigator.pop(context); // Close drawer after opening PDF
-              //   },
-              // ),
+
               ListTile(
                 leading: Icon(Icons.picture_as_pdf),
                 title: Text('আমাদের সংবিধান'),
@@ -237,12 +239,36 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   Navigator.pop(context);
                 },
               ),
+              ExpansionTile(
+                leading: Icon(Icons.perm_media),
+                title: Text('মিডিয়া'),
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.picture_in_picture_sharp),
+                    title: Text('ছবি'),
+                    selected: _selectedIndex == 3,
+                    onTap: () {
+                      _onItemTapped(3);
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.video_collection),
+                    title: Text('ভিডিও'),
+                    selected: _selectedIndex == 4,
+                    onTap: () {
+                      _onItemTapped(4);
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
               ListTile(
                 leading: Icon(Icons.edit),
                 title: Text('প্রোফাইল পরিবর্তন'),
-                selected: _selectedIndex == 3,
+                selected: _selectedIndex == 5,
                 onTap: () {
-                  _onItemTapped(3);
+                  _onItemTapped(5);
                   Navigator.pop(context);
                 },
               ),
@@ -409,7 +435,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           Stack(
             children: [
               Image.asset(
-                AssetsPath.Join_to_change,
+                AssetsPath.join_to_change,
                 width: double.infinity,
                 fit: BoxFit.fill,
               ),
@@ -519,7 +545,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         width: 250,
                         child: GestureDetector(
                           onTap: () {
-                            // Fixed: Added function wrapper
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -528,6 +553,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             );
                           },
                           child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                10,
+                              ), // Optional: Add rounded corners
+                            ),
+                            elevation:
+                                5, // Optional: Adds shadow for a floating effect
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -537,9 +569,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                     onPressed: () {},
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: AppColors.themeColor,
-                                      padding:
-                                          EdgeInsets
-                                              .zero, // Fixed: Proper comma placement
+                                      padding: EdgeInsets.zero,
                                       minimumSize: Size(180, 20),
                                     ),
                                     child: Text(
@@ -552,9 +582,52 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: SizedBox(
-                                    height: 250,
-                                    width: 250,
-                                    child: Image.asset(AssetsPath.discussion),
+                                    height:
+                                        200, // Adjusted image size to match the desired size
+                                    width: 250, // Maintained the same width
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(
+                                        10,
+                                      ), // Optional: Round corners for the image
+                                      child: Image.asset(
+                                        AssetsPath.discussion,
+                                        fit: BoxFit.cover,
+                                      ), // Replace with your actual image path
+                                      // Makes sure the image fills the box properly
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Text(
+                                    'আলোচনা ১',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'admin', // You can dynamically change this
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: AppColors.themeColor,
+                                        ),
+                                      ),
+                                      Text(
+                                        '23 February, 2025', // You can dynamically change this
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: AppColors.themeColor,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
@@ -567,7 +640,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         width: 250,
                         child: GestureDetector(
                           onTap: () {
-                            // Fixed: Added function wrapper
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -576,6 +648,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             );
                           },
                           child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                10,
+                              ), // Optional: Add rounded corners
+                            ),
+                            elevation:
+                                5, // Optional: Adds shadow for a floating effect
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -585,9 +664,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                     onPressed: () {},
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: AppColors.themeColor,
-                                      padding:
-                                          EdgeInsets
-                                              .zero, // Fixed: Proper comma placement
+                                      padding: EdgeInsets.zero,
                                       minimumSize: Size(180, 20),
                                     ),
                                     child: Text(
@@ -600,9 +677,52 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: SizedBox(
-                                    height: 250,
-                                    width: 250,
-                                    child: Image.asset(AssetsPath.discussion),
+                                    height:
+                                        200, // Adjusted image size to match the desired size
+                                    width: 250, // Maintained the same width
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(
+                                        10,
+                                      ), // Optional: Round corners for the image
+                                      child: Image.asset(
+                                        AssetsPath.discussion_two,
+                                        fit: BoxFit.cover,
+                                      ), // Replace with your actual image path
+                                      // Makes sure the image fills the box properly
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Text(
+                                    'আলোচনা ২',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'admin', // You can dynamically change this
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: AppColors.themeColor,
+                                        ),
+                                      ),
+                                      Text(
+                                        '23 February, 2025', // You can dynamically change this
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: AppColors.themeColor,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
@@ -615,7 +735,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         width: 250,
                         child: GestureDetector(
                           onTap: () {
-                            // Fixed: Added function wrapper
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -624,6 +743,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             );
                           },
                           child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                10,
+                              ), // Optional: Add rounded corners
+                            ),
+                            elevation:
+                                5, // Optional: Adds shadow for a floating effect
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -633,9 +759,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                     onPressed: () {},
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: AppColors.themeColor,
-                                      padding:
-                                          EdgeInsets
-                                              .zero, // Fixed: Proper comma placement
+                                      padding: EdgeInsets.zero,
                                       minimumSize: Size(180, 20),
                                     ),
                                     child: Text(
@@ -648,9 +772,52 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: SizedBox(
-                                    height: 250,
-                                    width: 250,
-                                    child: Image.asset(AssetsPath.discussion),
+                                    height:
+                                        200, // Adjusted image size to match the desired size
+                                    width: 250, // Maintained the same width
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(
+                                        10,
+                                      ), // Optional: Round corners for the image
+                                      child: Image.asset(
+                                        AssetsPath.discussion_three,
+                                        fit: BoxFit.cover,
+                                      ), // Replace with your actual image path
+                                      // Makes sure the image fills the box properly
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Text(
+                                    'আলোচনা ৩',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'admin', // You can dynamically change this
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: AppColors.themeColor,
+                                        ),
+                                      ),
+                                      Text(
+                                        '23 February, 2025', // You can dynamically change this
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: AppColors.themeColor,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],

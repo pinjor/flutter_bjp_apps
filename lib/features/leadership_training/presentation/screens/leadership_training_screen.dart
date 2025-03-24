@@ -1,5 +1,6 @@
 import 'package:bjp_app/features/leadership_training/presentation/screens/course_details_screen.dart';
 import 'package:bjp_app/features/leadership_training/presentation/widgets/course_card_widget.dart';
+import 'package:bjp_app/core/constants/assets_path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

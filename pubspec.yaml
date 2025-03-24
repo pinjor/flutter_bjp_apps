@@ -55,6 +55,8 @@ dependencies:
   flutter_cached_pdfview: ^0.4.3
   flutter_html: ^3.0.0
   cached_network_image: ^3.4.1
+  video_player: ^2.9.3
+
 
 dev_dependencies:
   flutter_test:
@@ -84,6 +86,8 @@ flutter:
   assets:
     - assets/images/
     - assets/images/our_constitution.pdf
+    - assets/images/discussion_two.png
+    - assets/images/discussion_three.png
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
