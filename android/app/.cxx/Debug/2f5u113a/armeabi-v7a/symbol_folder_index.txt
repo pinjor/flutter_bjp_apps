@@ -1,0 +1,1 @@
+/home/mr/development/flutter_dev/flutter_projects/flutter_bjp_app/build/app/intermediates/cxx/Debug/2f5u113a/obj/armeabi-v7a
