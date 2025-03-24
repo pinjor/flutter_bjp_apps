@@ -17,4 +17,8 @@ class AssetsPath {
   static const String imagetwo = '$_imagePath/imagetwo.png';
 
   static const String discussion = '$_imagePath/discussion.png';
+
+  static const String course_one = '$_imagePath/course_one.png';
+
+  static const String course_two = '$_imagePath/course_two.png';
 }

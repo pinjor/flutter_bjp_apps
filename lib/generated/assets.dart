@@ -5,6 +5,8 @@ class Assets {
   static const String assetsImagesOurConstitution =
       'assets/images/our_constitution.pdf';
   static const String imagesBjp = 'assets/images/bjp.svg';
+  static const String imagesCourseOne = 'assets/images/course_one.png';
+  static const String imagesCourseTwo = 'assets/images/course_two.png';
   static const String imagesDiscussion = 'assets/images/discussion.png';
   static const String imagesImage = 'assets/images/image.png';
   static const String imagesImagetwo = 'assets/images/imagetwo.png';
@@ -18,5 +20,7 @@ class Assets {
   static const String imagesPictureOfMans = 'assets/images/picture_of_mans.png';
   static const String imagesSplash = 'assets/images/Splash.png';
 
-  static const String discussion = 'assets/images/discussion.png';
+  static const String course_two = 'assets/images/course_two.png';
+
+  static const String course_one = 'assets/images/course_one.png';
 }
