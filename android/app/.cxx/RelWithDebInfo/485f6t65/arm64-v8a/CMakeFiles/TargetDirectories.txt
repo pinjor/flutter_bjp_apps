@@ -1,0 +1,2 @@
+D:/flutter_bjp_app/android/app/.cxx/RelWithDebInfo/485f6t65/arm64-v8a/CMakeFiles/edit_cache.dir
+D:/flutter_bjp_app/android/app/.cxx/RelWithDebInfo/485f6t65/arm64-v8a/CMakeFiles/rebuild_cache.dir
