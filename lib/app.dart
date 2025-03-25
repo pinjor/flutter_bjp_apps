@@ -1,4 +1,3 @@
-
 import 'package:bjp_app/config/app_router.dart';
 import 'package:bjp_app/config/app_theme_data.dart';
 import 'package:flutter/material.dart';

@@ -8,11 +8,12 @@ import 'package:bjp_app/features/events/presentation/screens/event_scedule_scree
 import 'package:bjp_app/features/events/presentation/widgets/event_time_card.dart';
 import 'package:bjp_app/features/home/presentation/screens/our_constitution.dart';
 import 'package:bjp_app/features/home/presentation/screens/our_introduction.dart';
+import 'package:bjp_app/features/home/presentation/widgets/discussion_card_widget.dart';
 import 'package:bjp_app/features/leadership_training/presentation/screens/leadership_training_screen.dart';
 import 'package:bjp_app/features/media/presentation/screens/image_screen.dart';
 import 'package:bjp_app/features/media/presentation/screens/video_screen.dart';
 import 'package:bjp_app/features/member/presentation/screens/member_screen.dart';
-import 'package:bjp_app/features/our_discussion/presentation/screens/our_discussion.dart';
+import 'package:bjp_app/features/our_discussion/presentation/controllers/discussion_controller.dart';
 import 'package:bjp_app/features/profile/presentation/screens/profile_editing_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,6 +23,7 @@ import '../../../../core/ui/app_icon_widget.dart';
 import '../../../announcement/presentation/screens/create_announcement_screen.dart';
 import '../../../events/domain/event_model.dart';
 import '../../../events/presentation/controllers/event_controller.dart';
+import '../../../our_discussion/domain/discussion_model.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -39,6 +41,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(eventControllerProvider.notifier).fetchEvents(context);
+      ref
+          .read(discussionControllerProvider.notifier)
+          .fetchAllDiscussions(context);
     });
   }
 
@@ -46,17 +51,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     bool isAdmin,
     AuthState authState, {
     required AsyncValue<List<EventModel>?> events,
+    required AsyncValue<List<DiscussionModel>?> discussions,
   }) {
     return isAdmin
         ? [
-          _buildDashboard(authState, eventListState: events),
+          _buildDashboard(
+            authState,
+            eventListState: events,
+            discussionListState: discussions,
+          ),
           AnnouncementScreen(),
           CreateAnnouncementScreen(),
           MemberScreen(),
           EventSceduleScreen(),
         ]
         : [
-          _buildDashboard(authState, eventListState: events),
+          _buildDashboard(
+            authState,
+            eventListState: events,
+            discussionListState: discussions,
+          ),
           AnnouncementScreen(),
           OurConstitution(),
           AlbumScreen(),
@@ -124,6 +138,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final authState = ref.watch(authControllerProvider);
     final isAdmin = authState.isAdmin;
     final eventListState = ref.watch(eventControllerProvider);
+    final discussionListState = ref.watch(discussionControllerProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -150,6 +165,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               isAdmin,
               authState,
               events: eventListState,
+              discussions: discussionListState,
             )[_selectedIndex],
       ),
       drawer: Drawer(
@@ -282,13 +298,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget _buildDashboard(
     AuthState authState, {
     required AsyncValue<List<EventModel>?> eventListState,
+    required AsyncValue<List<DiscussionModel>?> discussionListState,
   }) {
     return SingleChildScrollView(
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
+            children: [
               Container(
                 height: 200,
                 width: double.infinity,
@@ -523,314 +540,36 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               error: (err, st) => Text('ইভেন্ট লোড করতে ব্যর্থ হয়েছে: $err'),
               loading: () => CustomLoader(),
             ),
-          ],
-
-          SizedBox(height: 20),
-          SizedBox(
-            width: 330,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  'আপনাদের মতামত',
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24),
-                ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        height: 350,
-                        width: 250,
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => OurDiscussion(),
-                              ),
-                            );
-                          },
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                10,
-                              ), // Optional: Add rounded corners
-                            ),
-                            elevation:
-                                5, // Optional: Adds shadow for a floating effect
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(10, 0, 150, 5),
-                                  child: ElevatedButton(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: AppColors.themeColor,
-                                      padding: EdgeInsets.zero,
-                                      minimumSize: Size(180, 20),
-                                    ),
-                                    child: Text(
-                                      'আলোচনা',
-                                      style: TextStyle(fontSize: 10),
-                                    ),
-                                  ),
-                                ),
-
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: SizedBox(
-                                    height:
-                                        200, // Adjusted image size to match the desired size
-                                    width: 250, // Maintained the same width
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(
-                                        10,
-                                      ), // Optional: Round corners for the image
-                                      child: Image.asset(
-                                        AssetsPath.discussion,
-                                        fit: BoxFit.cover,
-                                      ), // Replace with your actual image path
-                                      // Makes sure the image fills the box properly
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: Text(
-                                    'আলোচনা ১',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'admin', // You can dynamically change this
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: AppColors.themeColor,
-                                        ),
-                                      ),
-                                      Text(
-                                        '23 February, 2025', // You can dynamically change this
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: AppColors.themeColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 350,
-                        width: 250,
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => OurDiscussion(),
-                              ),
-                            );
-                          },
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                10,
-                              ), // Optional: Add rounded corners
-                            ),
-                            elevation:
-                                5, // Optional: Adds shadow for a floating effect
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(10, 0, 150, 5),
-                                  child: ElevatedButton(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: AppColors.themeColor,
-                                      padding: EdgeInsets.zero,
-                                      minimumSize: Size(180, 20),
-                                    ),
-                                    child: Text(
-                                      'আলোচনা',
-                                      style: TextStyle(fontSize: 10),
-                                    ),
-                                  ),
-                                ),
-
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: SizedBox(
-                                    height:
-                                        200, // Adjusted image size to match the desired size
-                                    width: 250, // Maintained the same width
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(
-                                        10,
-                                      ), // Optional: Round corners for the image
-                                      child: Image.asset(
-                                        AssetsPath.discussion_two,
-                                        fit: BoxFit.cover,
-                                      ), // Replace with your actual image path
-                                      // Makes sure the image fills the box properly
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: Text(
-                                    'আলোচনা ২',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'admin', // You can dynamically change this
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: AppColors.themeColor,
-                                        ),
-                                      ),
-                                      Text(
-                                        '23 February, 2025', // You can dynamically change this
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: AppColors.themeColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 350,
-                        width: 250,
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => OurDiscussion(),
-                              ),
-                            );
-                          },
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                10,
-                              ), // Optional: Add rounded corners
-                            ),
-                            elevation:
-                                5, // Optional: Adds shadow for a floating effect
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(10, 0, 150, 5),
-                                  child: ElevatedButton(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: AppColors.themeColor,
-                                      padding: EdgeInsets.zero,
-                                      minimumSize: Size(180, 20),
-                                    ),
-                                    child: Text(
-                                      'আলোচনা',
-                                      style: TextStyle(fontSize: 10),
-                                    ),
-                                  ),
-                                ),
-
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: SizedBox(
-                                    height:
-                                        200, // Adjusted image size to match the desired size
-                                    width: 250, // Maintained the same width
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(
-                                        10,
-                                      ), // Optional: Round corners for the image
-                                      child: Image.asset(
-                                        AssetsPath.discussion_three,
-                                        fit: BoxFit.cover,
-                                      ), // Replace with your actual image path
-                                      // Makes sure the image fills the box properly
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: Text(
-                                    'আলোচনা ৩',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'admin', // You can dynamically change this
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: AppColors.themeColor,
-                                        ),
-                                      ),
-                                      Text(
-                                        '23 February, 2025', // You can dynamically change this
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: AppColors.themeColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+            SizedBox(height: 20),
+            Text(
+              'আপনাদের মতামত',
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24),
             ),
-          ),
+            discussionListState.when(
+              data: (discussions) {
+                if (discussions == null || discussions.isEmpty) {
+                  return Text('কোন আলোচনা পাওয়া যায়নি');
+                }
+
+                return SizedBox(
+                  height: 350, // Adjust the height as needed
+                  child: ListView.builder(
+                    itemCount: discussions.length,
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, i) {
+                      final discussion = discussions[i];
+                      return DiscussionCardWidget(discussion: discussion);
+                    },
+                  ),
+                );
+              },
+              error: (err, st) {
+                return Text('আলোচনা লোড করতে ব্যর্থ হয়েছে: $err');
+              },
+              loading: () => CustomLoader(),
+            ),
+          ],
         ],
       ),
     );

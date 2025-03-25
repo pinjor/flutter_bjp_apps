@@ -14,4 +14,5 @@ class ApiConstants {
   static const String getAllAnnouncements = '/api/announcements';
   static const String getUserProfile = '/api/get-profile';
   static const String updateProfile = '/api/profile/update';
+  static const String getRecentDiscussion = '/api/recent-discussions';
 }
