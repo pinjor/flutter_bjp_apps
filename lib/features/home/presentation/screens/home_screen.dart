@@ -308,7 +308,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             children: [
               Container(
                 height: 200,
-                width: double.infinity,
+                width: 200,
                 color: Colors.cyan,
                 child: Padding(
                   padding: EdgeInsets.all(20),
