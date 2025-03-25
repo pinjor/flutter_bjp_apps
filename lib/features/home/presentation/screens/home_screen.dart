@@ -155,7 +155,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   context: context,
                   onPressed: () => _logoutUser(),
                 ),
-            child: Icon(Icons.logout_outlined, color: Colors.black),
+            child: Text('Logout'),
+
+            //Icon(Icons.logout_outlined, color: Colors.black),
           ),
         ],
       ),
