@@ -1,31 +1,28 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'discussion_controller.dart';
+part of 'media_repository.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$discussionControllerHash() =>
-    r'25a2acef469994e02ce15fc7b21ac160f109d0f1';
+String _$mediaRepositoryHash() => r'9e25ba17ee73958e10c36217177f8941760017f7';
 
-/// See also [DiscussionController].
-@ProviderFor(DiscussionController)
-final discussionControllerProvider = AutoDisposeNotifierProvider<
-  DiscussionController,
-  AsyncValue<List<DiscussionModel>>
->.internal(
-  DiscussionController.new,
-  name: r'discussionControllerProvider',
+/// See also [mediaRepository].
+@ProviderFor(mediaRepository)
+final mediaRepositoryProvider = AutoDisposeProvider<MediaRepository>.internal(
+  mediaRepository,
+  name: r'mediaRepositoryProvider',
   debugGetCreateSourceHash:
       const bool.fromEnvironment('dart.vm.product')
           ? null
-          : _$discussionControllerHash,
+          : _$mediaRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$DiscussionController =
-    AutoDisposeNotifier<AsyncValue<List<DiscussionModel>>>;
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef MediaRepositoryRef = AutoDisposeProviderRef<MediaRepository>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

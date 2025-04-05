@@ -10,8 +10,8 @@ import 'package:bjp_app/features/home/presentation/screens/our_constitution.dart
 import 'package:bjp_app/features/home/presentation/screens/our_introduction.dart';
 import 'package:bjp_app/features/home/presentation/widgets/discussion_card_widget.dart';
 import 'package:bjp_app/features/leadership_training/presentation/screens/leadership_training_screen.dart';
-import 'package:bjp_app/features/media/presentation/screens/image_screen.dart';
-import 'package:bjp_app/features/media/presentation/screens/video_screen.dart';
+import 'package:bjp_app/features/media/presentation/screens/photo_album_screen.dart';
+import 'package:bjp_app/features/media/presentation/screens/video_album_screen.dart';
 import 'package:bjp_app/features/member/presentation/screens/member_screen.dart';
 import 'package:bjp_app/features/our_discussion/presentation/controllers/discussion_controller.dart';
 import 'package:bjp_app/features/profile/presentation/screens/profile_editing_screen.dart';
@@ -73,7 +73,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
           AnnouncementScreen(),
           OurConstitution(),
-          AlbumScreen(),
+          PhotoAlbumScreen(),
           VideoAlbumScreen(),
           ProfileEditingScreen(),
         ];
@@ -155,9 +155,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   context: context,
                   onPressed: () => _logoutUser(),
                 ),
-            child: Text('Logout'),
-
-            //Icon(Icons.logout_outlined, color: Colors.black),
+            child: Icon(Icons.logout_outlined, color: Colors.black, size: 24),
           ),
         ],
       ),

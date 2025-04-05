@@ -28,8 +28,8 @@ class MemberRepository {
   MemberRepository({
     required Dio dioClient,
     required FlutterSecureStorage secureStorage,
-  })  : _dioClient = dioClient,
-        _secureStorage = secureStorage;
+  }) : _dioClient = dioClient,
+       _secureStorage = secureStorage;
 
   /// Fetches all members (no filters applied)
   FutureEither<List<MemberModel>> fetchMembers() async {
@@ -60,16 +60,22 @@ class MemberRepository {
 
       if (response.statusCode == 200) {
         final List<dynamic> memberList = response.data['data'];
-        final List<MemberModel> members = memberList
-            .map((member) => MemberModel.fromMap(member as Map<String, dynamic>))
-            .toList();
+        final List<MemberModel> members =
+            memberList
+                .map(
+                  (member) =>
+                      MemberModel.fromMap(member as Map<String, dynamic>),
+                )
+                .toList();
         return right(members); // Returns a list, typically with one member
       } else {
         return left(Failure('সদস্যদের তথ্য আনতে গিয়ে একটি ত্রুটি ঘটেছে'));
       }
     } on DioException catch (err) {
       if (err.response != null && err.response!.statusCode == 401) {
-        lgr.w('${err.response!.statusCode} ${err.response!.statusMessage}\n${err.response!.data}');
+        lgr.w(
+          '${err.response!.statusCode} ${err.response!.statusMessage}\n${err.response!.data}',
+        );
       }
       return left(Failure('You are not authorized to view this content'));
     } catch (err) {
@@ -102,16 +108,22 @@ class MemberRepository {
 
       if (response.statusCode == 200) {
         final List<dynamic> memberList = response.data['data'];
-        final List<MemberModel> members = memberList
-            .map((member) => MemberModel.fromMap(member as Map<String, dynamic>))
-            .toList();
+        final List<MemberModel> members =
+            memberList
+                .map(
+                  (member) =>
+                      MemberModel.fromMap(member as Map<String, dynamic>),
+                )
+                .toList();
         return right(members); // Returns a list, typically with one member
       } else {
         return left(Failure('সদস্যদের তথ্য আনতে গিয়ে একটি ত্রুটি ঘটেছে'));
       }
     } on DioException catch (err) {
       if (err.response != null && err.response!.statusCode == 401) {
-        lgr.w('${err.response!.statusCode} ${err.response!.statusMessage}\n${err.response!.data}');
+        lgr.w(
+          '${err.response!.statusCode} ${err.response!.statusMessage}\n${err.response!.data}',
+        );
       }
       return left(Failure('You are not authorized to view this content'));
     } catch (err) {
@@ -163,16 +175,22 @@ class MemberRepository {
 
       if (response.statusCode == 200) {
         final List<dynamic> memberList = response.data['data'];
-        final List<MemberModel> members = memberList
-            .map((member) => MemberModel.fromMap(member as Map<String, dynamic>))
-            .toList();
+        final List<MemberModel> members =
+            memberList
+                .map(
+                  (member) =>
+                      MemberModel.fromMap(member as Map<String, dynamic>),
+                )
+                .toList();
         return right(members);
       } else {
         return left(Failure('সদস্যদের তথ্য আনতে গিয়ে একটি ত্রুটি ঘটেছে'));
       }
     } on DioException catch (err) {
       if (err.response != null && err.response!.statusCode == 401) {
-        lgr.w('${err.response!.statusCode} ${err.response!.statusMessage}\n${err.response!.data}');
+        lgr.w(
+          '${err.response!.statusCode} ${err.response!.statusMessage}\n${err.response!.data}',
+        );
       }
       return left(Failure('You are not authorized to view this content'));
     } catch (err) {
