@@ -157,12 +157,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           backgroundColor: Colors.transparent,
           child: Container(
             decoration: BoxDecoration(
+              color: Colors.white, // << Changed from gradient to solid color
               borderRadius: BorderRadius.circular(25),
-              gradient: LinearGradient(
-                colors: [Color(0xFF6A1B9A), Color(0xFF8E24AA)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black26,
@@ -175,26 +171,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.announcement, size: 48, color: Colors.white),
+                Icon(Icons.announcement, size: 48, color: AppColors.themeColor),
                 SizedBox(height: 10),
                 Text(
                   'Announcement',
                   style: TextStyle(
                     fontSize: 26,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: Colors.black,
                   ),
                 ),
                 Divider(color: Colors.white70, thickness: 1, height: 20),
                 Text(
-                  announcement.title ?? 'No title available',
-                  style: TextStyle(fontSize: 20, color: Colors.white70),
+                  announcement.content ?? 'No content available',
+                  style: TextStyle(fontSize: 18, color: Colors.black),
                   textAlign: TextAlign.center,
                 ),
+
                 SizedBox(height: 10),
                 Text(
-                  announcement.content ?? 'No content available',
-                  style: TextStyle(fontSize: 16, color: Colors.white70),
+                  announcement.createdAt ?? 'No date available',
+                  style: TextStyle(fontSize: 12, color: Colors.black),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 20),
@@ -204,7 +201,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: AppColors.themeColor,
-                    backgroundColor: Colors.white, // Button text color
+                    backgroundColor: AppColors.themeColor, // Button text color
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
@@ -212,7 +209,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ),
                   child: Text(
                     'Got it!',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ],

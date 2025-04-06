@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class RecentAnnouncement {
   int? id;
   String? title;
@@ -11,7 +13,9 @@ class RecentAnnouncement {
       id: json['id'],
       title: json['title'],
       content: json['content'],
-      createdAt: json['created_at'],
+      createdAt: DateFormat(
+        'yyyy-MM-dd',
+      ).format(DateTime.parse(json['created_at'])),
     );
   }
 }
