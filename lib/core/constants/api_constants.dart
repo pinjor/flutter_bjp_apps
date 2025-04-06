@@ -17,4 +17,6 @@ class ApiConstants {
   static const String getRecentDiscussion = '/api/recent-discussions';
   static const String getAllPhotos = '/api/albums/photos/1';
   static const String getAllVidoes = '/api/albums/videos/2';
+  //in the home page
+  static const String getMemberRecentNotification = '/api/member-notification';
 }

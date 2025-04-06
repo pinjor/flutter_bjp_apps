@@ -6,6 +6,8 @@ import 'package:bjp_app/features/auth/domain/auth_state.dart';
 import 'package:bjp_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:bjp_app/features/events/presentation/screens/event_scedule_screen.dart';
 import 'package:bjp_app/features/events/presentation/widgets/event_time_card.dart';
+import 'package:bjp_app/features/home/domain/recent_announcement.dart';
+import 'package:bjp_app/features/home/presentation/controllers/home_controller.dart';
 import 'package:bjp_app/features/home/presentation/screens/our_constitution.dart';
 import 'package:bjp_app/features/home/presentation/screens/our_introduction.dart';
 import 'package:bjp_app/features/home/presentation/widgets/discussion_card_widget.dart';
@@ -44,6 +46,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ref
           .read(discussionControllerProvider.notifier)
           .fetchAllDiscussions(context);
+
+      // Check user role.
+      final isAdmin = ref.read(authControllerProvider).isAdmin;
+      if (!isAdmin) {
+        ref
+            .read(homeControllerProvider.notifier)
+            .fetchRecentMemberAnnouncement();
+      }
     });
   }
 
@@ -133,12 +143,106 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     Navigator.pop(context);
   }
 
+  void _showAnnouncementDialog(RecentAnnouncement announcement) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25.0),
+          ),
+          elevation: 10,
+          backgroundColor: Colors.transparent,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(25),
+              gradient: LinearGradient(
+                colors: [Color(0xFF6A1B9A), Color(0xFF8E24AA)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 10,
+                  offset: Offset(0, 10),
+                ),
+              ],
+            ),
+            padding: EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.announcement, size: 48, color: Colors.white),
+                SizedBox(height: 10),
+                Text(
+                  'Announcement',
+                  style: TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                Divider(color: Colors.white70, thickness: 1, height: 20),
+                Text(
+                  announcement.title ?? 'No title available',
+                  style: TextStyle(fontSize: 20, color: Colors.white70),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 10),
+                Text(
+                  announcement.content ?? 'No content available',
+                  style: TextStyle(fontSize: 16, color: Colors.white70),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Color(0xFF6A1B9A),
+                    backgroundColor: Colors.white, // Button text color
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 40, vertical: 12),
+                  ),
+                  child: Text(
+                    'Got it!',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authControllerProvider);
     final isAdmin = authState.isAdmin;
     final eventListState = ref.watch(eventControllerProvider);
     final discussionListState = ref.watch(discussionControllerProvider);
+
+    if (!isAdmin) {
+      // Listen for changes in the home controller state.
+      ref.listen<AsyncValue<dynamic>>(homeControllerProvider, (previous, next) {
+        next.whenData((announcement) {
+          Future.delayed(Duration(milliseconds: 300), () {
+            // Check if the announcement is not null and show the dialog.
+
+            if (announcement != null) {
+              _showAnnouncementDialog(announcement);
+            }
+          });
+        });
+      });
+    }
 
     return Scaffold(
       appBar: AppBar(
