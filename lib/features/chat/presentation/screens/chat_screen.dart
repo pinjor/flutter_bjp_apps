@@ -1,27 +1,25 @@
 import 'dart:convert';
-
+import 'dart:ffi';
+import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 import 'package:bjp_app/config/app_colors.dart';
 import 'package:bjp_app/core/providers/providers.dart';
 import 'package:bjp_app/core/ui/custom_loader.dart';
 import 'package:bjp_app/features/auth/domain/login_response_model.dart';
 import 'package:bjp_app/features/chat/presentation/controllers/chat_controller.dart'
-    as ch;
+as ch;
 import 'package:bjp_app/features/chat/presentation/domain/chat_model.dart';
 import 'package:chatview/chatview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
-// import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:uuid/uuid.dart';
 
 class ChatPage extends ConsumerStatefulWidget {
   final userInfo;
   final name;
 
   const ChatPage({Key? key, required this.userInfo, required this.name})
-    : super(key: key);
+      : super(key: key);
 
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -29,9 +27,11 @@ class ChatPage extends ConsumerStatefulWidget {
 
 class _ChatPageState extends ConsumerState<ChatPage>
     with WidgetsBindingObserver {
-  // final _chatKey = GlobalKey<ChatState>();
-  var _user ;
-  var _user2 ;
+  var _user;
+  var _user2;
+  late PusherChannelsFlutter pusher;
+  late String channelName;
+
   var chatController = ChatController(
     initialMessageList: [],
     scrollController: ScrollController(),
@@ -43,10 +43,10 @@ class _ChatPageState extends ConsumerState<ChatPage>
       ),
     ],
   );
+
   late final FlutterSecureStorage _secureStorage;
   final TextEditingController _textEditingController = TextEditingController();
   FocusNode focusNode = FocusNode();
-
   bool isFileClicked = false;
 
   get bgColor => null;
@@ -56,9 +56,13 @@ class _ChatPageState extends ConsumerState<ChatPage>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _secureStorage = ref.read(secureStorageProvider);
+    pusher = PusherChannelsFlutter.getInstance();
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       try {
-        _asyncMethod();
+        await _asyncMethod();
+        await initPusher();
         getAllMessage();
       } catch (err) {
         if (kDebugMode) {
@@ -66,89 +70,101 @@ class _ChatPageState extends ConsumerState<ChatPage>
         }
       }
     });
-    ref
-        .read(notificationServiceProvider)
-        .showLocalNotification(
-          id: 0,
-          title: 'New Chat Message',
-          body: 'You got a new message!',
-          payload: 'chat', // still using this to navigate
-        );
+  }
+
+  Future<void> initPusher() async {
+    try {
+      // Initialize Pusher
+      await pusher.init(
+          onAuthorizer: (String channelName, String socketId, dynamic options) {
+            // This should return the auth payload from your server
+            return {
+              'shared_secret': 'fc0dabced0b57e3f5d1c', // Only for presence channels
+            };
+          },
+          apiKey: '94e4e879e002c03d0994',
+          cluster: 'mt1',
+          onEvent: (event) {
+            if (event.eventName == 'MessageSent') {
+              handleIncomingMessage(event.data);
+            }
+          },
+          onError: (String message, int? code, dynamic e) {
+            if (kDebugMode) {
+              print("onError: $message code: $code exception: $e");
+            }
+          }
+      );
+
+
+      // Generate channel name based on chat ID
+      channelName = 'presence-${_user=="1"? widget.userInfo:_user}';
+
+      // Subscribe to channel
+      await pusher.subscribe(channelName: channelName);
+
+      // Connect to Pusher
+      await pusher.connect();
+      // // Bind to message event
+      // await pusher.bind(eventName: 'MessageSent', (event) {
+      //   handleIncomingMessage(event?.data);
+      // });
+
+      // Handle connection errors
+      // pusher.onError(error:)
+      // {
+      //   if (kDebugMode) {
+      //     print("Pusher connection error: $error");
+      //   }
+      // });
+
+    } catch (e) {
+    if (kDebugMode) {
+    print("Pusher initialization error: $e");
+    }
+    }
+  }
+
+  void handleIncomingMessage(String? messageData) {
+    if (messageData == null) return;
+
+    try {
+      final messageJson = jsonDecode(messageData);
+      final message = Message(
+        id: messageJson['id'].toString(),
+        message: messageJson['message'],
+        createdAt: DateTime.parse(messageJson['created_at']),
+        sentBy: messageJson['from_user_id'].toString(),
+        messageType: MessageType.text,
+      );
+
+      // Add message to chat controller
+      if (message.sentBy != _user.toString()) {
+        chatController.addMessage(message);
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error processing incoming message: $e");
+      }
+    }
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  @override
-  Future<void> dispose() async {
+  void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _textEditingController.dispose();
     focusNode.dispose();
+    pusher.unsubscribe(channelName: channelName);
+    pusher.disconnect();
     super.dispose();
   }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    switch (state) {
-      case AppLifecycleState.resumed:
-        onResumed();
-        break;
-      case AppLifecycleState.inactive:
-        onPaused();
-        break;
-      case AppLifecycleState.paused:
-        onInactive();
-        break;
-      case AppLifecycleState.detached:
-        onDetached();
-        break;
-      case AppLifecycleState.hidden:
-        break;
-    }
-  }
-
-  void onResumed() {
-    try {
-      if (!isFileClicked) {
-        WidgetsBinding.instance.addPostFrameCallback((_) async {
-          setState(() {
-            isFileClicked = false;
-          });
-          try {
-            _asyncMethod();
-            getAllMessage();
-          } catch (err) {
-            if (kDebugMode) {
-              print(err);
-            }
-          }
-        });
-      }
-    } catch (err) {
-      if (kDebugMode) {
-        print(err);
-      }
-    }
-  }
-
-  void onPaused() {}
-
-  void onInactive() {}
-
-  void onDetached() {}
 
   @override
   Widget build(BuildContext context) {
     var messagesState = ref.watch(ch.chatControllerProvider);
     return WillPopScope(
       onWillPop: () async {
-        // globals.chatUserId = '-1';
-        // globals.chatReceived = null;
         if (widget.name) {
-          // Navigator.of(context).pushNamedAndRemoveUntil(
-          //     dashboardRoute, (Route<dynamic> route) => false);
           return false;
         } else {
           return true;
@@ -160,16 +176,18 @@ class _ChatPageState extends ConsumerState<ChatPage>
           leading: Visibility(
             visible: Navigator.canPop(context),
             child: IconButton(
-              icon: const Icon(Icons.arrow_back, size: 30), // custom icon
-              onPressed: () {Navigator.of(context).pop();},
+              icon: const Icon(Icons.arrow_back, size: 30),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
           ),
-          automaticallyImplyLeading: false, // this is true by default
+          automaticallyImplyLeading: false,
         ),
         backgroundColor: bgColor,
         body: messagesState.when(
           data: (data) {
-             chatController = ChatController(
+            chatController = ChatController(
               initialMessageList: loadMessages(data),
               scrollController: ScrollController(),
               currentUser: ChatUser(id: _user.toString(), name: 'Admin'),
@@ -183,9 +201,7 @@ class _ChatPageState extends ConsumerState<ChatPage>
             return ChatView(
               scrollToBottomButtonConfig: ScrollToBottomButtonConfig(
                 backgroundColor: Colors.black26,
-                border: Border.all(
-                  color:  Colors.grey,
-                ),
+                border: Border.all(color: Colors.grey),
                 icon: Icon(
                   Icons.keyboard_arrow_down_rounded,
                   color: Colors.white,
@@ -194,7 +210,7 @@ class _ChatPageState extends ConsumerState<ChatPage>
                 ),
               ),
               sendMessageConfig: SendMessageConfiguration(
-                sendButtonIcon: Icon(Icons.send,color: Colors.black54,),
+                sendButtonIcon: Icon(Icons.send, color: Colors.black54),
                 enableCameraImagePicker: false,
                 enableGalleryImagePicker: false,
                 allowRecordingVoice: false,
@@ -208,9 +224,7 @@ class _ChatPageState extends ConsumerState<ChatPage>
               ),
               chatController: chatController,
               onSendTap: onSendTap,
-              chatViewState:
-                  ChatViewState
-                      .hasMessages, // Add this state once data is available.
+              chatViewState: ChatViewState.hasMessages,
             );
           },
           error: (err, stack) {
@@ -224,23 +238,21 @@ class _ChatPageState extends ConsumerState<ChatPage>
     );
   }
 
-
-  void onSendTap(
-    String text,
-    ReplyMessage replyMessage,
-    MessageType messageType,
-  ) {
+  void onSendTap(String text, ReplyMessage replyMessage,
+      MessageType messageType) {
     final message = Message(
-      // id: '3',
       message: text,
       createdAt: DateTime.now(),
       sentBy: _user.toString(),
       replyMessage: replyMessage,
       messageType: messageType,
     );
-    // setState(() {
-      chatController.addMessage(message);
-    // });
+    var chat = ChatModel(id: 0,from_user_id: int.parse(_user.toString()),receiver_user_id: int.parse(widget.userInfo.toString()),message: text,messageId:_user=="1"? int.parse(widget.userInfo.toString()):int.parse(_user.toString()),createdAt: DateTime.now().toString(),updatedAt: DateTime.now().toString());
+    pusher.trigger(PusherEvent(
+        channelName: channelName,
+        eventName: 'MessageSent',
+        data: chat.toJson()));
+    chatController.addMessage(message);
     sendMessage(text);
   }
 
@@ -262,27 +274,24 @@ class _ChatPageState extends ConsumerState<ChatPage>
     }
   }
 
-
-
-  void _asyncMethod() async {
-    _secureStorage = ref.watch(secureStorageProvider);
+  Future<void> _asyncMethod() async {
     var userJson = await _secureStorage.read(key: 'user');
-
     final user = User.fromJson(jsonDecode(userJson!));
-    _user =user.id.toString();
+    _user = user.id.toString();
     _user2 = widget.userInfo.toString();
     from = _user;
-
   }
 
   List<Message> loadMessages(List<ChatModel> x) {
     return x.map((chat) {
       return Message(
-        sentBy: chat.from_user_id.toString() == from ? _user.toString() : _user2.toString(),
-        createdAt: DateTime.parse(chat.createdAt!),
-        id: chat.messageId.toString(),
-        message: chat.message ?? '',
-        messageType: MessageType.text
+          sentBy: chat.from_user_id.toString() == from
+              ? _user.toString()
+              : _user2.toString(),
+          createdAt: DateTime.parse(chat.createdAt!),
+          id: chat.messageId.toString(),
+          message: chat.message ?? '',
+          messageType: MessageType.text
       );
     }).toList();
   }

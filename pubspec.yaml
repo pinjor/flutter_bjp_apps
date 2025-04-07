@@ -51,6 +51,7 @@ dependencies:
   intl: ^0.20.2
   chatview: ^2.4.0
   flutter_local_notifications: ^17.0.0
+  pusher_channels_flutter: ^2.4.0
 
 
 dev_dependencies:
