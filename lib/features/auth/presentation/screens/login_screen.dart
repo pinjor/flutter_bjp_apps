@@ -1,9 +1,10 @@
 import 'package:bjp_app/config/app_colors.dart';
 import 'package:bjp_app/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:bjp_app/features/auth/presentation/screens/otp_verification_screen.dart';
+import 'package:bjp_app/features/auth/presentation/screens/enter_email_screen.dart';
 import 'package:bjp_app/features/auth/presentation/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -131,19 +132,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     children: [
                       TextButton(
                         onPressed: () {
-                          //! maybe this should be changed 
+                          //! maybe this should be changed
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => OtpVeificationScreen(),
+                              builder: (context) => EnterEmailScreen(),
                             ),
                           );
+                          // context.push(RoutePath.enterEmailScreenPath); // not working
                         },
-                        child: Text('পাসওয়ার্ড ভুলে গেছেন ?', 
-                        style: TextStyle(
-                          fontSize: 12
-                        ),
-                        
+                        child: Text(
+                          'পাসওয়ার্ড ভুলে গেছেন ?',
+                          style: TextStyle(fontSize: 12),
                         ),
                       ),
                     ],

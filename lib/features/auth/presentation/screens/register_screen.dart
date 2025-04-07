@@ -1,4 +1,5 @@
 import 'package:bjp_app/features/auth/domain/register_input_model.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -172,10 +173,10 @@ class _SignUpScreenState extends ConsumerState<RegisterScreen> {
                     hintText: 'এখানে লিখুন',
                   ),
                   keyboardType: TextInputType.emailAddress,
-                  validator: (String? value) {
-                    if (value?.trim().isEmpty ?? true) {
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
                       return 'ইমেইল দিন';
-                    } else if (!value!.contains('@')) {
+                    } else if (!EmailValidator.validate(value)) {
                       return 'ইমেইল সঠিক নয়';
                     }
                     return null;

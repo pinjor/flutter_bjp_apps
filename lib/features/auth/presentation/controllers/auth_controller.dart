@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:bjp_app/features/auth/data/auth_repository.dart';
 import 'package:bjp_app/features/auth/domain/login_response_model.dart';
+import 'package:bjp_app/features/auth/presentation/screens/otp_verification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -10,6 +11,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../core/utils/utils.dart';
 import '../../domain/auth_state.dart';
 import '../../domain/register_input_model.dart';
+import '../screens/reset_password_screen.dart';
 
 part 'auth_controller.g.dart';
 
@@ -86,7 +88,11 @@ class AuthController extends _$AuthController {
           status: AuthStatus.unauthenticated,
         );
         // Show the detailed error dialog:
-        await showErrorDialog(context, failure.message);
+        await showErrorDialog(
+          context,
+          errorMessage: failure.message,
+          title: 'নিবন্ধন ব্যর্থ',
+        );
       },
       (r) {
         state = AuthState(status: AuthStatus.unauthenticated);
@@ -94,7 +100,120 @@ class AuthController extends _$AuthController {
           context: context,
           message: 'সফলভাবে নিবন্ধিত হয়েছে, লগইন করুন',
         );
-        // Navigator.of(context).pop();
+        context.pop();
+      },
+    );
+  }
+
+  void sendOTPToEmail(BuildContext context, {required String email}) async {
+    state = AuthState(isLoading: true, status: AuthStatus.unauthenticated);
+
+    final result = await _authRepository.sendOTPToEmail(email: email);
+
+    result.fold(
+      (failure) async {
+        state = AuthState(
+          error: 'Send OTP error: ${failure.message}',
+          status: AuthStatus.unauthenticated,
+        );
+
+        lgr.i('OTP sent failed got response');
+
+        // Show the detailed error dialog:
+        await showErrorDialog(
+          context,
+          errorMessage: failure.message,
+          title: 'ওটিপি পাঠাতে ব্যর্থ হয়েছে',
+        );
+      },
+      (r) {
+        lgr.i('OTP sent successfully got response');
+        state = AuthState(status: AuthStatus.unauthenticated);
+        showMessageToUser(
+          context: context,
+          message: 'ওটিপি পাঠানো হয়েছে, আপনার ইমেইল চেক করুন',
+        );
+        // context.go(RoutePath.verifyOtpScreenPath);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OtpVeificationScreen(email: email),
+          ),
+        );
+      },
+    );
+  }
+
+  void verifyOTP(
+    BuildContext context, {
+    required String otp,
+    required String email,
+  }) async {
+    final result = await _authRepository.verifyOTP(otp: otp, email: email);
+
+    result.fold(
+      (failure) async {
+        state = AuthState(
+          error: 'Verify OTP error: ${failure.message}',
+          status: AuthStatus.unauthenticated,
+        );
+
+        // Show the detailed error dialog:
+        await showErrorDialog(
+          context,
+          errorMessage: failure.message,
+          title: 'ওটিপি যাচাই করতে ব্যর্থ হয়েছে',
+        );
+      },
+      (r) {
+        state = AuthState(status: AuthStatus.unauthenticated);
+        showMessageToUser(
+          context: context,
+          message: 'ওটিপি সফলভাবে যাচাই করা হয়েছে, পাসওয়ার্ড পরিবর্তন করুন',
+        );
+        // context.go(RoutePath.resetPasswordScreenPath);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ResetPasswordScreen(email: email, otp: otp),
+          ),
+        );
+      },
+    );
+  }
+
+  void resetPassword(
+    BuildContext context, {
+    required String password,
+    required String email,
+    required String otp,
+  }) async {
+    final result = await _authRepository.resetPassword(
+      email: email,
+      otp: otp,
+      password: password,
+    );
+
+    result.fold(
+      (failure) async {
+        state = AuthState(
+          error: 'Reset password error: ${failure.message}',
+          status: AuthStatus.unauthenticated,
+        );
+
+        // Show the detailed error dialog:
+        await showErrorDialog(
+          context,
+          errorMessage: failure.message,
+          title: 'পাসওয়ার্ড রিসেট করতে ব্যর্থ হয়েছে',
+        );
+      },
+      (r) {
+        state = AuthState(status: AuthStatus.unauthenticated);
+        showMessageToUser(
+          context: context,
+          message: 'পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে, লগইন করুন',
+        );
         context.pop();
       },
     );

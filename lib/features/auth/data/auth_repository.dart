@@ -134,6 +134,125 @@ class AuthRepository {
     }
   }
 
+  FutureEitherVoid sendOTPToEmail({required String email}) async {
+    try {
+      final uri = Uri(
+        scheme: 'http',
+        port: ApiConstants.port,
+        host: ApiConstants.baseUrl,
+        path: ApiConstants.forgotPassword,
+      );
+      lgr.i('Send OTP request sending to: ${uri.toString()}');
+      final response = await _dioClient.post(
+        uri.toString(),
+        data: {'email': email},
+      );
+      lgr.w('Send OTP response received: ${response.data}');
+      if (response.statusCode == 200) {
+        lgr.i('Send OTP success');
+        return right(null);
+      }
+
+      lgr.f('Send OTP failed');
+      return left(Failure('Send OTP failed'));
+    } on DioException catch (err) {
+      if (err.response != null && err.response!.statusCode == 422) {
+        // Extract error messages from the response data
+        final errorData = err.response!.data['errors'] as Map<String, dynamic>;
+        String errorMessage = '';
+        errorData.forEach((field, messages) {
+          errorMessage += '***${(messages as List).join(' ')}\n\n';
+        });
+
+        lgr.f('Register failed: $errorMessage');
+        return left(Failure(errorMessage.trim()));
+      } else if (err.response != null && err.response!.statusCode == 429) {
+        // Extract error messages from the response data
+        final errorData = err.response!.data['message'];
+        String errorMessage = '';
+        errorMessage += '***$errorData\n\n';
+        lgr.f('Register failed: $errorMessage');
+        return left(Failure(errorMessage.trim()));
+      } else {
+        // Handle other DioErrors or network issues
+        lgr.e('Register failed with error: ${err.message}');
+        return left(Failure('Register failed: ${err.message}'));
+      }
+    } catch (err) {
+      lgr.e('Send OTP failed with error: $err');
+      return left(Failure('Send OTP failed: $err'));
+    }
+  }
+
+  FutureEitherVoid verifyOTP({
+    required String otp,
+    required String email,
+  }) async {
+    try {
+      final uri = Uri(
+        scheme: 'http',
+        port: ApiConstants.port,
+        host: ApiConstants.baseUrl,
+        path: ApiConstants.verifyOtp,
+      );
+
+      lgr.i('Verify OTP request sending to: ${uri.toString()}');
+
+      final response = await _dioClient.post(
+        uri.toString(),
+        data: {'otp': otp, 'email': email},
+      );
+      lgr.i('Verify OTP response received: ${response.data}');
+      if (response.statusCode == 200) {
+        lgr.i('Verify OTP success');
+        return right(null);
+      } else {
+        lgr.f('Verify OTP failed');
+
+        return left(Failure('Verify OTP failed'));
+      }
+    } catch (err) {
+      lgr.e('Verify OTP failed with error: $err');
+      return left(Failure('Verify OTP failed: $err'));
+    }
+  }
+
+  FutureEitherVoid resetPassword({
+    required String email,
+    required String otp,
+    required String password,
+  }) async {
+    try {
+      final uri = Uri(
+        scheme: 'http',
+        port: ApiConstants.port,
+        host: ApiConstants.baseUrl,
+        path: ApiConstants.resetPassword,
+      );
+      lgr.i('Password reset request sending to: ${uri.toString()}');
+      final response = await _dioClient.post(
+        uri.toString(),
+
+        data: {
+          'email': email,
+          'otp': otp,
+          'password': password,
+          'password_confirmation': password,
+        },
+      );
+      lgr.i('Password reset response received: ${response.data}');
+      if (response.statusCode == 200) {
+        lgr.i('Password reset success');
+        return right(null);
+      }
+      lgr.w('Password reset failed');
+      return left(Failure('Password reset failed'));
+    } catch (err) {
+      lgr.e('Password reset failed with error: $err');
+      return left(Failure('Password reset failed: $err'));
+    }
+  }
+
   Future<void> logout() async {
     try {
       await _secureStorage.delete(key: 'token');

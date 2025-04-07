@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -153,6 +154,14 @@ class _EventTimeCardState extends State<EventTimeCard> {
       seconds.toString().padLeft(2, '0'),
     );
 
+    final eventImageUri =
+        Uri(
+          scheme: 'http',
+          host: ApiConstants.baseUrl,
+          port: ApiConstants.port,
+          path: '/storage/${widget.eventModel.image}',
+        ).toString();
+
     return Container(
       margin: const EdgeInsets.all(10),
       child: Column(
@@ -164,17 +173,12 @@ class _EventTimeCardState extends State<EventTimeCard> {
               Positioned.fill(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: Image.network(
-                    widget.eventModel.image!.isNotEmpty
-                        ? '${ApiConstants.baseUrl}/${widget.eventModel.image}'
-                        : 'https://via.placeholder.com/150',
+                  child: CachedNetworkImage(
+                    imageUrl:
+                        widget.eventModel.image!.isNotEmpty
+                            ? eventImageUri
+                            : Assets.imagesPictureOfMan,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Image.asset(
-                        Assets.imagesPictureOfMan,
-                        fit: BoxFit.cover,
-                      );
-                    },
                   ),
                 ),
               ),
@@ -229,9 +233,7 @@ class _EventTimeCardState extends State<EventTimeCard> {
                 _isDateFormattingInitialized
                     ? formatDateToBengali(_targetDate)
                     : 'তারিখ লোড হচ্ছে...',
-                style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                ),
+                style: const TextStyle(fontWeight: FontWeight.w500),
               ),
             ],
           ),
@@ -252,9 +254,7 @@ class _EventTimeCardState extends State<EventTimeCard> {
             ),
           const SizedBox(height: 5),
           // Address.
-          Text(
-            widget.eventModel.address!,
-          ),
+          Text(widget.eventModel.address!),
           const SizedBox(height: 14),
 
           // Separator.

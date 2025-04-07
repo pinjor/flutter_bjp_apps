@@ -1,22 +1,42 @@
-import 'package:bjp_app/features/auth/presentation/screens/new_password_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:otp_timer_button/otp_timer_button.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../../../config/app_colors.dart';
+import '../controllers/auth_controller.dart';
 
-class OtpVeificationScreen extends StatefulWidget {
-  const OtpVeificationScreen({super.key});
+class OtpVeificationScreen extends ConsumerStatefulWidget {
+  const OtpVeificationScreen({super.key, required this.email});
+
+  final String email;
 
   @override
-  State<OtpVeificationScreen> createState() => _OtpVeificationScreenState();
+  ConsumerState<OtpVeificationScreen> createState() => _OtpVeificationScreenState();
 }
 
-class _OtpVeificationScreenState extends State<OtpVeificationScreen> {
-  final TextEditingController _otpTEController = TextEditingController();
+class _OtpVeificationScreenState extends ConsumerState<OtpVeificationScreen> {
+  final TextEditingController _otpController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final OtpTimerButtonController controller = OtpTimerButtonController();
+
+  void _verifyOTP() {
+    if (_formKey.currentState!.validate()) {
+      FocusScope.of(context).unfocus();
+
+
+      ref.read(authControllerProvider.notifier).verifyOTP(
+        context,
+        email: widget.email,
+        otp: _otpController.text.trim(),
+      );
+
+
+      // Navigation handled by GoRouter redirect method automatically
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,18 +87,11 @@ class _OtpVeificationScreenState extends State<OtpVeificationScreen> {
                   keyboardType: TextInputType.number,
                   //enableActiveFill: true,
                   appContext: context,
-                  controller: _otpTEController,
+                  controller: _otpController,
                 ),
                 SizedBox(height: 16.0),
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => NewPasswordScreen(),
-                      ),
-                    );
-                  },
+                  onPressed: _verifyOTP,
                   child: Text('পরবর্তী', style: TextStyle(color: Colors.white)),
                 ),
                 SizedBox(height: 24.0),
