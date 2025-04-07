@@ -2,6 +2,7 @@ import 'package:bjp_app/config/route_refresh.dart';
 import 'package:bjp_app/core/constants/route_path.dart';
 import 'package:bjp_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:bjp_app/features/auth/presentation/screens/register_screen.dart';
+import 'package:bjp_app/features/chat/presentation/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -79,6 +80,13 @@ GoRouter appRouter(Ref ref) {
         path: RoutePath.homeScreenPath,
         pageBuilder:
             (context, state) => MaterialPage(child: const HomeScreen()),
+      ),
+
+      GoRoute(
+        path: '/chat/:userId',
+        builder: (context, state) {
+          return ChatPage(userInfo: null, name: true);
+        },
       ),
     ],
   );

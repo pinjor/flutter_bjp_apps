@@ -10,5 +10,7 @@ class ApiConstants {
   static const String getAllMembers = '/api/members';
   static const String getAllAnnouncements = '/api/announcements';
   static const String updateProfile = '/api/profile/update';
-  
+  static const String getAllMessages = '/api/messages';
+  static const String sendMessages = '/api/send-message';
+
 }

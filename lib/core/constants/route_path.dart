@@ -8,5 +8,6 @@ class RoutePath {
   static const String homeScreenPath = '/home-screen';
   static const String memberScreenPath = '/member-screen';
   static const String newPasswordScreenPath = '/new-password-screen';
+  static const String chatScreenPath = '/chat/:userId';
 
 }

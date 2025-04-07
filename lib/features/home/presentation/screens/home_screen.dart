@@ -3,6 +3,7 @@ import 'package:bjp_app/core/utils/utils.dart';
 import 'package:bjp_app/features/announcement/presentation/screens/announcement_screen.dart';
 import 'package:bjp_app/features/auth/domain/auth_state.dart';
 import 'package:bjp_app/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:bjp_app/features/chat/presentation/screens/chat_screen.dart';
 import 'package:bjp_app/features/member/presentation/screens/member_screen.dart';
 import 'package:bjp_app/features/profile/presentation/screens/profile_editing_screen.dart';
 import 'package:bjp_app/features/events/presentation/screens/event_scedule_screen.dart';
@@ -48,11 +49,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           MemberScreen(),
           EventSceduleScreen(),
           ProfileEditingScreen(),
+
         ]
         : [
           _buildDashboard(authState, eventListState: events),
           AnnouncementScreen(),
           ProfileEditingScreen(),
+          ChatPage(userInfo: '1', name: "Admin")
         ];
   }
 
@@ -93,6 +96,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             break;
           case 2:
             _appBarTitle = 'প্রোফাইল পরিবর্তন';
+            break;
+          case 3:
+            _appBarTitle = 'চ্যাট';
             break;
         }
       }
@@ -220,6 +226,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 selected: _selectedIndex == 2,
                 onTap: () {
                   _onItemTapped(2);
+                  Navigator.pop(context);
+                },
+              ), ListTile(
+                leading: Icon(Icons.chat),
+                title: Text('চ্যাট'),
+                selected: _selectedIndex == 3,
+                onTap: () {
+                  _onItemTapped(3);
                   Navigator.pop(context);
                 },
               ),
