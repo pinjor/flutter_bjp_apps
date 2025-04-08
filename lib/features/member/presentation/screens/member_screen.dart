@@ -145,221 +145,197 @@ class _MemberScreenState extends ConsumerState<MemberScreen> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            SizedBox(height: 20),
-        
-            // User ID TextField
-            TextField(
-              controller: _userIdController,
-              decoration: InputDecoration(
-                labelText: 'ব্যবহারকারী আইডি',
-                border: OutlineInputBorder(),
+        child: Expanded(
+          child: Column(
+            children: [
+              SizedBox(height: 20),
+          
+              // User ID TextField
+              TextField(
+                controller: _userIdController,
+                decoration: InputDecoration(
+                  labelText: 'ব্যবহারকারী আইডি',
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
-            SizedBox(height: 10),
-        
-            // Mobile Number TextField
-            TextField(
-              controller: _mobileController,
-              decoration: InputDecoration(
-                labelText: 'মোবাইল নম্বার',
-                border: OutlineInputBorder(),
+              SizedBox(height: 10),
+          
+              // Mobile Number TextField
+              TextField(
+                controller: _mobileController,
+                decoration: InputDecoration(
+                  labelText: 'মোবাইল নম্বার',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.phone,
               ),
-              keyboardType: TextInputType.phone,
-            ),
-            SizedBox(height: 10),
-        
-            // Name TextField
-            TextField(
-              controller: _nameController,
-              decoration: InputDecoration(
-                labelText: 'নাম',
-                border: OutlineInputBorder(),
+              SizedBox(height: 10),
+          
+              // Name TextField
+              TextField(
+                controller: _nameController,
+                decoration: InputDecoration(
+                  labelText: 'নাম',
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
-            SizedBox(height: 10),
-        
-            // Division Dropdown
-            DropdownButtonFormField<String>(
-              value: _selectedDivisionId,
-              decoration: InputDecoration(
-                labelText: 'বিভাগ',
-                border: OutlineInputBorder(),
+              SizedBox(height: 10),
+          
+              // Division Dropdown
+              DropdownButtonFormField<String>(
+                value: _selectedDivisionId,
+                decoration: InputDecoration(
+                  labelText: 'বিভাগ',
+                  border: OutlineInputBorder(),
+                ),
+                items:
+                    divisionMap.entries.map((entry) {
+                      return DropdownMenuItem(
+                        value: entry.value, // Store the division ID
+                        child: Text(entry.key), // Display Bangla division name
+                      );
+                    }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedDivisionId = value;
+                  });
+                },
               ),
-              items:
-                  divisionMap.entries.map((entry) {
-                    return DropdownMenuItem(
-                      value: entry.value, // Store the division ID
-                      child: Text(entry.key), // Display Bangla division name
-                    );
-                  }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  _selectedDivisionId = value;
-                });
-              },
-            ),
-            SizedBox(height: 20),
-        
-            DropdownButtonFormField<String>(
-              value: _selectedDistrictId,
-              decoration: InputDecoration(
-                hintText: 'জেলা*',
-                labelText: 'জেলা',
-                border: OutlineInputBorder(),
+              SizedBox(height: 20),
+          
+              DropdownButtonFormField<String>(
+                value: _selectedDistrictId,
+                decoration: InputDecoration(
+                  hintText: 'জেলা*',
+                  labelText: 'জেলা',
+                  border: OutlineInputBorder(),
+                ),
+                // If no division is selected, disable the dropdown.
+                onChanged:
+                    _selectedDivisionId == null
+                        ? null
+                        : (value) {
+                          setState(() {
+                            _selectedDistrictId = value;
+                          });
+                        },
+                items:
+                    districtsForSelectedDivision.map((district) {
+                      return DropdownMenuItem(
+                        value: district.id, // district ID is stored
+                        child: Text(district.name), // district name is displayed
+                      );
+                    }).toList(),
+                validator: (value) {
+                  if (_selectedDivisionId == null) {
+                    return 'প্রথমে বিভাগ নির্বাচন করুন';
+                  }
+                  if (value == null) {
+                    return 'জেলা দিন';
+                  }
+                  return null;
+                },
               ),
-              // If no division is selected, disable the dropdown.
-              onChanged:
-                  _selectedDivisionId == null
-                      ? null
-                      : (value) {
-                        setState(() {
-                          _selectedDistrictId = value;
-                        });
-                      },
-              items:
-                  districtsForSelectedDivision.map((district) {
-                    return DropdownMenuItem(
-                      value: district.id, // district ID is stored
-                      child: Text(district.name), // district name is displayed
-                    );
-                  }).toList(),
-              validator: (value) {
-                if (_selectedDivisionId == null) {
-                  return 'প্রথমে বিভাগ নির্বাচন করুন';
-                }
-                if (value == null) {
-                  return 'জেলা দিন';
-                }
-                return null;
-              },
-            ),
-        
-            SizedBox(height: 20.0),
-            DropdownButtonFormField<String>(
-              value: _selectedUpazilaId,
-              decoration: InputDecoration(
-                hintText: 'উপজেলা*',
-                labelText: 'উপজেলা',
-                border: OutlineInputBorder(),
+          
+              SizedBox(height: 20.0),
+              DropdownButtonFormField<String>(
+                value: _selectedUpazilaId,
+                decoration: InputDecoration(
+                  hintText: 'উপজেলা*',
+                  labelText: 'উপজেলা',
+                  border: OutlineInputBorder(),
+                ),
+                // If no division is selected, disable the dropdown.
+                onChanged:
+                    _selectedDivisionId == null
+                        ? null
+                        : (value) {
+                          setState(() {
+                            _selectedUpazilaId = value;
+                          });
+                        },
+                items:
+                    subDistrictsForSelectedDistrict.map((district) {
+                      return DropdownMenuItem(
+                        value: district.id, // district ID is stored
+                        child: Text(district.name), // district name is displayed
+                      );
+                    }).toList(),
+                validator: (value) {
+                  if (_selectedDistrictId == null) {
+                    return 'প্রথমে জেলা নির্বাচন করুন';
+                  }
+                  if (value == null) {
+                    return 'উপজেলা দিন';
+                  }
+                  return null;
+                },
               ),
-              // If no division is selected, disable the dropdown.
-              onChanged:
-                  _selectedDivisionId == null
-                      ? null
-                      : (value) {
-                        setState(() {
-                          _selectedUpazilaId = value;
-                        });
-                      },
-              items:
-                  subDistrictsForSelectedDistrict.map((district) {
-                    return DropdownMenuItem(
-                      value: district.id, // district ID is stored
-                      child: Text(district.name), // district name is displayed
-                    );
-                  }).toList(),
-              validator: (value) {
-                if (_selectedDistrictId == null) {
-                  return 'প্রথমে জেলা নির্বাচন করুন';
-                }
-                if (value == null) {
-                  return 'উপজেলা দিন';
-                }
-                return null;
-              },
-            ),
-            SizedBox(height: 20.0),
-        
-            // Search Button
-            ElevatedButton(
-              onPressed: _findMember,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF00B1B0),
-                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+              SizedBox(height: 20.0),
+          
+              // Search Button
+              ElevatedButton(
+                onPressed: _findMember,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF00B1B0),
+                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                ),
+                child: Text("অনুসন্ধান করুন", style: TextStyle(fontSize: 16)),
               ),
-              child: Text("অনুসন্ধান করুন", style: TextStyle(fontSize: 16)),
-            ),
-            SizedBox(height: 20),
-        
-            // Results Table Header
-            Text(
-              "তালিকা",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10),
-        
-            // List of Results
-            Expanded(
-              child: membersListState.when(
-                data: (members) {
-                  lgr.i('member length: ${members.length}');
-                  return members.isEmpty
-                      ? Center(
-                        child: Text(
-                          "কোন সদস্য পাওয়া যায়নি",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      )
-                      : ListView.builder(
-                        itemCount: members.length,
-                        itemBuilder: (context, index) {
-                          final member = members[index];
-                          return Card(
-                            margin: EdgeInsets.symmetric(vertical: 8),
-                            child: CustomListTile(
-                              height: 130,
-                              title: Text(
-                                member.name!,
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              subTitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // phone number
-                                  Text(
-                                    "মোবাইল: ${member.phoneNumber}",
-                                    style: TextStyle(fontSize: 14),
-                                  ),
-                                  // division
-                                  Text(
-                                    "বিভাগ: ${_getDivisionName(member.divisionId!)}",
-                                    style: TextStyle(fontSize: 14),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>  ChatPage(userInfo: member.userId, name: member.name,),
-                                        ),
-                                      );
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Color(0xFF00B1B0),
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 8,
-                                        vertical: 4,
-                                      ),
-                                    ),
-                                    child: Text(
-                                      "চ্যাট",
-                                      style: TextStyle(fontSize: 12),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              trailing: SizedBox(
-                                width: 120,
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
+              SizedBox(height: 20),
+          
+              // Results Table Header
+              Text(
+                "তালিকা",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 10),
+          
+              // List of Results
+              Expanded(
+                child: membersListState.when(
+                  data: (members) {
+                    lgr.i('member length: ${members.length}');
+                    return members.isEmpty
+                        ? Center(
+                          child: Text(
+                            "কোন সদস্য পাওয়া যায়নি",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        )
+                        : ListView.builder(
+                          itemCount: members.length,
+                          itemBuilder: (context, index) {
+                            final member = members[index];
+                            return Card(
+                              margin: EdgeInsets.symmetric(vertical: 8),
+                              child: CustomListTile(
+                                height: 130,
+                                title: Text(
+                                  member.name!,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                subTitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    ElevatedButton(
+                                    // phone number
+                                    Text(
+                                      "মোবাইল: ${member.phoneNumber}",
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                    // division
+                                    Text(
+                                      "বিভাগ: ${_getDivisionName(member.divisionId!)}",
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                    IconButton(
+                                      icon: Icon(Icons.chat_rounded,color: Colors.white,),
                                       onPressed: () {
-                                        _copyToClipboard(member.phoneNumber!);
-                        
-                                        _openDialer(member.phoneNumber!);
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>  ChatPage(userInfo: member.userId, name: member.name,),
+                                          ),
+                                        );
                                       },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Color(0xFF00B1B0),
@@ -368,51 +344,78 @@ class _MemberScreenState extends ConsumerState<MemberScreen> {
                                           vertical: 4,
                                         ),
                                       ),
-                                      child: Text(
-                                        "নম্বর কপি করুন",
-                                        style: TextStyle(fontSize: 12),
-                                      ),
+                                      // child: Text(
+                                      //   "চ্যাট",
+                                      //   style: TextStyle(fontSize: 12),
+                                      // ),
                                     ),
-                                    SizedBox(height: 4),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        _showDetailsDialog(member);
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Color(0xFF00B1B0),
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 8,
-                                          vertical: 4,
-                                        ),
-                                      ),
-                                      child: Text(
-                                        "বিস্তারিত",
-                                        style: TextStyle(fontSize: 12),
-                                      ),
-                                    ),
-
                                   ],
                                 ),
+                                trailing: SizedBox(
+                                  width: 120,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          _copyToClipboard(member.phoneNumber!);
+                          
+                                          _openDialer(member.phoneNumber!);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Color(0xFF00B1B0),
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                            vertical: 4,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          "নম্বর কপি করুন",
+                                          style: TextStyle(fontSize: 12),
+                                        ),
+                                      ),
+                                      SizedBox(height: 4),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          _showDetailsDialog(member);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Color(0xFF00B1B0),
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                            vertical: 4,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          "বিস্তারিত",
+                                          style: TextStyle(fontSize: 12),
+                                        ),
+                                      ),
+          
+                                    ],
+                                  ),
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                      );
-                },
-                error: (err, st) {
-                  return Center(
-                    child: Text(
-                      "তথ্য পাওয়া যায়নি",
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  );
-                },
-                loading: () {
-                  return Center(child: CircularProgressIndicator());
-                },
+                            );
+                          },
+                        );
+                  },
+                  error: (err, st) {
+                    return Center(
+                      child: Text(
+                        "তথ্য পাওয়া যায়নি",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    );
+                  },
+                  loading: () {
+                    return Center(child: CircularProgressIndicator());
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
