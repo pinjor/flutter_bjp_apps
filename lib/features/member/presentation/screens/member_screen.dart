@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../../../core/database/district.dart';
 import '../../../../core/database/district_sub_district_map.dart';
 import '../../../../core/database/division_district_map_data.dart';

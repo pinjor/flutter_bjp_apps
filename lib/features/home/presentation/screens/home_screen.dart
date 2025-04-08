@@ -488,7 +488,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ],
           ),
 
-          SizedBox(height: 20),
+          SizedBox(height: 3),
 
           Stack(
             children: [
@@ -692,7 +692,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               loading: () => CustomLoader(),
             ),
           ],
-          SizedBox(height: 20),
+          SizedBox(height: 5),
           Container(
             color: Colors.black,
             child: Column(

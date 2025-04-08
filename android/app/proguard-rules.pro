@@ -1,14 +1,32 @@
-# Please add these rules to your existing keep rules in order to
 
-# This is generated automatically by the Android Gradle plugin.
--dontwarn android.os.ServiceManager*
--dontwarn com.bun.miitmdid.core.MdidSdkHelper*
--dontwarn com.bun.miitmdid.interfaces.IIdentifierListener*
--dontwarn com.bun.miitmdid.interfaces.IdSupplier*
--dontwarn com.google.firebase.iid.FirebaseInstanceId*
--dontwarn com.google.firebase.iid.InstanceIdResult*
--dontwarn com.huawei.hms.ads.identifier.AdvertisingIdClient$Info*
--dontwarn com.huawei.hms.ads.identifier.AdvertisingIdClient*
--dontwarn com.tencent.android.tpush.otherpush.OtherPushClient*
-
--dontwarn com.google.mlkit.vision.text.chinese.** -assumenosideeffects class com.google.mlkit.vision.text.chinese.** { *; }
+-dontwarn androidx.window.extensions.WindowExtensions
+-dontwarn androidx.window.extensions.WindowExtensionsProvider
+-dontwarn androidx.window.extensions.area.ExtensionWindowAreaPresentation
+-dontwarn androidx.window.extensions.layout.DisplayFeature
+-dontwarn androidx.window.extensions.layout.FoldingFeature
+-dontwarn androidx.window.extensions.layout.WindowLayoutComponent
+-dontwarn androidx.window.extensions.layout.WindowLayoutInfo
+-dontwarn androidx.window.sidecar.SidecarDeviceState
+-dontwarn androidx.window.sidecar.SidecarDisplayFeature
+-dontwarn androidx.window.sidecar.SidecarInterface$SidecarCallback
+-dontwarn androidx.window.sidecar.SidecarInterface
+-dontwarn androidx.window.sidecar.SidecarProvider
+-dontwarn androidx.window.sidecar.SidecarWindowLayoutInfo
+-dontwarn proguard.annotation.Keep
+-dontwarn proguard.annotation.KeepClassMembers
+-keep class io.flutter.app.** { *; }
+-keep class io.flutter.plugin.* { *; }
+-keep class io.flutter.util.* { *; }
+-keep class io.flutter.view.* { *; }
+-keep class io.flutter.* { *; }
+-keep class io.flutter.plugins.* { *; }
+-keep class com.google.firebase.* { *; }
+-dontwarn io.flutter.embedding.*
+-ignorewarnings
+-keepattributes *Annotation*
+-dontwarn com.razorpay.**
+-keep class com.razorpay.** {*;}
+-optimizations !method/inlining/
+-keepclasseswithmembers class * {
+  public void onPayment*(...);
+}
