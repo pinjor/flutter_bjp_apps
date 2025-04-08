@@ -49,6 +49,9 @@ dependencies:
   logger: ^2.5.0
   fpdart: ^1.1.1
   intl: ^0.20.2
+  chatview: ^2.4.0
+  flutter_local_notifications: ^17.0.0
+  pusher_channels_flutter: ^2.4.0
   email_validator: ^3.0.0
   flutter_pdfview: ^1.4.0
   path_provider: ^2.1.5
