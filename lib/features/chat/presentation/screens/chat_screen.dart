@@ -98,7 +98,7 @@ class _ChatPageState extends ConsumerState<ChatPage>
 
 
       // Generate channel name based on chat ID
-      channelName = 'presence-${_user=="1"? widget.userInfo:_user}';
+      channelName = 'chat.${_user=="1"? widget.userInfo:_user}';
 
       // Subscribe to channel
       await pusher.subscribe(channelName: channelName);
@@ -210,16 +210,18 @@ class _ChatPageState extends ConsumerState<ChatPage>
                 ),
               ),
               sendMessageConfig: SendMessageConfiguration(
+                textFieldBackgroundColor: Color(0xFF00B1B0),
                 sendButtonIcon: Icon(Icons.send, color: Colors.black54),
                 enableCameraImagePicker: false,
                 enableGalleryImagePicker: false,
                 allowRecordingVoice: false,
                 textFieldConfig: TextFieldConfiguration(
+                  hintStyle: TextStyle(color: Colors.white),
                   onMessageTyping: (status) {
                     debugPrint(status.toString());
                   },
                   compositionThresholdTime: const Duration(seconds: 1),
-                  textStyle: TextStyle(color: Colors.black54),
+                  textStyle: TextStyle(color: Colors.white),
                 ),
               ),
               chatController: chatController,
@@ -247,11 +249,7 @@ class _ChatPageState extends ConsumerState<ChatPage>
       replyMessage: replyMessage,
       messageType: messageType,
     );
-    var chat = ChatModel(id: 0,from_user_id: int.parse(_user.toString()),receiver_user_id: int.parse(widget.userInfo.toString()),message: text,messageId:_user=="1"? int.parse(widget.userInfo.toString()):int.parse(_user.toString()),createdAt: DateTime.now().toString(),updatedAt: DateTime.now().toString());
-    pusher.trigger(PusherEvent(
-        channelName: channelName,
-        eventName: 'MessageSent',
-        data: chat.toJson()));
+
     chatController.addMessage(message);
     sendMessage(text);
   }
