@@ -14,6 +14,9 @@ class ApiConstants {
   static const String getAllAnnouncements = '/api/announcements';
   static const String getUserProfile = '/api/get-profile';
   static const String updateProfile = '/api/profile/update';
+  static const String getAllMessages = '/api/messages';
+  static const String sendMessages = '/api/send-message';
+
   static const String getRecentDiscussion = '/api/recent-discussions';
   static const String getAllPhotos = '/api/albums/photos/1';
   static const String getAllVidoes = '/api/albums/videos/2';

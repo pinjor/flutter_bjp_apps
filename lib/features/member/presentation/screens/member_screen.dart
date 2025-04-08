@@ -1,3 +1,4 @@
+import 'package:bjp_app/features/chat/presentation/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -326,6 +327,26 @@ class _MemberScreenState extends ConsumerState<MemberScreen> {
                                     "বিভাগ: ${_getDivisionName(member.divisionId!)}",
                                     style: TextStyle(fontSize: 14),
                                   ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>  ChatPage(userInfo: member.userId, name: member.name,),
+                                        ),
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Color(0xFF00B1B0),
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 4,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      "চ্যাট",
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                  ),
                                 ],
                               ),
                               trailing: SizedBox(
@@ -369,6 +390,7 @@ class _MemberScreenState extends ConsumerState<MemberScreen> {
                                         style: TextStyle(fontSize: 12),
                                       ),
                                     ),
+
                                   ],
                                 ),
                               ),

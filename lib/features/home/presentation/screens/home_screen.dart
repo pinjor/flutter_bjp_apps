@@ -4,6 +4,7 @@ import 'package:bjp_app/core/utils/utils.dart';
 import 'package:bjp_app/features/announcement/presentation/screens/announcement_screen.dart';
 import 'package:bjp_app/features/auth/domain/auth_state.dart';
 import 'package:bjp_app/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:bjp_app/features/chat/presentation/screens/chat_screen.dart';
 import 'package:bjp_app/features/events/presentation/screens/event_scedule_screen.dart';
 import 'package:bjp_app/features/events/presentation/widgets/event_time_card.dart';
 import 'package:bjp_app/features/home/domain/recent_announcement.dart';
@@ -87,6 +88,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           PhotoAlbumScreen(),
           VideoAlbumScreen(),
           ProfileEditingScreen(),
+          ChatPage(userInfo: '1', name: "Admin")
         ];
   }
 
@@ -133,6 +135,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             break;
           case 5:
             _appBarTitle = 'প্রোফাইল পরিবর্তন';
+            break;
+          case 6:
+            _appBarTitle = 'চ্যাট';
             break;
         }
       }
@@ -394,6 +399,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 selected: _selectedIndex == 5,
                 onTap: () {
                   _onItemTapped(5);
+                  Navigator.pop(context);
+                },
+              ), ListTile(
+                leading: Icon(Icons.chat),
+                title: Text('চ্যাট'),
+                selected: _selectedIndex == 6,
+                onTap: () {
+                  _onItemTapped(6);
                   Navigator.pop(context);
                 },
               ),
