@@ -172,7 +172,7 @@ class _ChatPageState extends ConsumerState<ChatPage>
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('চ্যাট'),
+          //title: const Text('চ্যাট'),
           leading: Visibility(
             visible: Navigator.canPop(context),
             child: IconButton(
