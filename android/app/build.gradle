@@ -43,7 +43,8 @@ android {
     dependencies {
 
          coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.2.3")
-
+        implementation 'org.slf4j:slf4j-api:1.7.32'
+        implementation 'org.slf4j:slf4j-log4j12:1.7.32'
     }
 }
 
