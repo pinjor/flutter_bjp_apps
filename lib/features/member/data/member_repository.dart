@@ -44,7 +44,7 @@ class MemberRepository {
         port: ApiConstants.port,
         host: ApiConstants.baseUrl,
         path: ApiConstants.getAllMembers,
-        queryParameters: {'id': id},
+        queryParameters: {'user_id': id},
       );
 
       final token = await _secureStorage.read(key: 'token');
