@@ -102,4 +102,22 @@ final Map<String, List<SubDistrict>> districtSubdistrictMap = {
       name: 'গাজীপুর সদর',
     ),
   ],
+
+//কিশোরগঞ্জ
+
+  districtMap['কিশোরগঞ্জ']!: [
+    SubDistrict(id: '6c531adc-d7d2-498f-95e6-81dd77d2154f', name: 'অষ্টগ্রাম'),
+    SubDistrict(id: '384220f6-dff5-43ba-8e6a-983a81dda01e', name: 'বাজিতপুর'),
+    SubDistrict(id: '6990fb59-c6af-4c2c-999b-072493c77631', name: 'ভৈরব'),
+    SubDistrict(id: 'f04b738d-f085-44ea-bdb5-7aec706cff81', name: 'ইতনা'),
+    SubDistrict(id: '35418fba-0a1f-4608-b780-c5cf5dcf66e4', name: 'কটিয়াদি'),
+    SubDistrict(id: 'c999b66e-d458-46d4-8ce2-d6486a594785', name: 'তাড়াইল'),
+    SubDistrict(id: 'd325897b-2007-4b2a-8ed7-4880c1998cc3', name: 'হোসেনপুর'),
+    SubDistrict(id: '0d7c46d0-863c-4ec1-9928-bd3cb7db690b', name: 'পাকুন্দিয়া'),
+    SubDistrict(id: '35f0a3e9-5df1-409d-895d-da7923fd8868', name: 'কুলিয়ারচর'),
+    SubDistrict(id: 'c1f1ab90-ea5f-4b58-842a-184906bd005f', name: 'কিশোরগঞ্জ সদর'),
+    SubDistrict(id: '94eaf049-5f0b-43cb-a324-fd3abcb4887c', name: 'করিমগঞ্জ'),
+    SubDistrict(id: 'e4a592a8-4673-4b25-b212-d6ea694bf59e', name: 'মিঠামোইন'),
+    SubDistrict(id: 'a22a43ef-97c5-4068-a733-230ffb523be2', name: 'নিকলি'),
+  ],
 };
