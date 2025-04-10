@@ -137,7 +137,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             _appBarTitle = 'প্রোফাইল পরিবর্তন';
             break;
           case 6:
-            _appBarTitle = 'চ্যাট';
+            _appBarTitle = 'চ্যাট উইথ আন্দালিব';
             break;
         }
       }
@@ -404,7 +404,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
               ListTile(
                 leading: Icon(Icons.chat),
-                title: Text('চ্যাট'),
+                title: Text('চ্যাট উইথ আন্দালিব'),
                 selected: _selectedIndex == 6,
                 onTap: () {
                   _onItemTapped(6);
