@@ -1,15 +1,12 @@
 import 'package:bjp_app/features/chat/data/chat_repository.dart';
 import 'package:bjp_app/features/chat/presentation/domain/chat_model.dart';
-import 'package:bjp_app/features/events/domain/event_model.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/utils/utils.dart';
-import '../../data/chat_repository.dart';
-
 
 part 'chat_controller.g.dart';
+
 @riverpod
 class ChatController extends _$ChatController {
   late final ChatRepository _chatRepository;
@@ -38,19 +35,17 @@ class ChatController extends _$ChatController {
     );
   }
 
-  void sendMessage(BuildContext context, String receiverId, String text)  async {
-
-    final result = await _chatRepository.sendMessage(receiverId,text);
+  void sendMessage(BuildContext context, String receiverId, String text) async {
+    final result = await _chatRepository.sendMessage(receiverId, text);
 
     // state = AsyncValue.data([]);
 
     result.fold(
-          (l) {
+      (l) {
         // state = AsyncValue.error();
         showMessageToUser(context: context, message: l.message);
       },
-          (r) {
-
+      (r) {
         // showMessageToUser(context: context, message: 'চ্যাট পাঠানো হয়েছে');
       },
     );

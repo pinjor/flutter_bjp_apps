@@ -1,9 +1,9 @@
+import 'package:bjp_app/app.dart';
 import 'package:flutter/material.dart';
 
 import '../../config/app_colors.dart';
-import '../constants/route_path.dart';
 import 'app_icon_widget.dart';
-import 'package:bjp_app/app.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -23,17 +23,15 @@ class _SplashScreenState extends State<SplashScreen> {
   //   Navigator.pushReplacementNamed(context, RoutePath.loginPath);
   // }
 
-
   Future<void> _moveToNextScreen() async {
     await Future.delayed(const Duration(seconds: 7));
     if (mounted) {
       // Navigate to main app structure
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => MyApp()),
-      );
+      Navigator.of(
+        context,
+      ).pushReplacement(MaterialPageRoute(builder: (_) => MyApp()));
     }
   }
-
 
   @override
   Widget build(BuildContext context) {

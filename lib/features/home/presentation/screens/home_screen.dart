@@ -146,7 +146,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   void _logoutUser() {
     ref.read(authControllerProvider.notifier).logout();
-    Navigator.pop(context);
+    if (Navigator.canPop(context)) {
+      Navigator.pop(context);
+    } else {
+      // Navigate to a specific screen if there are no pages left in the stack
+      Navigator.pushReplacementNamed(context, '/login');
+      Navigator.of(context).pop();
+      //Navigator.pop(context);
+    }
   }
 
   void _showAnnouncementDialog(RecentAnnouncement announcement) {
