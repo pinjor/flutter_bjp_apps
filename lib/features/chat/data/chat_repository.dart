@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:bjp_app/features/chat/presentation/domain/chat_list_model.dart';
 import 'package:bjp_app/features/chat/presentation/domain/chat_model.dart';
 import 'package:bjp_app/features/events/domain/event_model.dart';
 import 'package:dio/dio.dart';
@@ -62,6 +63,54 @@ class ChatRepository {
         // Map the list to ChatModel objects
         final chatModelList = chatList
             .map((event) => ChatModel.fromMap(event as Map<String, dynamic>))
+            .toList();
+        lgr.i('got chatModelList: $chatModelList');
+        return right(chatModelList);
+      } else {
+        return left(Failure('চ্যাট বার্তা গুলি পাওয়া যায়নি'));
+      }
+    } on DioException catch (err) {
+      if (err.response != null && err.response!.statusCode == 401) {
+        lgr.w(
+          '${err.response!.statusCode} ${err.response!.statusMessage}\n${err.response!.data}',
+        );
+      }
+      return left(Failure('You are not authorized to view this content'));
+    } catch (err) {
+      lgr.e('Error fetching chat messages: $err');
+      return left(Failure('চ্যাট বার্তা গুলি পাওয়া যায়নি'));
+    }
+  }
+  FutureEither<List<ChatList>> fetchChatList() async {
+    try {
+      final uri = Uri(
+        scheme: 'http',
+        port: ApiConstants.port,
+        host: ApiConstants.baseUrl,
+        path: ApiConstants.getAllChats,
+      );
+      lgr.i('fetching chat messages from: ${uri.toString()}');
+      final token = await _secureStorage.read(key: 'token');
+      lgr.e('token: $token');
+      lgr.i('sending request to fetch chat messages to ${uri.toString()}');
+      final response = await _dioClient.get(
+        uri.toString(),
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+      lgr.i('got response: $response');
+
+      if (response.statusCode == 200) {
+        lgr.i('statusCode: 200 : ${response.data}');
+        // Access the "data" key, which contains the list of events
+        final List<dynamic> chatList = response.data['data'];
+        // Map the list to ChatModel objects
+        final chatModelList = chatList
+            .map((event) => ChatList.fromJson(event as Map<String, dynamic>))
             .toList();
         lgr.i('got chatModelList: $chatModelList');
         return right(chatModelList);

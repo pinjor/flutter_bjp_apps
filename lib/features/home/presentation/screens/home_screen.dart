@@ -4,6 +4,7 @@ import 'package:bjp_app/core/utils/utils.dart';
 import 'package:bjp_app/features/announcement/presentation/screens/announcement_screen.dart';
 import 'package:bjp_app/features/auth/domain/auth_state.dart';
 import 'package:bjp_app/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:bjp_app/features/chat/presentation/screens/chat_list_screen.dart';
 import 'package:bjp_app/features/chat/presentation/screens/chat_screen.dart';
 import 'package:bjp_app/features/events/presentation/screens/event_scedule_screen.dart';
 import 'package:bjp_app/features/events/presentation/widgets/event_time_card.dart';
@@ -76,6 +77,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           CreateAnnouncementScreen(),
           MemberScreen(),
           EventSceduleScreen(),
+          ChatListScreen()
+
         ]
         : [
           _buildDashboard(
@@ -88,7 +91,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           PhotoAlbumScreen(),
           VideoAlbumScreen(),
           ProfileEditingScreen(),
-          ChatPage(userInfo: '1', name: "Admin")
+          ChatPage(userInfo: '1', name: "Admin"),
         ];
   }
 
@@ -113,6 +116,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             break;
           case 4:
             _appBarTitle = 'অনুষ্ঠানের সময়';
+            break;
+          case 5:
+            _appBarTitle = 'চ্যাট তালিকা';
             break;
         }
       } else {
@@ -341,8 +347,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 },
               ),
               ListTile(
-                leading: Icon(Icons.edit),
-                title: Text('প্রোফাইল পরিবর্তন'),
+                leading: Icon(Icons.chat),
+                title: Text('চ্যাট তালিকা'),
                 selected: _selectedIndex == 5,
                 onTap: () {
                   _onItemTapped(5);
@@ -401,7 +407,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   _onItemTapped(5);
                   Navigator.pop(context);
                 },
-              ), ListTile(
+              ),
+              ListTile(
                 leading: Icon(Icons.chat),
                 title: Text('চ্যাট'),
                 selected: _selectedIndex == 6,

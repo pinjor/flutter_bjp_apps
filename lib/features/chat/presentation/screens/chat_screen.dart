@@ -58,7 +58,14 @@ class _ChatPageState extends ConsumerState<ChatPage>
     WidgetsBinding.instance.addObserver(this);
     _secureStorage = ref.read(secureStorageProvider);
     pusher = PusherChannelsFlutter.getInstance();
-
+    // ref
+    //     .read(notificationServiceProvider)
+    //     .showLocalNotification(
+    //   id: 0,
+    //   title: 'New Chat Message',
+    //   body: 'You got a new message!',
+    //   payload: 'chat', // still using this to navigate
+    // );
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       try {
         await _asyncMethod();
