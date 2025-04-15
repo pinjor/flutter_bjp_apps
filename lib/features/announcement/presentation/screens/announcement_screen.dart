@@ -35,8 +35,8 @@ class _AnnouncementScreenState extends ConsumerState<AnnouncementScreen> {
 
   String? _getDivisionFromId(String? id) {
     return divisionMap.keys.firstWhere(
-      (key) => divisionMap[key] == id,
-      orElse: () => 'অজানা',
+      (key) => (divisionMap[key] == id),
+      orElse: () => 'সমস্ত বিভাগ',
     );
   }
 
