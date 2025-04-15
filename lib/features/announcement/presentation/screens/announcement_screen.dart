@@ -110,7 +110,7 @@ class _AnnouncementScreenState extends ConsumerState<AnnouncementScreen> {
                 itemCount: announcements.length,
                 itemBuilder: (context, index) {
                   // final announcement = announcements[index];
-                  final announcement = announcements.reversed.toList()[index];
+                  final announcement = announcements.toList()[index];
 
                   return Card(
                     margin: EdgeInsets.symmetric(vertical: 8),
