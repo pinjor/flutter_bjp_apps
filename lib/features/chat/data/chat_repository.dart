@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'package:bjp_app/features/chat/presentation/domain/chat_model.dart';
-import 'package:bjp_app/features/events/domain/event_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -30,7 +28,7 @@ class ChatRepository {
     required Dio dioClient,
     required FlutterSecureStorage secureStorage,
   }) : _dioClient = dioClient,
-        _secureStorage = secureStorage;
+       _secureStorage = secureStorage;
 
   FutureEither<List<ChatModel>> fetchChatMessages(String partner_id) async {
     try {
@@ -60,9 +58,12 @@ class ChatRepository {
         // Access the "data" key, which contains the list of events
         final List<dynamic> chatList = response.data['data'];
         // Map the list to ChatModel objects
-        final chatModelList = chatList
-            .map((event) => ChatModel.fromMap(event as Map<String, dynamic>))
-            .toList();
+        final chatModelList =
+            chatList
+                .map(
+                  (event) => ChatModel.fromMap(event as Map<String, dynamic>),
+                )
+                .toList();
         lgr.i('got chatModelList: $chatModelList');
         return right(chatModelList);
       } else {
@@ -81,49 +82,45 @@ class ChatRepository {
     }
   }
 
-  FutureEitherVoid  sendMessage(String receiverId, String text) async {
-      try {
-        final uri = Uri(
-          scheme: 'http',
-          port: ApiConstants.port,
-          host: ApiConstants.baseUrl,
-          path: ApiConstants.sendMessages,
-        );
-        final token = await _secureStorage.read(key: 'token');
-        lgr.w('got token: $token');
-        final result = await _dioClient.post(
-          uri.toString(),
-          data: {'receiver_id': receiverId,
-            'message': text},
+  FutureEitherVoid sendMessage(String receiverId, String text) async {
+    try {
+      final uri = Uri(
+        scheme: 'http',
+        port: ApiConstants.port,
+        host: ApiConstants.baseUrl,
+        path: ApiConstants.sendMessages,
+      );
+      final token = await _secureStorage.read(key: 'token');
+      lgr.w('got token: $token');
+      final result = await _dioClient.post(
+        uri.toString(),
+        data: {'receiver_id': receiverId, 'message': text},
 
-          options: Options(
-            headers: {
-              'Accept': 'application/json',
-              'Authorization': 'Bearer $token',
-            },
-          ),
-        );
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
 
-        lgr.i('got response: $result');
+      lgr.i('got response: $result');
 
-        if (result.statusCode == 200) {
-          lgr.i('statusCode: 200 : ${result.data}');
+      if (result.statusCode == 200) {
+        lgr.i('statusCode: 200 : ${result.data}');
 
-          return right(null);
-        }
-        else if (result.statusCode == 201){
-          lgr.i('statusCode: 201 : ${result.data}');
+        return right(null);
+      } else if (result.statusCode == 201) {
+        lgr.i('statusCode: 201 : ${result.data}');
 
-          return right(null);
-        }
-      else {
-          lgr.f('statusCode: ${result.statusCode} : ${result.data}');
-          return left(Failure('Failed to send message'));
-        }
-      } catch (err) {
-        lgr.e('error: $err');
+        return right(null);
+      } else {
+        lgr.f('statusCode: ${result.statusCode} : ${result.data}');
         return left(Failure('Failed to send message'));
       }
-
+    } catch (err) {
+      lgr.e('error: $err');
+      return left(Failure('Failed to send message'));
+    }
   }
 }
