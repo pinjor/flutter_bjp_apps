@@ -88,7 +88,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           PhotoAlbumScreen(),
           VideoAlbumScreen(),
           ProfileEditingScreen(),
-          ChatPage(userInfo: '1', name: "Admin")
+          ChatPage(userInfo: '1', name: "Admin"),
         ];
   }
 
@@ -137,7 +137,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             _appBarTitle = 'প্রোফাইল পরিবর্তন';
             break;
           case 6:
-            _appBarTitle = 'চ্যাট';
+            _appBarTitle = 'চ্যাট উইথ আন্দালিব';
             break;
         }
       }
@@ -340,15 +340,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   Navigator.pop(context);
                 },
               ),
-              ListTile(
-                leading: Icon(Icons.edit),
-                title: Text('প্রোফাইল পরিবর্তন'),
-                selected: _selectedIndex == 5,
-                onTap: () {
-                  _onItemTapped(5);
-                  Navigator.pop(context);
-                },
-              ),
+              // ListTile(
+              //   leading: Icon(Icons.edit),
+              //   title: Text('প্রোফাইল পরিবর্তন'),
+              //   selected: _selectedIndex == 5,
+              //   onTap: () {
+              //     _onItemTapped(5);
+              //     Navigator.pop(context);
+              //   },
+              // ),
             ] else ...[
               ListTile(
                 leading: Icon(Icons.announcement),
@@ -401,9 +401,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   _onItemTapped(5);
                   Navigator.pop(context);
                 },
-              ), ListTile(
+              ),
+              ListTile(
                 leading: Icon(Icons.chat),
-                title: Text('চ্যাট'),
+                title: Text('চ্যাট উইথ আন্দালিব'),
                 selected: _selectedIndex == 6,
                 onTap: () {
                   _onItemTapped(6);
