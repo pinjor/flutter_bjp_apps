@@ -2,12 +2,10 @@ import 'dart:convert';
 import 'package:bjp_app/core/utils/utils.dart';
 import 'package:bjp_app/features/chat/presentation/domain/chat_list_model.dart';
 import 'package:intl/intl.dart';
-import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 import 'package:bjp_app/core/providers/providers.dart';
 import 'package:bjp_app/features/auth/domain/login_response_model.dart' as cm;
 import 'package:bjp_app/features/chat/presentation/controllers/chat_list_controller.dart'
 as ch;
-import 'package:chatview/chatview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

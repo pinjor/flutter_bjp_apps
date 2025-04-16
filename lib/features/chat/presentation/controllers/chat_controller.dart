@@ -1,5 +1,4 @@
 import 'package:bjp_app/features/chat/data/chat_repository.dart';
-import 'package:bjp_app/features/chat/presentation/domain/chat_list_model.dart';
 import 'package:bjp_app/features/chat/presentation/domain/chat_model.dart';
 import 'package:bjp_app/features/events/domain/event_model.dart';
 import 'package:flutter/material.dart';
@@ -22,10 +21,10 @@ class ChatController extends _$ChatController {
     return AsyncValue.data([]);
   }
 
-  void fetchChatMessages(String partner_id) async {
+  void fetchChatMessages(String partnerId) async {
     state = AsyncValue.loading();
     lgr.i('fetching chats');
-    final result = await _chatRepository.fetchChatMessages(partner_id);
+    final result = await _chatRepository.fetchChatMessages(partnerId);
 
     result.fold(
       (failure) {
