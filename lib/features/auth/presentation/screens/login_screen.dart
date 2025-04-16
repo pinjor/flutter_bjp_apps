@@ -5,7 +5,6 @@ import 'package:bjp_app/features/auth/presentation/screens/register_screen.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
@@ -183,7 +182,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               ),
                             );
                           },
-                          child: Text('মেম্বার হন'),
+                          child: Text('মেম্বার হোন'),
                         ),
                       ],
                     ),

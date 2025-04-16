@@ -35,8 +35,8 @@ class _AnnouncementScreenState extends ConsumerState<AnnouncementScreen> {
 
   String? _getDivisionFromId(String? id) {
     return divisionMap.keys.firstWhere(
-      (key) => divisionMap[key] == id,
-      orElse: () => 'অজানা',
+      (key) => (divisionMap[key] == id),
+      orElse: () => 'সমস্ত বিভাগ',
     );
   }
 
@@ -110,7 +110,7 @@ class _AnnouncementScreenState extends ConsumerState<AnnouncementScreen> {
                 itemCount: announcements.length,
                 itemBuilder: (context, index) {
                   // final announcement = announcements[index];
-                  final announcement = announcements.reversed.toList()[index];
+                  final announcement = announcements.toList()[index];
 
                   return Card(
                     margin: EdgeInsets.symmetric(vertical: 8),

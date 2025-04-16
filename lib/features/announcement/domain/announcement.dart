@@ -33,6 +33,8 @@ class Announcement {
   final String? createdAt;
   final String? updatedAt;
 
+  final bool? is_for_all_division;
+
   Announcement({
     this.id,
     this.title,
@@ -46,6 +48,7 @@ class Announcement {
     this.upazilaName,
     this.createdAt,
     this.updatedAt,
+    this.is_for_all_division,
   });
 
   Map<String, dynamic> toMap() {
@@ -62,6 +65,7 @@ class Announcement {
       'upazila_name': upazilaName,
       'created_at': createdAt,
       'updated_at': updatedAt,
+      'is_for_all_division': is_for_all_division,
     };
   }
 
@@ -84,6 +88,10 @@ class Announcement {
           map['upazila_name'] != null ? map['upazila_name'] as String : null,
       createdAt: map['created_at'] != null ? map['created_at'] as String : null,
       updatedAt: map['updated_at'] != null ? map['updated_at'] as String : null,
+      is_for_all_division:
+          map['is_for_all_division'] != null
+              ? map['is_for_all_division'] as bool
+              : null,
     );
   }
 

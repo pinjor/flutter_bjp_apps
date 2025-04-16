@@ -1,9 +1,8 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
-import 'package:bjp_app/config/app_colors.dart';
+
 import 'package:bjp_app/core/providers/providers.dart';
-import 'package:bjp_app/core/ui/custom_loader.dart';
+
 import 'package:bjp_app/features/auth/domain/login_response_model.dart';
 import 'package:bjp_app/features/chat/presentation/controllers/chat_controller.dart'
 as ch;

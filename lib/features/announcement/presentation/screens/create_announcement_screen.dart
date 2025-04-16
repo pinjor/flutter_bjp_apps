@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../controllers/announcement_controller.dart';
 
 class CreateAnnouncementScreen extends ConsumerStatefulWidget {
@@ -14,11 +15,10 @@ class _CreateAnnouncementScreenState
     extends ConsumerState<CreateAnnouncementScreen> {
   final TextEditingController _nameController = TextEditingController();
 
-
   final _formKey = GlobalKey<FormState>();
 
-
   final Map<String, String> _divisionMap = {
+    'সমস্ত বিভাগ': 'all',
     'ঢাকা': 'f47ea481-c504-4dc6-9bf5-350bbb200719',
     'চট্টগ্রাম': '2be20dd7-39d9-4cc3-bfaa-f13761210051',
     'বরিশাল': 'a0a290a7-4f6f-4e21-8550-58f45cc122d8',
@@ -71,7 +71,9 @@ class _CreateAnnouncementScreenState
                       _divisionMap.entries.map((entry) {
                         return DropdownMenuItem(
                           value: entry.value, // Store the division ID
-                          child: Text(entry.key), // Display Bangla division name
+                          child: Text(
+                            entry.key,
+                          ), // Display Bangla division name
                         );
                       }).toList(),
                   onChanged: (value) {
@@ -109,7 +111,7 @@ class _CreateAnnouncementScreenState
               Padding(
                 padding: const EdgeInsets.all(25.0),
                 child: ElevatedButton(
-                  onPressed:    _createAnnouncement,
+                  onPressed: _createAnnouncement,
                   child: Text(
                     'ঘোষণা তৈরি করুন',
                     style: TextStyle(color: Colors.white),
