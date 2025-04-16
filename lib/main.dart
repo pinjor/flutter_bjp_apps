@@ -1,26 +1,15 @@
+import 'package:bjp_app/app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import 'core/ui/splash_screen.dart';
 import 'features/local_notification/local_notification.dart';
 
+
+
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(ProviderScope(child: SplashApp()));
-}
-
-// Temporary app for showing splash screen first
-class SplashApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: SplashScreen());
-
-
-  }
+  runApp(ProviderScope(child: MyApp()));
 }
 
 Future<void> initializeNotifications(GoRouter router) async {
@@ -31,13 +20,16 @@ Future<void> initializeNotifications(GoRouter router) async {
     initSettings,
     onDidReceiveNotificationResponse: (NotificationResponse response) {
       if (response.payload == 'chat') {
-        router.push(
-          '/chat',
-          extra: {
-            'userInfo': {'id': '123', 'name': 'John Doe'},
-            'isChat': true,
+        // Navigate to Chat using GoRouter
+        router.push('/chat', extra: {
+          'userInfo': {
+            'id': '123',
+            'name': 'John Doe',
+            // other fields...
           },
-        );
+          'isChat': true,
+        });
+
       }
     },
   );

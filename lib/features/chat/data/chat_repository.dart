@@ -1,5 +1,6 @@
-
+import 'dart:convert';
 import 'package:bjp_app/features/chat/presentation/domain/chat_model.dart';
+import 'package:bjp_app/features/events/domain/event_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
