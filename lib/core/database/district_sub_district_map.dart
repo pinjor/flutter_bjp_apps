@@ -426,4 +426,26 @@ final Map<String, List<SubDistrict>> districtSubdistrictMap = {
     ),
     SubDistrict(id: '70e50f2b-1137-4c4a-8b84-0fcdb13aeb69', name: 'ওসমানীনগর'),
   ],
+
+  //বরিশাল
+  districtMap['বরিশাল']!: [
+    SubDistrict(id: 'a58a91ea-67b1-4e2b-9191-578c7b73a899', name: 'আগাইলঝাড়া'),
+    SubDistrict(id: '74541126-6159-4420-b316-69549a31c526', name: 'বাবুগঞ্জ'),
+    SubDistrict(id: '127db652-822c-4b25-97ef-30c874add68f', name: 'বাকেরগঞ্জ'),
+    SubDistrict(id: '21602621-e45f-4296-ab99-e619c6101747', name: 'বরিশাল সদর'),
+
+    SubDistrict(id: 'f40a090e-5543-4a3e-97c8-d7277f534da7', name: 'উজিরপুর'),
+    SubDistrict(
+      id: '60c5caf4-d940-415e-92d8-8519a2c3891c',
+      name: 'বানারীপাড়া',
+    ),
+    SubDistrict(id: '2913aba5-190b-4eb6-9ab2-b010c27f7c1a', name: 'গৌরনদী'),
+
+    SubDistrict(
+      id: 'c1537090-3833-4574-bf4c-53627e7f1cc1',
+      name: 'মেহেন্দিগঞ্জ',
+    ),
+    SubDistrict(id: 'ec6172e1-ee18-479d-a0e4-86110f951366', name: 'মুলাদি'),
+    SubDistrict(id: 'f4391f68-8b5c-4821-be53-8fdd7e6751c2', name: 'হিজলা'),
+  ],
 };

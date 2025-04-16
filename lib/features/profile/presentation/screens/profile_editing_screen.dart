@@ -2,9 +2,9 @@ import 'package:bjp_app/core/database/sub_district.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/database/district.dart';
 import '../../../../core/database/district_sub_district_map.dart';
 import '../../../../core/database/division_district_map_data.dart';
-import '../../../../core/database/district.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileEditingScreen extends ConsumerStatefulWidget {
@@ -133,7 +133,7 @@ class _ProfileEditingScreenState extends ConsumerState<ProfileEditingScreen> {
       error: (error, stack) => Center(child: Text('Error: $error')),
       data: (profile) {
         if (profile == null) {
-          return const Center(child: Text('No profile data available'));
+          return const Center(child: Text('''আপনার তথ্য সফলভাবে পরিবর্তন করা হয়েছে।'''));
         }
 
         final List<District> districtsForSelectedDivision =
@@ -178,6 +178,8 @@ class _ProfileEditingScreenState extends ConsumerState<ProfileEditingScreen> {
                         ),
                         keyboardType: TextInputType.emailAddress,
                         controller: _emailController,
+                        enabled: false,
+                        readOnly: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'ইমেইল দিন';
@@ -194,6 +196,7 @@ class _ProfileEditingScreenState extends ConsumerState<ProfileEditingScreen> {
                         ),
                         keyboardType: TextInputType.number,
                         controller: _mobileController,
+
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'মোবাইল নম্বর দিন';

@@ -2,6 +2,7 @@ import 'package:bjp_app/app.dart';
 import 'package:flutter/material.dart';
 
 import '../../config/app_colors.dart';
+import '../constants/route_path.dart';
 import 'app_icon_widget.dart';
 
 class SplashScreen extends StatefulWidget {
