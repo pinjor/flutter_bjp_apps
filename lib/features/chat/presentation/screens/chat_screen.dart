@@ -17,8 +17,7 @@ class ChatPage extends ConsumerStatefulWidget {
   final userInfo;
   final name;
 
-  const ChatPage({Key? key, required this.userInfo, required this.name})
-      : super(key: key);
+  const ChatPage({super.key, required this.userInfo, required this.name});
 
   @override
   _ChatPageState createState() => _ChatPageState();
