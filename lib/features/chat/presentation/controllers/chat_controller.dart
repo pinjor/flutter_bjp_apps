@@ -1,12 +1,8 @@
 import 'package:bjp_app/features/chat/data/chat_repository.dart';
 import 'package:bjp_app/features/chat/presentation/domain/chat_model.dart';
-import 'package:bjp_app/features/events/domain/event_model.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import '../../../../core/utils/utils.dart';
-import '../../data/chat_repository.dart';
 
 
 part 'chat_controller.g.dart';

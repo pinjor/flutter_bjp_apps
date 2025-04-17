@@ -55,13 +55,28 @@ class ProfileController extends _$ProfileController {
       districtId: districtId,
       upazilaId: upazilaId,
     );
-    state = AsyncValue.data(null);
+    // state = AsyncValue.data(null);
+    // result.fold(
+    //   (l) async => await showErrorDialog(context, errorMessage:l.message, title: l.title!),
+    //   (r) => showMessageToUser(
+    //     context: context,
+    //     message: 'প্রোফাইল হালনাগাদ হয়েছে',
+    //   ),
+    // );
     result.fold(
-      (l) async => await showErrorDialog(context, errorMessage:l.message, title: l.title!),
-      (r) => showMessageToUser(
-        context: context,
-        message: 'প্রোফাইল হালনাগাদ হয়েছে',
-      ),
+      (l) async {
+        state = AsyncValue.error(l, StackTrace.current);
+        await showErrorDialog(
+          context,
+          errorMessage: l.message,
+          title: l.title!,
+        );
+      },
+      (r) {
+        showMessageToUser(context: context, message: 'প্রোফাইল হালনাগাদ হয়েছে');
+        // Re-fetch profile data after successful update
+        fetchUserProfile(context: context);
+      },
     );
   }
 }
