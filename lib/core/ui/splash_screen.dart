@@ -1,5 +1,6 @@
 import 'package:bjp_app/app.dart';
 import 'package:flutter/material.dart';
+
 import '../../config/app_colors.dart';
 import 'app_icon_widget.dart';
 
@@ -23,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
   // }
 
   Future<void> _moveToNextScreen() async {
-    await Future.delayed(const Duration(seconds: 10));
+    await Future.delayed(const Duration(seconds: 5));
     if (mounted) {
       // Navigate to main app structure
       Navigator.of(

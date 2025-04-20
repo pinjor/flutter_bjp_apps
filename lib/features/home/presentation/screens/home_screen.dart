@@ -4,6 +4,7 @@ import 'package:bjp_app/core/utils/utils.dart';
 import 'package:bjp_app/features/announcement/presentation/screens/announcement_screen.dart';
 import 'package:bjp_app/features/auth/domain/auth_state.dart';
 import 'package:bjp_app/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:bjp_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:bjp_app/features/chat/presentation/screens/chat_list_screen.dart';
 import 'package:bjp_app/features/chat/presentation/screens/chat_screen.dart';
 import 'package:bjp_app/features/events/presentation/screens/event_scedule_screen.dart';
@@ -77,8 +78,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           CreateAnnouncementScreen(),
           MemberScreen(),
           EventSceduleScreen(),
-          ChatListScreen()
-
+          ChatListScreen(),
         ]
         : [
           _buildDashboard(
@@ -151,8 +151,30 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   void _logoutUser() {
+    // ref.read(authControllerProvider.notifier).logout();
+    // //Navigator.pop(context);
+    // if (Navigator.canPop(context)) {
+    //   Navigator.pop(context);
+    // } else {
+    //   Navigator.pushReplacement(
+    //     context,
+    //     MaterialPageRoute(builder: (context) => LoginScreen()),
+    //   );
+    //   //Navigator.pop(context);
+    // }
+    if (Navigator.of(context, rootNavigator: true).canPop()) {
+      Navigator.of(context, rootNavigator: true).pop(); // Closes dialog
+    }
+
+    // Then perform logout
     ref.read(authControllerProvider.notifier).logout();
-    Navigator.pop(context);
+
+    // Navigate to login screen
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
+          (route) => false,
+    );
   }
 
   void _showAnnouncementDialog(RecentAnnouncement announcement) {
