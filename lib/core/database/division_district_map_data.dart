@@ -17,7 +17,7 @@ final Map<String, List<District>> divisionDistrictsMap = {
     District(id: '80dc1b41-f32f-414f-aaa6-63354000549b', name: 'বরিশাল'),
     District(id: '2a4c157a-0016-476c-bd65-3d14b519ea10', name: 'বরগুনা'),
     District(id: '9626d329-58c3-4ccd-8260-679e5a61b74b', name: 'ভোলা'),
-    District(id: '198d591d-2ab6-4093-a687-b6979e9941e0', name: 'ঝালোকাটি'),
+    District(id: '198d591d-2ab6-4093-a687-b6979e9941e0', name: 'ঝালকাঠি'),
     District(id: '78c4180f-d9c5-40be-8d1d-f60fc91af586', name: 'পটুয়াখালী'),
     District(id: 'e12bcfef-1ccc-4012-8eda-08e222965fbd', name: 'পিরোজপুর'),
   ],
