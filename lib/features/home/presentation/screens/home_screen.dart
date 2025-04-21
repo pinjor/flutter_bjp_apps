@@ -151,17 +151,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   void _logoutUser() {
-    // ref.read(authControllerProvider.notifier).logout();
-    // //Navigator.pop(context);
-    // if (Navigator.canPop(context)) {
-    //   Navigator.pop(context);
-    // } else {
-    //   Navigator.pushReplacement(
-    //     context,
-    //     MaterialPageRoute(builder: (context) => LoginScreen()),
-    //   );
-    //   //Navigator.pop(context);
-    // }
+     ref.read(authControllerProvider.notifier).logout();
+      //Navigator.pop(context);
+     if (Navigator.canPop(context)) {
+      Navigator.pop(context);
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+      );
+      Navigator.pop(context);
+    }
     if (Navigator.of(context, rootNavigator: true).canPop()) {
       Navigator.of(context, rootNavigator: true).pop(); // Closes dialog
     }
@@ -176,6 +176,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           (route) => false,
     );
   }
+
+
+
+
+
+
 
   void _showAnnouncementDialog(RecentAnnouncement announcement) {
     showDialog(
