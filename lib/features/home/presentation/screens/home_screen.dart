@@ -39,7 +39,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  String _appBarTitle = 'হোম স্ক্রীন';
+  String _appBarTitle = 'হোম';
   int _selectedIndex = 0;
 
   @override
@@ -101,7 +101,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       if (ref.read(authControllerProvider).user?.user?.isAdmin == 1) {
         switch (index) {
           case 0:
-            _appBarTitle = 'হোম স্ক্রীন';
+            _appBarTitle = 'হোম';
             break;
           // announcements
           case 1:
@@ -124,7 +124,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       } else {
         switch (index) {
           case 0:
-            _appBarTitle = 'হোম স্ক্রীন';
+            _appBarTitle = 'হোম';
             break;
           // announcements
           case 1:
@@ -310,6 +310,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               discussions: discussionListState,
             )[_selectedIndex],
       ),
+      floatingActionButton: _selectedIndex == 0
+          ? FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChatPage(userInfo: '1', name: "Admin"),
+            ),
+          );
+        },
+        child: Icon(Icons.chat, color: Colors.white),
+        backgroundColor: AppColors.themeColor,
+      )
+          : null,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       drawer: Drawer(
         width: 250,
         child: ListView(
@@ -317,7 +332,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             DrawerHeader(child: AppLogoWidget(height: 10, width: 10)),
             ListTile(
               leading: Icon(Icons.dashboard),
-              title: Text('হোম স্ক্রীন'),
+              title: Text('হোম'),
               selected: _selectedIndex == 0,
               onTap: () {
                 _onItemTapped(0);
