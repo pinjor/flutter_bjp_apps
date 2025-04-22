@@ -151,9 +151,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   void _logoutUser() {
-     ref.read(authControllerProvider.notifier).logout();
-      //Navigator.pop(context);
-     if (Navigator.canPop(context)) {
+    ref.read(authControllerProvider.notifier).logout();
+    //Navigator.pop(context);
+    if (Navigator.canPop(context)) {
       Navigator.pop(context);
     } else {
       Navigator.pushReplacement(
@@ -167,21 +167,30 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     }
 
     // Then perform logout
-    ref.read(authControllerProvider.notifier).logout();
-
-    // Navigate to login screen
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => const LoginScreen()),
-          (route) => false,
-    );
+    // ref.read(authControllerProvider.notifier).logout();
+    //
+    // // Navigate to login screen
+    // Navigator.pushAndRemoveUntil(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => const LoginScreen()),
+    //       (route) => false,
+    // );
   }
 
-
-
-
-
-
+  // void _logoutUser() {
+  //   // Close the dialog using rootNavigator
+  //   Navigator.of(context, rootNavigator: true).pop();
+  //
+  //   // Perform logout once
+  //   ref.read(authControllerProvider.notifier).logout();
+  //
+  //   // Navigate to LoginScreen and remove all previous routes
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(builder: (context) => LoginScreen()),
+  //     // (route) => false,
+  //   );
+  // }
 
   void _showAnnouncementDialog(RecentAnnouncement announcement) {
     showDialog(
@@ -316,20 +325,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               discussions: discussionListState,
             )[_selectedIndex],
       ),
-      floatingActionButton: _selectedIndex == 0
-          ? FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ChatPage(userInfo: '1', name: "Admin"),
-            ),
-          );
-        },
-        child: Icon(Icons.chat, color: Colors.white),
-        backgroundColor: AppColors.themeColor,
-      )
-          : null,
+      floatingActionButton:
+          _selectedIndex == 0
+              ? FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:
+                          (context) => ChatPage(userInfo: '1', name: "Admin"),
+                    ),
+                  );
+                },
+                child: Icon(Icons.chat, color: Colors.white),
+                backgroundColor: AppColors.themeColor,
+              )
+              : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       drawer: Drawer(
         width: 250,
