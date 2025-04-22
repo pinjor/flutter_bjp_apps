@@ -549,7 +549,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ],
           ),
 
-          SizedBox(height: 3),
+          SizedBox(height: 15),
 
           Stack(
             children: [
@@ -632,6 +632,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ],
           ),
+          SizedBox(height: 8),
           Stack(
             children: [
               Image.asset(
@@ -704,7 +705,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ],
           ),
-
+          SizedBox(height: 8),
           if (!authState.isAdmin) ...[
             eventListState.when(
               data: (events) {
@@ -728,6 +729,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               'আপনাদের মতামত',
               style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24),
             ),
+            SizedBox(height: 5,),
             discussionListState.when(
               data: (discussions) {
                 if (discussions == null || discussions.isEmpty) {
@@ -753,7 +755,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               loading: () => CustomLoader(),
             ),
           ],
-          SizedBox(height: 5),
+          SizedBox(height: 8),
           Container(
             color: Colors.black,
             child: Column(
