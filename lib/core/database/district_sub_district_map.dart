@@ -262,15 +262,15 @@ final Map<String, List<SubDistrict>> districtSubdistrictMap = {
 
   //শরীয়তপুর
   districtMap['শরীয়তপুর']!: [
-    SubDistrict(id: 'dbc003b9-15ee-4c19-ba75-8ebc386b566e', name: 'ভেদরগঞ্জ'),
-    SubDistrict(id: '3f7e619b-4c80-4dda-ab24-109a21e47595', name: 'ডামুড্যা'),
-    SubDistrict(id: '89b92ba4-fce5-439a-8980-66054fbd32e3', name: 'গোসাইরহাট'),
+    SubDistrict(id: '0e78fc3b-c9c2-444c-93ce-3310cc96bd54', name: 'ভেদরগঞ্জ'),
+    SubDistrict(id: '6895518f-0eb9-472b-b984-ad7c94174f9e', name: 'ডামুড্যা'),
+    SubDistrict(id: '50f0d063-6551-4ce8-9321-55d4a74d495d', name: 'গোসাইরহাট'),
     SubDistrict(
-      id: '331ae9b7-a7f6-4c52-9a6b-54dbe96ac539',
+      id: '0b123d3c-5384-4ddb-9d10-37a26cf80b3a',
       name: 'শরীয়তপুর সদর',
     ),
-    SubDistrict(id: 'e0d7a6fc-1fa1-4023-9a1e-b55a76702b28', name: 'নড়িয়া'),
-    SubDistrict(id: 'e0d7a6fc-1fa1-4023-9a1e-b55a76702b28', name: 'জাজিরা'),
+    SubDistrict(id: 'b7d80d81-8d79-4168-8f86-7494cc950cc8', name: 'নড়িয়া'),
+    SubDistrict(id: '1dfd17ad-343e-4356-be81-a5be0a67d31d', name: 'জাজিরা'),
   ],
 
   //ময়মনসিংহ
@@ -449,251 +449,174 @@ final Map<String, List<SubDistrict>> districtSubdistrictMap = {
     SubDistrict(id: 'f4391f68-8b5c-4821-be53-8fdd7e6751c2', name: 'হিজলা'),
   ],
 
-
-
-
   //বরগুনা
   districtMap['বরগুনা']!: [
     SubDistrict(id: '3d42592c-a176-4fbd-b5e7-15a5348e5e87', name: 'আমতলী'),
     SubDistrict(id: '986b31f0-8324-4ef6-9f0d-716cbfa15200', name: 'বরগুনা সদর'),
 
     SubDistrict(id: '029c015e-0d7c-4177-96bc-4e8fdb07907d', name: 'বেতাগী'),
-    SubDistrict(
-      id: 'f0e2bf52-e21a-4033-a872-dae52314ba48',
-      name: 'বামনা',
-    ),
+    SubDistrict(id: 'f0e2bf52-e21a-4033-a872-dae52314ba48', name: 'বামনা'),
     SubDistrict(id: '38d001a6-6762-485f-bc3d-e3d7242fca4c', name: 'পাথরঘাটা'),
 
-    SubDistrict(
-      id: '329f0836-bd56-4d0d-a3cd-d048bbf3782a',
-      name: 'তালতলী',
-    ),
-
+    SubDistrict(id: '329f0836-bd56-4d0d-a3cd-d048bbf3782a', name: 'তালতলী'),
   ],
 
   //ভোলা
   districtMap['ভোলা']!: [
     SubDistrict(id: 'f066da3e-4814-4e44-b546-b134f6fe2f46', name: 'ভোলা সদর'),
 
-    SubDistrict(id: '08a14117-2bbd-4db7-9efe-e0252eab7f09', name: 'বোরহান উদ্দিন'),
     SubDistrict(
-      id: '561c09bc-6dc8-48df-a8d9-6fb04db37d851c',
-      name: 'চরফ্যাসন',
+      id: '08a14117-2bbd-4db7-9efe-e0252eab7f09',
+      name: 'বোরহান উদ্দিন',
     ),
+    SubDistrict(id: '561c09bc-6dc8-48df-a8d9-6fb04db37d851c', name: 'চরফ্যাসন'),
     SubDistrict(id: '08e8edb5-0124-4424-b83b-932e50e0e196', name: 'দৌলতখান'),
 
-    SubDistrict(
-      id: '5fdb4eff-363c-4910-82be-2907888c7d93',
-      name: 'মনপুরা',
-    ),
-    SubDistrict(
-      id: '3d10398c-2bcf-4001-8f24-cd68f005b540',
-      name: 'তজুমদ্দিন',
-    ),
-    SubDistrict(
-      id: '31db7011-8e3d-41c5-8ebc-cf00bee8392e',
-      name: 'লালমোহন',
-    ),
+    SubDistrict(id: '5fdb4eff-363c-4910-82be-2907888c7d93', name: 'মনপুরা'),
+    SubDistrict(id: '3d10398c-2bcf-4001-8f24-cd68f005b540', name: 'তজুমদ্দিন'),
+    SubDistrict(id: '31db7011-8e3d-41c5-8ebc-cf00bee8392e', name: 'লালমোহন'),
   ],
-
 
   //ঝালকাঠি
   districtMap['ঝালকাঠি']!: [
-    SubDistrict(id: '3ab85114-0a60-4ca9-80e3-91dd747de85e', name: 'ঝালকাঠি সদর'),
+    SubDistrict(
+      id: '3ab85114-0a60-4ca9-80e3-91dd747de85e',
+      name: 'ঝালকাঠি সদর',
+    ),
 
     SubDistrict(id: '5dc84564-a364-409d-b9ac-b68096d2d9bb', name: 'কাঁঠালিয়া'),
-    SubDistrict(
-      id: 'dcda4ca9-67e3-420d-8cc5-1fd51f479755',
-      name: 'নলছিটি',
-    ),
+    SubDistrict(id: 'dcda4ca9-67e3-420d-8cc5-1fd51f479755', name: 'নলছিটি'),
     SubDistrict(id: 'e99fb463-84a2-4f33-a684-f4d65ada2631', name: 'রাজাপুর'),
-
   ],
-
 
   //পটুয়াখালী
   districtMap['পটুয়াখালী']!: [
     SubDistrict(id: '4521ba72-9963-42b6-bc92-5fc22353a566', name: 'বাউফল'),
-    SubDistrict(id: '79755bb2-5fc7-4074-a851-cd2e5716a80b', name: 'পটুয়াখালী সদর'),
     SubDistrict(
-      id: '1570943b-374b-486c-9d2c-e6e2717ef68a',
-      name: 'দুমকি',
+      id: '79755bb2-5fc7-4074-a851-cd2e5716a80b',
+      name: 'পটুয়াখালী সদর',
     ),
+    SubDistrict(id: '1570943b-374b-486c-9d2c-e6e2717ef68a', name: 'দুমকি'),
     SubDistrict(id: 'cb51abe8-1267-400e-876a-2e42bb77fe96', name: 'দশমিনা'),
-    SubDistrict(
-      id: 'a1f330ab-0720-4800-b394-2d108041c821',
-      name: 'কলাপাড়া',
-    ),
+    SubDistrict(id: 'a1f330ab-0720-4800-b394-2d108041c821', name: 'কলাপাড়া'),
     SubDistrict(id: '32bfb3ee-333f-4535-8e2f-fdef7873ffd6', name: 'মির্জাগঞ্জ'),
-    SubDistrict(
-      id: 'c9b8bce6-3155-47db-846b-7dd5068f84fd',
-      name: 'গলাচিপা',
-    ),
+    SubDistrict(id: 'c9b8bce6-3155-47db-846b-7dd5068f84fd', name: 'গলাচিপা'),
     SubDistrict(id: 'f8381911-1b96-472d-8197-66a5eb10c956', name: 'রাঙ্গাবালি'),
-
   ],
-
-
 
   //পিরোজপুর
   districtMap['পিরোজপুর']!: [
-    SubDistrict(id: '1d881bac-e682-4c9a-8fc3-bacb8eecff53', name: 'পিরোজপুর সদর'),
+    SubDistrict(
+      id: '1d881bac-e682-4c9a-8fc3-bacb8eecff53',
+      name: 'পিরোজপুর সদর',
+    ),
 
     SubDistrict(id: 'ad23ec6a-e855-4776-9631-70d83ad07a3e', name: 'নাজিরপুর'),
-    SubDistrict(
-      id: 'fe1a5dc7-5735-40d0-b201-f75b8597c192',
-      name: 'কাউখালী',
-    ),
+    SubDistrict(id: 'fe1a5dc7-5735-40d0-b201-f75b8597c192', name: 'কাউখালী'),
     SubDistrict(id: '4d7cd751-d4db-4496-b461-26560546e1b6', name: 'জিয়ানগর'),
-    SubDistrict(id: '8a03adce-6afa-4cac-97cb-6af3c9340f34', name: 'ভান্ডারিয়া'),
     SubDistrict(
-      id: '28af7190-dca0-40b0-9ca0-c3e6264491f4',
-      name: 'মঠবাড়িয়া',
+      id: '8a03adce-6afa-4cac-97cb-6af3c9340f34',
+      name: 'ভান্ডারিয়া',
     ),
+    SubDistrict(id: '28af7190-dca0-40b0-9ca0-c3e6264491f4', name: 'মঠবাড়িয়া'),
     SubDistrict(id: '3af07cd5-5909-4dd6-a4d9-f9909c23a4df', name: 'নেছারাবাদ'),
-
   ],
-
-
-
 
   //ব্রাহ্মণবাড়িয়া
   districtMap['ব্রাহ্মণবাড়িয়া']!: [
-    SubDistrict(
-      id: '11a669ca-08f3-41e5-8c3d-c732d6d36ea8',
-      name: 'আখাউড়া',
-    ),
+    SubDistrict(id: '11a669ca-08f3-41e5-8c3d-c732d6d36ea8', name: 'আখাউড়া'),
     SubDistrict(id: 'cd8430a5-c047-492b-8cca-447ec60ac9b3', name: 'আশুগঞ্জ'),
     SubDistrict(
       id: '99167e21-5400-478a-a621-5d23fd61f766',
       name: 'বাঞ্ছারামপুর',
     ),
-    SubDistrict(id: 'c4f04ee2-94f6-4dcd-8b7c-64ab26a6ea1f', name: 'ব্রাহ্মণবাড়িয়া সদর'),
     SubDistrict(
-      id: 'fb31b76f-5156-4de1-a199-ca0d688bec39',
-      name: 'কসবা',
+      id: 'c4f04ee2-94f6-4dcd-8b7c-64ab26a6ea1f',
+      name: 'ব্রাহ্মণবাড়িয়া সদর',
     ),
-    SubDistrict(
-      id: 'd430255a-d8d8-4751-be13-dde00da801a0',
-      name: 'নাসিরনগর',
-    ),
+    SubDistrict(id: 'fb31b76f-5156-4de1-a199-ca0d688bec39', name: 'কসবা'),
+    SubDistrict(id: 'd430255a-d8d8-4751-be13-dde00da801a0', name: 'নাসিরনগর'),
     SubDistrict(id: '55b4e98c-9561-4069-a5bf-bf9dd542bd13', name: 'সরাইল'),
-    SubDistrict(
-      id: 'a7555623-41d1-46f0-a687-485ca3c7cbdd',
-      name: 'নবীনগর',
-    ),
+    SubDistrict(id: 'a7555623-41d1-46f0-a687-485ca3c7cbdd', name: 'নবীনগর'),
     SubDistrict(id: 'f94e2971-f7d6-436d-873a-fb316baf6541', name: 'বিজয়নগর'),
   ],
 
-//কুমিল্লা
+  //কুমিল্লা
   districtMap['কুমিল্লা']!: [
-    SubDistrict(
-      id: '2f533bcc-d796-45af-9e42-3dbfe3c9ba49',
-      name: 'দেবিদ্বার',
-    ),
+    SubDistrict(id: '2f533bcc-d796-45af-9e42-3dbfe3c9ba49', name: 'দেবিদ্বার'),
     SubDistrict(id: 'd1a6b112-4ffc-4bd9-9c34-6aeb1b2efe95', name: 'বরুড়া'),
     SubDistrict(
       id: 'ca433d67-a660-4c02-8fa5-dd70da471c29',
       name: 'ব্রাহ্মণপাড়া',
     ),
-    SubDistrict(
-      id: '0c5f43d4-64d6-4ca6-8434-37efadca9514',
-      name: 'চান্দিনা',
-    ),
-    SubDistrict(
-      id: 'e64ec461-0d8b-4b5a-b282-aed7575d32f0',
-      name: 'চৌদ্দগ্রাম',
-    ),
+    SubDistrict(id: '0c5f43d4-64d6-4ca6-8434-37efadca9514', name: 'চান্দিনা'),
+    SubDistrict(id: 'e64ec461-0d8b-4b5a-b282-aed7575d32f0', name: 'চৌদ্দগ্রাম'),
     SubDistrict(id: 'd34d14b3-70ba-4bb5-b892-a126658dba3e', name: 'দাউদকান্দি'),
-    SubDistrict(
-      id: '36fa48c6-33f5-470d-87b4-73ae031a9551',
-      name: 'হোমনা',
-    ),
-    SubDistrict(
-      id: 'c842eb45-a41a-44a7-a17f-3b968f0bc3fd',
-      name: 'লাকসাম',
-    ),
+    SubDistrict(id: '36fa48c6-33f5-470d-87b4-73ae031a9551', name: 'হোমনা'),
+    SubDistrict(id: 'c842eb45-a41a-44a7-a17f-3b968f0bc3fd', name: 'লাকসাম'),
     SubDistrict(id: '7c970fe6-0f09-4f38-954f-1b6193b8322c', name: 'মুরাদনগর'),
+    SubDistrict(id: 'b4a94f9c-ba47-43ef-aeee-24b3b6a065f8', name: 'নাঙ্গলকোট'),
     SubDistrict(
-      id: 'b4a94f9c-ba47-43ef-aeee-24b3b6a065f8',
-      name: 'নাঙ্গলকোট',
+      id: 'afad4e66-5e8c-48b5-b309-49b5c1f474d4',
+      name: 'কুমিল্লা সদর',
     ),
-    SubDistrict(id: 'afad4e66-5e8c-48b5-b309-49b5c1f474d4', name: 'কুমিল্লা সদর'),
-    SubDistrict(
-      id: '082720eb-e646-4793-bf30-995052ca6b96',
-      name: 'মেঘনা',
-    ),
-    SubDistrict(
-      id: 'cf1923aa-6427-46eb-961a-5e74022c0646',
-      name: 'মনোহরগঞ্জ',
-    ),
+    SubDistrict(id: '082720eb-e646-4793-bf30-995052ca6b96', name: 'মেঘনা'),
+    SubDistrict(id: 'cf1923aa-6427-46eb-961a-5e74022c0646', name: 'মনোহরগঞ্জ'),
     SubDistrict(id: '6ead7af4-9e2d-4cb8-98ab-aa02905a6519', name: 'সদরদক্ষিণ'),
-    SubDistrict(
-      id: '7dd966c0-d132-4917-8824-c4e860728abd',
-      name: 'তিতাস',
-    ),
+    SubDistrict(id: '7dd966c0-d132-4917-8824-c4e860728abd', name: 'তিতাস'),
     SubDistrict(id: 'e82cf44a-4296-456b-91e0-8c2962abd2d6', name: 'বুড়িচং'),
     SubDistrict(id: '810eb410-ed59-4b34-8f6f-a667b7b118dc', name: 'লালমাই'),
   ],
 
-
   //চাঁদপুর
   districtMap['চাঁদপুর']!: [
     SubDistrict(id: 'e3646d2e-f7a7-4fbc-970c-ffe3c60050d3', name: 'হাইমচর'),
-    SubDistrict(
-      id: 'f7c1c96c-5f70-432f-8150-1c1e764060a4',
-      name: 'কচুয়া',
-    ),
+    SubDistrict(id: 'f7c1c96c-5f70-432f-8150-1c1e764060a4', name: 'কচুয়া'),
     SubDistrict(id: '217f9f93-5a47-4172-8c0b-52da0fa68a21', name: 'শাহরাস্তি'),
-    SubDistrict(id: 'a7d66695-2c24-4f68-9567-3b97cb783b3d', name: 'চাঁদপুর সদর'),
+    SubDistrict(
+      id: 'a7d66695-2c24-4f68-9567-3b97cb783b3d',
+      name: 'চাঁদপুর সদর',
+    ),
     SubDistrict(
       id: '74284ff2-4221-470b-afed-dfb2cf276ba7',
       name: 'মতলব দক্ষিণ',
     ),
     SubDistrict(id: 'c4940898-791f-4a16-8bfb-518f27b84f6d', name: 'হাজীগঞ্জ'),
-    SubDistrict(
-      id: 'cd8843c2-3b33-4282-9c3d-5664185ff385',
-      name: 'মতলব উত্তর',
-    ),
+    SubDistrict(id: 'cd8843c2-3b33-4282-9c3d-5664185ff385', name: 'মতলব উত্তর'),
     SubDistrict(id: '18681c9f-5d6e-4f41-ae63-168d2e35b311', name: 'ফরিদগঞ্জ'),
   ],
 
-//লক্ষ্মীপুর
+  //লক্ষ্মীপুর
   districtMap['লক্ষ্মীপুর']!: [
-    SubDistrict(id: 'e11cd5cb-379b-4913-9fa1-676d42c485cd', name: 'লক্ষ্মীপুর সদর'),
+    SubDistrict(
+      id: 'e11cd5cb-379b-4913-9fa1-676d42c485cd',
+      name: 'লক্ষ্মীপুর সদর',
+    ),
 
     SubDistrict(id: '5942419a-3ed2-449d-98d5-8067eca8b952', name: 'কমলনগর'),
-    SubDistrict(
-      id: '82549570-fb87-4259-b26c-f604d5bd63db',
-      name: 'রায়পুর',
-    ),
+    SubDistrict(id: '82549570-fb87-4259-b26c-f604d5bd63db', name: 'রায়পুর'),
     SubDistrict(id: '073ae979-7c65-4660-a664-cdebf1420094', name: 'রামগতি'),
     SubDistrict(id: 'b182568a-95dd-4af6-9813-78bae1a67d87', name: 'রামগঞ্জ'),
   ],
 
-
-
   //নোয়াখালী
   districtMap['নোয়াখালী']!: [
-    SubDistrict(id: '9dee7ea7-28ec-44ce-a4c2-abd3a10c9e19', name: 'নোয়াখালী সদর'),
-    SubDistrict(id: '944d7fbd-5916-4a9c-bd09-4cbb39b9015b', name: 'কোম্পানীগঞ্জ'),
     SubDistrict(
-      id: '467e09fd-6c91-43b3-b04c-088e07125853',
-      name: 'বেগমগঞ্জ',
+      id: '9dee7ea7-28ec-44ce-a4c2-abd3a10c9e19',
+      name: 'নোয়াখালী সদর',
     ),
+    SubDistrict(
+      id: '944d7fbd-5916-4a9c-bd09-4cbb39b9015b',
+      name: 'কোম্পানীগঞ্জ',
+    ),
+    SubDistrict(id: '467e09fd-6c91-43b3-b04c-088e07125853', name: 'বেগমগঞ্জ'),
     SubDistrict(id: 'e694eef9-84b6-4531-afa9-226e1b331392', name: 'হাতিয়া'),
     SubDistrict(id: 'f39bac55-0837-4dd7-8b05-4a220feaa0aa', name: 'সুবর্ণচর'),
     SubDistrict(id: '1c4e41b6-95ee-488d-83b6-2d9498150667', name: 'কবিরহাট'),
-    SubDistrict(
-      id: 'cd17a58f-4b8f-4d32-91bb-30fb66361498',
-      name: 'সেনবাগ',
-    ),
+    SubDistrict(id: 'cd17a58f-4b8f-4d32-91bb-30fb66361498', name: 'সেনবাগ'),
     SubDistrict(id: '8cf0c23e-9cd8-4ff8-ba48-cab958032ae1', name: 'চাটখিল'),
     SubDistrict(id: '751374c5-25d4-46bd-9fea-011fcdf51887', name: 'সোনাইমোরি'),
   ],
-
-
-
 
   //ফেনী
   districtMap['ফেনী']!: [
@@ -702,17 +625,24 @@ final Map<String, List<SubDistrict>> districtSubdistrictMap = {
     SubDistrict(id: 'ece26da5-c519-4fdf-a596-918f012ff5bd', name: 'সোনাগাজী'),
     SubDistrict(id: '6ed25f9c-c92b-4408-9c85-371f07861c41', name: 'ফুলগাজী'),
     SubDistrict(id: '1738004e-8782-4e00-b87b-26e505bdc298', name: 'পরশুরাম'),
-    SubDistrict(id: 'cb57d8c9-6719-4dc7-b551-6da8ecdc0872', name: 'দাগনভূঁইয়া'),
+    SubDistrict(
+      id: 'cb57d8c9-6719-4dc7-b551-6da8ecdc0872',
+      name: 'দাগনভূঁইয়া',
+    ),
   ],
-
-
 
   //খাগড়াছড়ি
   districtMap['খাগড়াছড়ি']!: [
-    SubDistrict(id: '6a5604dc-865d-46f1-865a-b266c89f35e7', name: 'খাগড়াছড়ি সদর'),
+    SubDistrict(
+      id: '6a5604dc-865d-46f1-865a-b266c89f35e7',
+      name: 'খাগড়াছড়ি সদর',
+    ),
     SubDistrict(id: 'ca9dda19-84a6-4200-b273-6f492ca1efb6', name: 'দীঘিনালা'),
     SubDistrict(id: '7bb8fd36-4956-486d-8721-2b0feba76aef', name: 'পানছড়ি'),
-    SubDistrict(id: '5cd24713-b784-436d-a7d5-95178c3ae1d7', name: 'লক্ষ্মীছড়ি'),
+    SubDistrict(
+      id: '5cd24713-b784-436d-a7d5-95178c3ae1d7',
+      name: 'লক্ষ্মীছড়ি',
+    ),
     SubDistrict(id: '4a212a3e-a6f1-4c8f-a97b-cf8df5bdc8d9', name: 'মহলছড়ি'),
     SubDistrict(id: 'b81cc4ff-a68e-4c84-a5f0-599b43616003', name: 'মানিকছড়ি'),
     SubDistrict(id: 'a71f8dec-ea5f-4354-9a61-7dff4095203a', name: 'রামগড়'),
@@ -722,7 +652,10 @@ final Map<String, List<SubDistrict>> districtSubdistrictMap = {
 
   //রাঙ্গামাটি
   districtMap['রাঙ্গামাটি']!: [
-    SubDistrict(id: 'efab72da-6725-465d-9c48-b9505041edb9', name: 'রাঙ্গামাটি সদর'),
+    SubDistrict(
+      id: 'efab72da-6725-465d-9c48-b9505041edb9',
+      name: 'রাঙ্গামাটি সদর',
+    ),
     SubDistrict(id: 'deb01f29-5bf0-4e11-a7ea-196cf1a20eb6', name: 'কাপ্তাই'),
     SubDistrict(id: '450d10e6-8887-488b-be7e-d86eaf6cfe5f', name: 'কাউখালী'),
     SubDistrict(id: '24784dd1-5c7e-4bf6-97d2-dcec1d7a2b09', name: 'বাঘাইছড়ি'),
@@ -734,22 +667,29 @@ final Map<String, List<SubDistrict>> districtSubdistrictMap = {
     SubDistrict(id: '88896b68-b12b-4c61-a88c-d7159e27378b', name: 'নানিয়ারচর'),
   ],
 
-
   //বন্দরবান
   districtMap['বন্দরবান']!: [
-    SubDistrict(id: 'd8b7da32-51fa-4ccb-a15c-d936e5e08eee', name: 'বন্দরবান সদর'),
+    SubDistrict(
+      id: 'd8b7da32-51fa-4ccb-a15c-d936e5e08eee',
+      name: 'বন্দরবান সদর',
+    ),
     SubDistrict(id: '0452d0d9-6b9c-43a3-bd8b-565863d83fcf', name: 'আলীকদম'),
-    SubDistrict(id: '839cfb8d-aad3-4f6d-abc4-a9c6d74c655f', name: 'নাইক্ষংছড়ি'),
+    SubDistrict(
+      id: '839cfb8d-aad3-4f6d-abc4-a9c6d74c655f',
+      name: 'নাইক্ষংছড়ি',
+    ),
     SubDistrict(id: 'ba2bb720-9f1a-4a7c-b015-c4368caca017', name: 'রোয়াংছড়ি'),
     SubDistrict(id: '0f4460f1-a37e-45bb-99db-d8c720e30233', name: 'লামা'),
     SubDistrict(id: 'e76451bd-e9cb-4347-bec9-3d518a2014db', name: 'রুমা'),
     SubDistrict(id: '2e4e4fc8-7b7f-424d-a0bd-1b254d55d2c1', name: 'থানচি'),
   ],
 
-
   //চট্টগ্রাম
   districtMap['চট্টগ্রাম']!: [
-    SubDistrict(id: '3c3aaaf8-aaff-42b7-b90f-0f056fc5d5f3', name: 'রাঙ্গুনিয়া'),
+    SubDistrict(
+      id: '3c3aaaf8-aaff-42b7-b90f-0f056fc5d5f3',
+      name: 'রাঙ্গুনিয়া',
+    ),
     SubDistrict(id: 'ee35fcb6-4daf-4ff0-bf9c-67ae435b06fd', name: 'সীতাকুণ্ড'),
     SubDistrict(id: '6340b0d9-030c-47c3-aa88-459b7bc99dbe', name: 'মিরসরাই'),
     SubDistrict(id: '83407f15-6005-457d-b4ce-75084e71e20d', name: 'পটিয়া'),
@@ -766,11 +706,12 @@ final Map<String, List<SubDistrict>> districtSubdistrictMap = {
     SubDistrict(id: 'cfbba335-fe3f-40a7-8225-e651c84243fb', name: 'কর্ণফুলী'),
   ],
 
-
-
   //কক্সবাজার
   districtMap['কক্সবাজার']!: [
-    SubDistrict(id: 'e5d85da5-a1e0-4bd2-bfb7-dca44ac7651d', name: 'কক্সবাজার সদর'),
+    SubDistrict(
+      id: 'e5d85da5-a1e0-4bd2-bfb7-dca44ac7651d',
+      name: 'কক্সবাজার সদর',
+    ),
     SubDistrict(id: 'da8e3fe6-217b-4f73-ad56-5206822a4959', name: 'চকরিয়া'),
     SubDistrict(id: 'df4a28c7-2088-4071-84c1-9106ed88891a', name: 'কুতুবদিয়া'),
     SubDistrict(id: 'b02092e8-410d-48d5-919d-c1b6ead897f2', name: 'উখিয়া'),
@@ -779,7 +720,6 @@ final Map<String, List<SubDistrict>> districtSubdistrictMap = {
     SubDistrict(id: 'ec8d61e5-33fe-4161-843d-f2675437e4ea', name: 'রামু'),
     SubDistrict(id: 'ec445127-99e8-4eac-a0bf-9eb7b9f013fd', name: 'টেকনাফ'),
   ],
-
 
   //খুলনা
   districtMap['খুলনা']!: [
@@ -794,18 +734,19 @@ final Map<String, List<SubDistrict>> districtSubdistrictMap = {
     SubDistrict(id: '005bae8a-da1f-45d1-a66f-4ca88e0a2206', name: 'কয়রা'),
   ],
 
-
   //সাতক্ষীরা
   districtMap['সাতক্ষীরা']!: [
     SubDistrict(id: 'da8e3fe6-217b-4f73-ad56-5206822a4959', name: 'আসাসুনি'),
     SubDistrict(id: 'df4a28c7-2088-4071-84c1-9106ed88891a', name: 'দেবহাটা'),
     SubDistrict(id: 'b02092e8-410d-48d5-919d-c1b6ead897f2', name: 'কলারোয়া'),
-    SubDistrict(id: 'e5d85da5-a1e0-4bd2-bfb7-dca44ac7651d', name: 'সাতক্ষীরা সদর'),
+    SubDistrict(
+      id: 'e5d85da5-a1e0-4bd2-bfb7-dca44ac7651d',
+      name: 'সাতক্ষীরা সদর',
+    ),
     SubDistrict(id: '29b128ae-5747-4de4-a07e-9046bc190a87', name: 'শ্যামনগর'),
     SubDistrict(id: '2844134a-eaf7-411d-ab55-e5c17df36293', name: 'টালা'),
     SubDistrict(id: 'ec8d61e5-33fe-4161-843d-f2675437e4ea', name: 'কালীগঞ্জ'),
   ],
-
 
   //যশোর
   districtMap['যশোর']!: [
@@ -819,30 +760,39 @@ final Map<String, List<SubDistrict>> districtSubdistrictMap = {
     SubDistrict(id: '487343f2-9dcd-4cf7-9389-199c965ca6bb', name: 'শার্শা'),
   ],
 
-
   //চুয়াডাঙ্গা
   districtMap['চুয়াডাঙ্গা']!: [
-    SubDistrict(id: '720e107f-7697-48ab-a2ed-f4d00812f5a1', name: 'চুয়াডাঙ্গা সদর'),
+    SubDistrict(
+      id: '720e107f-7697-48ab-a2ed-f4d00812f5a1',
+      name: 'চুয়াডাঙ্গা সদর',
+    ),
     SubDistrict(id: 'c3075ca8-d1a0-4a65-90f3-c856eb210c82', name: 'আলমডাঙ্গা'),
     SubDistrict(id: 'e4fe396d-ff03-4e65-8374-64a748fb5dc3', name: 'দামুড়হুদা'),
     SubDistrict(id: '6bddbb98-1821-451c-aa60-a696ac8a0ce8', name: 'জীবননগর'),
   ],
 
-
   //ঝিনাইদহ
   districtMap['ঝিনাইদহ']!: [
-    SubDistrict(id: '443fbf0f-5f33-4328-a269-801955d1b17b', name: 'ঝিনাইদহ সদর'),
+    SubDistrict(
+      id: '443fbf0f-5f33-4328-a269-801955d1b17b',
+      name: 'ঝিনাইদহ সদর',
+    ),
     SubDistrict(id: 'e73b735c-600c-4be6-8b0a-1d3f280b3809', name: 'শৈলকুপা'),
-    SubDistrict(id: '9665053c-a1f4-43ce-af54-22f24bcee703', name: 'হরিণাকুন্ডু'),
+    SubDistrict(
+      id: '9665053c-a1f4-43ce-af54-22f24bcee703',
+      name: 'হরিণাকুন্ডু',
+    ),
     SubDistrict(id: '4741d790-2579-4fcd-bc3d-c11634fc8cc0', name: 'কালীগঞ্জ'),
     SubDistrict(id: '2cb6bbfc-2803-4bdd-b4aa-fca8aded6a3c', name: 'কোটচাঁদপুর'),
     SubDistrict(id: 'd0e6a12f-38c7-4049-8d6d-687fbc5f9d1b', name: 'মহেশপুর'),
   ],
 
-
   //কুষ্টিয়া
   districtMap['কুষ্টিয়া']!: [
-    SubDistrict(id: '238487db-b44a-46ef-8bd9-84435fdbe75d', name: 'কুষ্টিয়া সদর'),
+    SubDistrict(
+      id: '238487db-b44a-46ef-8bd9-84435fdbe75d',
+      name: 'কুষ্টিয়া সদর',
+    ),
     SubDistrict(id: '5071d475-e543-4d36-80a7-582eedbb6b38', name: 'কুমারখালী'),
     SubDistrict(id: 'c60b6648-ff43-48b1-abea-f0a06f1b80dd', name: 'খোকসা'),
     SubDistrict(id: '69b05fdc-7ffe-4117-a85f-ab8fa1302548', name: 'মিরপুর'),
@@ -855,30 +805,36 @@ final Map<String, List<SubDistrict>> districtSubdistrictMap = {
     SubDistrict(id: 'edc4152e-2d4b-4973-9ee8-236d3b8cf065', name: 'শালিখা'),
     SubDistrict(id: 'a610588c-59d8-4509-8c77-3734f644c612', name: 'শ্রীপুর'),
     SubDistrict(id: 'e9f6200e-cec4-4928-9e8d-4d61cfbc41da', name: 'মাগুরা সদর'),
-    SubDistrict(id: 'c10fe33a-7d48-4f49-a7e0-0fcf8f7a1298', name: 'মোহাম্মদপুর'),
+    SubDistrict(
+      id: 'c10fe33a-7d48-4f49-a7e0-0fcf8f7a1298',
+      name: 'মোহাম্মদপুর',
+    ),
   ],
 
   //মেহেরপুর
   districtMap['মেহেরপুর']!: [
     SubDistrict(id: '465dd610-f32f-4000-bc30-c330cc5e1fcd', name: 'মুজিবনগর'),
-    SubDistrict(id: 'a43ce74a-f28b-4f3f-9c4a-a7458f9e32a9', name: 'মেহেরপুর সদর'),
+    SubDistrict(
+      id: 'a43ce74a-f28b-4f3f-9c4a-a7458f9e32a9',
+      name: 'মেহেরপুর সদর',
+    ),
     SubDistrict(id: '61df7414-897c-48f5-b43f-c40543be5d05', name: 'গাংনী'),
   ],
 
   //নড়াইল
   districtMap['নড়াইল']!: [
-
     SubDistrict(id: '4880579d-b920-421e-a6bd-b304ae895f46', name: 'নড়াইল সদর'),
     SubDistrict(id: '998b55af-da09-496c-9cc1-ba245bab6648', name: 'লোহাগড়া'),
     SubDistrict(id: '6b5b042b-36dd-4d54-8176-5436278ec4e2', name: 'কালিয়া'),
   ],
 
-
-
   //বাগেরহাট
   districtMap['বাগেরহাট']!: [
     SubDistrict(id: '999af71b-82de-42af-b1cd-23e903fb78a6', name: 'ফকিরহাট'),
-    SubDistrict(id: '6834aecc-9436-41cc-bda4-2ee588c07080', name: 'বাগেরহাট সদর'),
+    SubDistrict(
+      id: '6834aecc-9436-41cc-bda4-2ee588c07080',
+      name: 'বাগেরহাট সদর',
+    ),
     SubDistrict(id: '36dcbb46-4b8c-4fa4-a31e-133d706612aa', name: 'মোল্লাহাট'),
     SubDistrict(id: '1c7d8aee-3a23-4654-b806-9a225278e597', name: 'শরণখোলা'),
     SubDistrict(id: 'cf4311fb-f02e-41ac-a5cf-9e9567e06818', name: 'রামপাল'),
@@ -888,10 +844,12 @@ final Map<String, List<SubDistrict>> districtSubdistrictMap = {
     SubDistrict(id: '34bc8e10-e791-42f1-9753-c04240411658', name: 'চিতলমারী'),
   ],
 
-
   //নাটোর
   districtMap['নাটোর']!: [
-    SubDistrict(id: 'e5f7114b-c88a-44b7-8b50-93d301c46048', name: 'বাগাতিপাড়া'),
+    SubDistrict(
+      id: 'e5f7114b-c88a-44b7-8b50-93d301c46048',
+      name: 'বাগাতিপাড়া',
+    ),
     SubDistrict(id: 'f83850e7-9fb8-48da-8faf-cb06399e62e5', name: 'বড়াইগ্রাম'),
     SubDistrict(id: '09bad702-15c4-4d15-b435-44768dc2c692', name: 'গুরুদাসপুর'),
     SubDistrict(id: '8644a4d4-780d-4557-9852-201ce35cc05b', name: 'নাটোর সদর'),
@@ -899,7 +857,6 @@ final Map<String, List<SubDistrict>> districtSubdistrictMap = {
     SubDistrict(id: '11afa5c1-6224-4cd7-b035-bfa073c16cf3', name: 'লালপুর'),
     SubDistrict(id: 'c5510ee5-0bef-4250-9a37-7f3b1d828cdb', name: 'নলডাঙ্গা'),
   ],
-
 
   //রাজশাহী
   districtMap['রাজশাহী']!: [
@@ -914,9 +871,6 @@ final Map<String, List<SubDistrict>> districtSubdistrictMap = {
     SubDistrict(id: 'c27d9b94-fdbd-40f1-8693-8e480cff56ae', name: 'বাগমারা'),
   ],
 
-
-
-
   //সিরাজগঞ্জ
   districtMap['সিরাজগঞ্জ']!: [
     SubDistrict(id: '3b7ce5f5-b952-42ce-98cd-52c70935620e', name: 'বেলকুচি'),
@@ -925,12 +879,13 @@ final Map<String, List<SubDistrict>> districtSubdistrictMap = {
     SubDistrict(id: '541068da-f26a-42f3-a2c6-e7b89a859cd7', name: 'কাজিপুর'),
     SubDistrict(id: '7ed5fed3-69d9-4802-af02-19c6c9c79cf5', name: 'রায়গঞ্জ'),
     SubDistrict(id: '1e97e85d-691b-40b0-b880-8de91dba9431', name: 'শাহজাদপুর'),
-    SubDistrict(id: '010658d7-95bc-4ece-8a3b-afb0eedff9cf', name: 'সিরাজগঞ্জ সদর'),
+    SubDistrict(
+      id: '010658d7-95bc-4ece-8a3b-afb0eedff9cf',
+      name: 'সিরাজগঞ্জ সদর',
+    ),
     SubDistrict(id: 'dfeac5f9-b557-4dc3-91fb-7ccc0a47dd32', name: 'তাড়াশ'),
     SubDistrict(id: '27541293-f5ba-484a-b5fd-60933670e400', name: 'উল্লাপাড়া'),
   ],
-
-
 
   //পাবনা
   districtMap['পাবনা']!: [
@@ -945,14 +900,19 @@ final Map<String, List<SubDistrict>> districtSubdistrictMap = {
     SubDistrict(id: '68e66b40-1b6a-4c0d-ae4a-ec39aedfafe9', name: 'ফরিদপুর'),
   ],
 
-
   //বগুড়া
   districtMap['বগুড়া']!: [
     SubDistrict(id: 'ec7b473c-4e7a-45e4-8070-46d2f5799090', name: 'কাহালু'),
     SubDistrict(id: '71409c4b-772a-48c6-9fd2-c4555490286f', name: 'বগুড়া সদর'),
-    SubDistrict(id: 'ba8ddf3e-8796-47c4-97d9-517c4919a3ef', name: 'শারিয়াকান্দি'),
+    SubDistrict(
+      id: 'ba8ddf3e-8796-47c4-97d9-517c4919a3ef',
+      name: 'শারিয়াকান্দি',
+    ),
     SubDistrict(id: '5df52e64-03b2-4761-b679-2efd11a661df', name: 'শাজাহানপুর'),
-    SubDistrict(id: '4b2ab7ba-fe35-46a9-b0cc-38b021aabf0f', name: 'দুপচাঁচিয়া'),
+    SubDistrict(
+      id: '4b2ab7ba-fe35-46a9-b0cc-38b021aabf0f',
+      name: 'দুপচাঁচিয়া',
+    ),
     SubDistrict(id: 'f6727316-de34-4d81-b694-c40c78386531', name: 'আদমদীঘি'),
     SubDistrict(id: '67172b94-51cb-4fc7-95a2-0a7b8160c244', name: 'নন্দিগ্রাম'),
     SubDistrict(id: '790fadc6-e1f6-4578-9b0f-e81448c6f4cd', name: 'সোনাতলা'),
@@ -962,16 +922,165 @@ final Map<String, List<SubDistrict>> districtSubdistrictMap = {
     SubDistrict(id: '83de8dfc-4d6d-437a-b052-16f70d178b22', name: 'শিবগঞ্জ'),
   ],
 
-
-
-
   //চাপাইনবাবগঞ্জ
   districtMap['চাপাইনবাবগঞ্জ']!: [
-    SubDistrict(id: '5f13b08f-73f2-4b4f-9f1d-f195f4449d47', name: 'চাপাইনবাবগঞ্জ সদর'),
+    SubDistrict(
+      id: '5f13b08f-73f2-4b4f-9f1d-f195f4449d47',
+      name: 'চাপাইনবাবগঞ্জ সদর',
+    ),
     SubDistrict(id: '1fe40e9e-cdf0-4bf9-bfc9-64bb01788ea2', name: 'গোমস্তাপুর'),
     SubDistrict(id: '28b067c7-30e3-4d68-9664-b7252e94cc11', name: 'নাচোল'),
     SubDistrict(id: '23695e04-b7fc-4b7d-8a5e-14b08c1710cd', name: 'ভোলাহাট'),
     SubDistrict(id: 'bde0bd70-e164-4089-8570-6f60de30502a', name: 'শিবগঞ্জ'),
   ],
 
+  //নওগাঁ
+  districtMap['নওগাঁ']!: [
+    SubDistrict(id: '262ba64b-036d-49a5-89bc-7d5bac2266f7', name: 'মহাদেবপুর'),
+    SubDistrict(id: '77cd95d1-1457-472b-a986-bc7aeea840c4', name: 'বদলগাছি'),
+    SubDistrict(id: '612614c9-8402-40ed-8088-c466950b565b', name: 'পত্নীতলা'),
+    SubDistrict(id: '49066ee6-c6e0-412a-890a-43cd8f175d24', name: 'ধামইরহাট'),
+    SubDistrict(id: '93960033-c2e5-428f-8df7-d7ead7b3ba4a', name: 'নিয়ামতপুর'),
+    SubDistrict(id: '6c240128-2845-440c-a890-96c6fe53fcf1', name: 'মান্দা'),
+    SubDistrict(id: '9704bd92-f6ed-4b7b-904a-7751fb390575', name: 'আত্রাই'),
+    SubDistrict(id: 'cbe8ac66-f235-47a4-9079-cdac7c6164bd', name: 'রাণীনগর'),
+    SubDistrict(id: '6eded9f7-6e9c-4fdc-84d5-9cb798eb3095', name: 'নওগাঁ সদর'),
+    SubDistrict(id: '8fdc6d0f-e60b-44bd-b61c-05c182faa25b', name: 'পোরশা'),
+    SubDistrict(id: 'e273ba6b-0c13-4376-b329-afefe455377e', name: 'সাপাহার'),
+  ],
+
+  //জয়পুরহাট
+  districtMap['জয়পুরহাট']!: [
+    SubDistrict(id: '62477194-0d78-4c4c-adbd-7757f8e345ec', name: 'আক্কেলপুর'),
+    SubDistrict(id: '7fd441d0-57b9-40cb-9487-4697e3d56631', name: 'কালাই'),
+    SubDistrict(id: '982f9d2a-7d37-4b85-923e-c023de635493', name: 'ক্ষেতলাল'),
+    SubDistrict(id: '7a62623a-3f00-4089-b962-dff719042d02', name: 'পাঁচবিবি'),
+    SubDistrict(
+      id: 'd79ec931-432f-4828-a7db-465485243efa',
+      name: 'জয়পুরহাট সদর',
+    ),
+  ],
+
+  //দিনাজপুর
+  districtMap['দিনাজপুর']!: [
+    SubDistrict(id: 'f9ebf4ee-c75b-40e1-bddb-72078aeb1e1b', name: 'নবাবগঞ্জ'),
+    SubDistrict(id: '81dafb5f-d4c2-44f5-8f6c-8d642d592b66', name: 'বীরগঞ্জ'),
+    SubDistrict(id: '9f7b5ee9-8781-4735-9cd9-dfc9a16f4149', name: 'ঘোড়াঘাট'),
+    SubDistrict(id: 'd6bd6c97-82a0-4e3d-9588-a0b6029f5305', name: 'বিরামপুর'),
+    SubDistrict(id: '7c3f1bbe-2efc-4c8d-aae0-59bd7f68040c', name: 'পার্বতীপুর'),
+    SubDistrict(id: 'f81462c9-a5a6-4106-a445-626f76c94a06', name: 'বোচাগঞ্জ'),
+    SubDistrict(id: '40579b7a-2eb3-4797-b07c-0415ff11039c', name: 'কাহারোল'),
+    SubDistrict(id: '1df0bae7-34eb-480a-8255-f53648893b38', name: 'ফুলবাড়ি'),
+    SubDistrict(
+      id: '7dd4809f-55dd-45d3-8289-5dd747a4bba0',
+      name: 'দিনাজপুর সদর',
+    ),
+    SubDistrict(id: 'e9066749-2d2d-4bdc-8df4-ec8e27229e57', name: 'হাকিমপুর'),
+    SubDistrict(id: '1406f135-4fec-407c-b03f-87566853fd59', name: 'খানসামা'),
+    SubDistrict(id: '585745aa-2a1d-41a5-9a7a-8e47dcbbde3e', name: 'বিরল'),
+    SubDistrict(id: '6e5c9be1-d6cd-49ce-93a4-281cf7974406', name: 'চিরিরবন্দর'),
+  ],
+
+  //কুড়িগ্রাম
+  districtMap['কুড়িগ্রাম']!: [
+    SubDistrict(
+      id: 'c43dabb6-afaf-41a4-9c4d-80471d6170c0',
+      name: 'কুড়িগ্রাম সদর',
+    ),
+    SubDistrict(id: 'e8b09c00-0f90-4e73-b8b6-53e2b83907c5', name: 'নাগেশ্বরী'),
+    SubDistrict(
+      id: '58edeb02-8066-4363-8fff-5c1f83f526c9',
+      name: 'ভূরুঙ্গামারী',
+    ),
+    SubDistrict(id: '7216c2b6-7973-42a6-a348-ba08102455e3', name: 'ফুলবাড়ী'),
+    SubDistrict(id: '5cbbd671-32ba-4a55-9c91-154c9a837d13', name: 'রাজারহাট'),
+    SubDistrict(id: '75b87384-13dc-4fe7-a666-94a6b861ac0c', name: 'উলিপুর'),
+    SubDistrict(id: '4bd35096-77a4-4b7d-9637-2ad0284cf55a', name: 'চিলমারী'),
+    SubDistrict(id: '38be7ca3-ce13-4ab4-8078-af81841f4f09', name: 'রৌমারী'),
+    SubDistrict(id: '55d74de0-c8ee-4e30-871b-231bba31b8b1', name: 'চররাজিবপুর'),
+  ],
+
+  //গাইবান্ধা
+  districtMap['গাইবান্ধা']!: [
+    SubDistrict(
+      id: '832c25ad-daae-4dfb-a20b-355d2bb81470',
+      name: 'সাদুল্লাপুর',
+    ),
+    SubDistrict(
+      id: '0274d933-107c-4ea9-83ec-4e85d2711d64',
+      name: 'গাইবান্ধা সদর',
+    ),
+    SubDistrict(id: '0a3e5386-127b-45c9-996c-f0bb870d70e0', name: 'পলাশবাড়ী'),
+    SubDistrict(id: 'f65d8ad1-c57a-471f-b412-4a348042bf5b', name: 'সাঘাটা'),
+    SubDistrict(
+      id: '72f393ad-ce8b-4c5b-b522-a51d88359fae',
+      name: 'গোবিন্দগঞ্জ',
+    ),
+    SubDistrict(id: '6d89bf08-0832-4231-a904-a6b49d5d8501', name: 'সুন্দরগঞ্জ'),
+    SubDistrict(id: '2fdb623b-409b-4fb4-9642-cf842b9c79d7', name: 'ফুলছড়ি'),
+  ],
+
+  //লালমনিরহাট
+  districtMap['লালমনিরহাট']!: [
+    SubDistrict(
+      id: 'd08d3615-9fd7-4a1d-8ae0-95a8930faf65',
+      name: 'লালমনিরহাট সদর',
+    ),
+    SubDistrict(id: '3a7bb2d5-c20e-47ce-a64d-e42c2ba1f083', name: 'কালীগঞ্জ'),
+    SubDistrict(id: '1bb18a9d-e1a9-41c4-bd54-8933d33f57cc', name: 'হাতীবান্ধা'),
+    SubDistrict(id: '6853db62-2a84-4926-bdfc-7097db294f68', name: 'পাটগ্রাম'),
+    SubDistrict(id: '3ac915ea-7d75-4ac1-bc23-d8a7f739699f', name: 'আদিতমারী'),
+  ],
+
+  //নিলফামারি
+  districtMap['নিলফামারি']!: [
+    SubDistrict(id: '00152f13-f923-4f92-ad0c-172465014100', name: 'সৈয়দপুর'),
+    SubDistrict(id: '0e2c4bed-8e7c-41be-860e-e942f89a8db6', name: 'ডোমার'),
+    SubDistrict(id: 'bda921b5-0044-4c2d-be68-34abe697de1a', name: 'ডিমলা'),
+    SubDistrict(id: '5f36f147-f7c5-4a85-ac26-12bdb28a2903', name: 'জলঢাকা'),
+    SubDistrict(
+      id: '46502ab8-b8c9-4a81-8e82-040e8a1a4505',
+      name: 'নিলফামারি সদর',
+    ),
+    SubDistrict(id: 'c69c6096-9505-4f0d-ac0a-76b33a8be094', name: 'কিশোরগঞ্জ'),
+  ],
+
+  //পঞ্চগড়
+  districtMap['পঞ্চগড়']!: [
+    SubDistrict(
+      id: '9a66136c-f7a0-4b7f-b806-832e8d6b0960',
+      name: 'পঞ্চগড় সদর',
+    ),
+    SubDistrict(id: '6a505720-9f30-48ff-910c-f08039357e45', name: 'দেবীগঞ্জ'),
+    SubDistrict(id: '34a6a0c1-1a38-4f70-b24e-33cee7679d82', name: 'বোদা'),
+    SubDistrict(id: '12139276-efc5-4ea2-b5ab-230dd3c9d3c9', name: 'আটোয়ারী'),
+    SubDistrict(id: '6e2c82d7-8ed8-46ac-92b5-ef08d4b107f1', name: 'তেতুলিয়া'),
+  ],
+
+  //রংপুর
+  districtMap['রংপুর']!: [
+    SubDistrict(id: 'c75a39de-22e3-41ce-8b25-7de757a18cd1', name: 'রংপুর সদর'),
+    SubDistrict(id: 'ff907b7e-610b-4c16-8a51-106303b9098c', name: 'গঙ্গাচড়া'),
+    SubDistrict(id: 'f49ddee0-4b00-422c-bddb-d698728328fe', name: 'তারাগঞ্জ'),
+    SubDistrict(id: '1732c8b4-1aee-4786-b16e-78d8965beda8', name: 'বদরগঞ্জ'),
+    SubDistrict(id: '53c2089f-c918-4722-91ef-d7143e608744', name: 'মিঠাপুকুর'),
+    SubDistrict(id: 'cc0a7c18-c22e-4d8d-b816-bdd16f8365e0', name: 'পীরগঞ্জ'),
+    SubDistrict(id: 'ade4bef6-0d38-4e6d-af31-65a23195e2af', name: 'কাউনিয়া'),
+    SubDistrict(id: 'aacec321-0afd-4ff9-a67f-ab66bab1f6d0', name: 'পীরগাছা'),
+  ],
+
+  //ঠাকুরগাঁও
+  districtMap['ঠাকুরগাঁও']!: [
+    SubDistrict(
+      id: '99b13414-85ae-4be6-9a9a-9162f6052951',
+      name: 'ঠাকুরগাঁও সদর',
+    ),
+    SubDistrict(id: '9e96fced-4f3a-4c72-afca-9647483fac15', name: 'পীরগঞ্জ'),
+    SubDistrict(id: 'a645bae8-697e-4b5b-b79a-fbfdb11889e4', name: 'রানীশংকৈল'),
+    SubDistrict(id: '9e441ed3-ec37-4b46-8ee3-5df1157cb371', name: 'হরিপুর'),
+    SubDistrict(
+      id: '51da2664-fd16-4703-a3b9-bd5e011ccb05',
+      name: 'বালিয়াডাঙ্গী',
+    ),
+  ],
 };
