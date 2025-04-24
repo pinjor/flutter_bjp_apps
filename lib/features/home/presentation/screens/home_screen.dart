@@ -11,10 +11,12 @@ import 'package:bjp_app/features/events/presentation/screens/event_scedule_scree
 import 'package:bjp_app/features/events/presentation/widgets/event_time_card.dart';
 import 'package:bjp_app/features/home/domain/recent_announcement.dart';
 import 'package:bjp_app/features/home/presentation/controllers/home_controller.dart';
+import 'package:bjp_app/features/home/presentation/screens/contact_information.dart';
+import 'package:bjp_app/features/home/presentation/screens/first_home_screen_portion.dart';
+import 'package:bjp_app/features/home/presentation/screens/leadership_trainning.dart';
 import 'package:bjp_app/features/home/presentation/screens/our_constitution.dart';
-import 'package:bjp_app/features/home/presentation/screens/our_introduction.dart';
+import 'package:bjp_app/features/home/presentation/screens/our_introduction_screen.dart';
 import 'package:bjp_app/features/home/presentation/widgets/discussion_card_widget.dart';
-import 'package:bjp_app/features/leadership_training/presentation/screens/leadership_training_screen.dart';
 import 'package:bjp_app/features/media/presentation/screens/photo_album_screen.dart';
 import 'package:bjp_app/features/media/presentation/screens/video_album_screen.dart';
 import 'package:bjp_app/features/member/presentation/screens/member_screen.dart';
@@ -22,9 +24,7 @@ import 'package:bjp_app/features/our_discussion/presentation/controllers/discuss
 import 'package:bjp_app/features/profile/presentation/screens/profile_editing_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-import '../../../../core/constants/assets_path.dart';
 import '../../../../core/ui/app_icon_widget.dart';
 import '../../../announcement/presentation/screens/create_announcement_screen.dart';
 import '../../../events/domain/event_model.dart';
@@ -294,185 +294,198 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       });
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          _appBarTitle,
-          style: TextStyle(color: Colors.black, fontSize: 18),
-        ),
-        centerTitle: true,
-        actions: [
-          TextButton(
-            onPressed:
-                () => showLogoutDialog(
-                  context: context,
-                  onPressed: () => _logoutUser(),
-                ),
-            child: Text(
-              'Logout',
-              style: TextStyle(color: AppColors.themeColor, fontSize: 14),
-            ),
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child:
-            _drawerOptions(
-              isAdmin,
-              authState,
-              events: eventListState,
-              discussions: discussionListState,
-            )[_selectedIndex],
-      ),
-      floatingActionButton:
-          _selectedIndex == 0
-              ? FloatingActionButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder:
-                          (context) => ChatPage(userInfo: '1', name: "Admin"),
-                    ),
-                  );
-                },
-                child: Icon(Icons.chat, color: Colors.white),
-                backgroundColor: AppColors.themeColor,
-              )
-              : null,
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      drawer: Drawer(
-        width: 250,
-        child: ListView(
-          children: [
-            DrawerHeader(child: AppLogoWidget(height: 10, width: 10)),
-            ListTile(
-              leading: Icon(Icons.dashboard),
-              title: Text('হোম'),
-              selected: _selectedIndex == 0,
-              onTap: () {
-                _onItemTapped(0);
-                Navigator.pop(context);
-              },
-            ),
-            // announcements
-            if (isAdmin) ...[
-              ExpansionTile(
-                leading: Icon(Icons.announcement),
-                title: Text('ঘোষণা'),
-                children: [
-                  ListTile(
-                    leading: Icon(Icons.list),
-                    title: Text('ঘোষণা তালিকা'),
-                    selected: _selectedIndex == 1,
-                    onTap: () {
-                      _onItemTapped(1);
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.add),
-                    title: Text('ঘোষণা তৈরি করুন'),
-                    selected: _selectedIndex == 2,
-                    onTap: () {
-                      _onItemTapped(2);
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
-              ),
-              ListTile(
-                leading: Icon(Icons.person_4),
-                title: Text('সদস্য'),
-                selected: _selectedIndex == 3,
-                onTap: () {
-                  _onItemTapped(3);
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.schedule_sharp),
-                title: Text('অনুষ্ঠানের সময়'),
-                selected: _selectedIndex == 4,
-                onTap: () {
-                  _onItemTapped(4);
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.chat),
-                title: Text('চ্যাট তালিকা'),
-                selected: _selectedIndex == 5,
-                onTap: () {
-                  _onItemTapped(5);
-                  Navigator.pop(context);
-                },
-              ),
-            ] else ...[
-              ListTile(
-                leading: Icon(Icons.announcement),
-                title: Text('ঘোষণা'),
-                selected: _selectedIndex == 1,
-                onTap: () {
-                  _onItemTapped(1);
-                  Navigator.pop(context);
-                },
-              ),
+    return PopScope(
+      canPop: _selectedIndex == 0, // Allow app to minimize only when on home
+      onPopInvoked: (bool didPop) {
+        if (!didPop && _selectedIndex != 0) {
+          // Handle back press: navigate to home screen
+          setState(() {
+            _selectedIndex = 0;
+            _appBarTitle = 'হোম';
+          });
+        }
+      },
 
-              ListTile(
-                leading: Icon(Icons.picture_as_pdf),
-                title: Text('আমাদের সংবিধান'),
-                selected: _selectedIndex == 2,
-                onTap: () {
-                  _onItemTapped(2);
-                  Navigator.pop(context);
-                },
-              ),
-              ExpansionTile(
-                leading: Icon(Icons.perm_media),
-                title: Text('মিডিয়া'),
-                children: [
-                  ListTile(
-                    leading: Icon(Icons.picture_in_picture_sharp),
-                    title: Text('ছবি'),
-                    selected: _selectedIndex == 3,
-                    onTap: () {
-                      _onItemTapped(3);
-                      Navigator.pop(context);
-                    },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: Text(
+            _appBarTitle,
+            style: TextStyle(color: Colors.black, fontSize: 18),
+          ),
+          centerTitle: true,
+          actions: [
+            TextButton(
+              onPressed:
+                  () => showLogoutDialog(
+                    context: context,
+                    onPressed: () => _logoutUser(),
                   ),
-                  ListTile(
-                    leading: Icon(Icons.video_collection),
-                    title: Text('ভিডিও'),
-                    selected: _selectedIndex == 4,
-                    onTap: () {
-                      _onItemTapped(4);
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
+              child: Text(
+                'Logout',
+                style: TextStyle(color: AppColors.themeColor, fontSize: 14),
               ),
-              ListTile(
-                leading: Icon(Icons.edit),
-                title: Text('প্রোফাইল পরিবর্তন'),
-                selected: _selectedIndex == 5,
-                onTap: () {
-                  _onItemTapped(5);
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.chat),
-                title: Text('চ্যাট উইথ আন্দালিব'),
-                selected: _selectedIndex == 6,
-                onTap: () {
-                  _onItemTapped(6);
-                  Navigator.pop(context);
-                },
-              ),
-            ],
+            ),
           ],
+        ),
+        body: SafeArea(
+          child:
+              _drawerOptions(
+                isAdmin,
+                authState,
+                events: eventListState,
+                discussions: discussionListState,
+              )[_selectedIndex],
+        ),
+        floatingActionButton:
+            _selectedIndex == 0
+                ? FloatingActionButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (context) => ChatPage(userInfo: '1', name: "Admin"),
+                      ),
+                    );
+                  },
+                  child: Icon(Icons.chat, color: Colors.white),
+                  backgroundColor: AppColors.themeColor,
+                )
+                : null,
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        drawer: Drawer(
+          width: 250,
+          child: ListView(
+            children: [
+              DrawerHeader(child: AppLogoWidget(height: 10, width: 10)),
+              ListTile(
+                leading: Icon(Icons.dashboard),
+                title: Text('হোম'),
+                selected: _selectedIndex == 0,
+                onTap: () {
+                  _onItemTapped(0);
+                  Navigator.pop(context);
+                },
+              ),
+              // announcements
+              if (isAdmin) ...[
+                ExpansionTile(
+                  leading: Icon(Icons.announcement),
+                  title: Text('ঘোষণা'),
+                  children: [
+                    ListTile(
+                      leading: Icon(Icons.list),
+                      title: Text('ঘোষণা তালিকা'),
+                      selected: _selectedIndex == 1,
+                      onTap: () {
+                        _onItemTapped(1);
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.add),
+                      title: Text('ঘোষণা তৈরি করুন'),
+                      selected: _selectedIndex == 2,
+                      onTap: () {
+                        _onItemTapped(2);
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
+                ListTile(
+                  leading: Icon(Icons.person_4),
+                  title: Text('সদস্য'),
+                  selected: _selectedIndex == 3,
+                  onTap: () {
+                    _onItemTapped(3);
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.schedule_sharp),
+                  title: Text('অনুষ্ঠানের সময়'),
+                  selected: _selectedIndex == 4,
+                  onTap: () {
+                    _onItemTapped(4);
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.chat),
+                  title: Text('চ্যাট তালিকা'),
+                  selected: _selectedIndex == 5,
+                  onTap: () {
+                    _onItemTapped(5);
+                    Navigator.pop(context);
+                  },
+                ),
+              ] else ...[
+                ListTile(
+                  leading: Icon(Icons.announcement),
+                  title: Text('ঘোষণা'),
+                  selected: _selectedIndex == 1,
+                  onTap: () {
+                    _onItemTapped(1);
+                    Navigator.pop(context);
+                  },
+                ),
+
+                ListTile(
+                  leading: Icon(Icons.picture_as_pdf),
+                  title: Text('আমাদের সংবিধান'),
+                  selected: _selectedIndex == 2,
+                  onTap: () {
+                    _onItemTapped(2);
+                    Navigator.pop(context);
+                  },
+                ),
+                ExpansionTile(
+                  leading: Icon(Icons.perm_media),
+                  title: Text('মিডিয়া'),
+                  children: [
+                    ListTile(
+                      leading: Icon(Icons.picture_in_picture_sharp),
+                      title: Text('ছবি'),
+                      selected: _selectedIndex == 3,
+                      onTap: () {
+                        _onItemTapped(3);
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.video_collection),
+                      title: Text('ভিডিও'),
+                      selected: _selectedIndex == 4,
+                      onTap: () {
+                        _onItemTapped(4);
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
+                ListTile(
+                  leading: Icon(Icons.edit),
+                  title: Text('প্রোফাইল পরিবর্তন'),
+                  selected: _selectedIndex == 5,
+                  onTap: () {
+                    _onItemTapped(5);
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.chat),
+                  title: Text('চ্যাট উইথ আন্দালিব'),
+                  selected: _selectedIndex == 6,
+                  onTap: () {
+                    _onItemTapped(6);
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ],
+          ),
         ),
       ),
     );
@@ -486,225 +499,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                height: 200,
-                width: 200,
-                color: Colors.cyan,
-                child: Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'পরিবর্তনে যোগ দিন',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ), // Adds space between the two text widgets
-                      Text(
-                        'আমাদের লক্ষ্য একটি এমন সমাজ গঠন করা যেখানে '
-                        'প্রতিটি মানুষ সমান সুযোগ এবং মর্যাদা পাবে। আমরা বিশ্বাস করি যে '
-                        'সুশাসন ও জনগণের সক্রিয় অংশগ্রহণ ছাড়া প্রকৃত উন্নয়ন সম্ভব নয়।',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 8,
-                        ),
-                      ),
-                      SizedBox(height: 3),
-                      Text(
-                        'ন্যায়বিচার ও সমানাধিকারের ওপর ভিত্তি করে আমরা একটি ন্যায়সংগত '
-                        'সমাজ বিনির্মাণে প্রতিশ্রুতিবদ্ধ, যেখানে প্রত্যেকে স্বাধীনভাবে নিজের মত প্রকাশ '
-                        'করতে পারবে এবং সঠিক অধিকার ভোগ করতে সক্ষম হবে।',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 8,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
-              //SizedBox(width:2),
-              Image.asset(
-                AssetsPath.imagetwo,
-
-                height: 200,
-                width: 160,
-                fit: BoxFit.cover,
-              ),
-
-              // Add some space between the image and text
-              // The text with background color
-            ],
-          ),
+          first_home_screen_portion(),
 
           SizedBox(height: 15),
 
-          Stack(
-            children: [
-              Image.asset(
-                AssetsPath.our_journey,
-                width: double.infinity,
-                fit: BoxFit.fill,
-              ),
-              Positioned(
-                left: 20,
-                top: 10,
-                //bottom: 20, // Adjust the position as needed
-                child: Text(
-                  'আমাদের পরিচিতি',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 20,
-                top: 40,
-                //bottom: 20, // Adjust the position as needed
-                child: Text(
-                  '২০০১ সাল থেকে আজ পর্যন্ত, আমরা উন্নয়ন,\n'
-                  ' জনকল্যাণ ও সাম্যের জন্য '
-                  'নিবেদিতভাবে কাজ করে \n'
-                  'চলেছি।'
-                  'গণতন্ত্র, স্বাধীনতা, ন্যায়বিচার এবং সামাজিক ন্যায় \n'
-                  'নিশ্চিত করার'
-                  ' লক্ষ্যে আমাদের '
-                  'এই অগ্রযাত্রা অবিচল \n'
-                  'এবং অপ্রতিরোধ্য। '
-                  'আমরা প্রতিটি নাগরিকের কল্যাণ \n'
-                  ' ও সমানাধিকারের'
-                  'জন্য কাজ করে যাচ্ছি, '
-                  'যাতে সবার জন্য \n'
-                  'একটি সমৃদ্ধ ও সুরক্ষিত ভবিষ্যৎ নিশ্চিত করা যায়।',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 8,
-                  ),
-                ),
-              ),
-              // SizedBox(
-              //   height: 200,
-              // ), // Adds space between TextField and ElevatedButton
-              // ElevatedButton widget
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 118, 250, 0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Action when button is pressed
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => OurIntroduction(),
-                      ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white, // Button color
-                    padding: EdgeInsets.zero, // Padding inside button
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6), // Rounded corners
-                    ),
-                    minimumSize: Size(180, 20), // Minimum size of the button
-                  ),
-                  child: Text(
-                    'আরো পড়ুন', // Text inside the button
-                    style: TextStyle(
-                      fontSize: 10,
-                      color: Colors.black,
-                    ), // Font size inside button
-                  ),
-                ),
-              ),
-            ],
-          ),
+          our_introduction_screen(context: context),
           SizedBox(height: 8),
-          Stack(
-            children: [
-              Image.asset(
-                AssetsPath.join_to_change,
-                width: double.infinity,
-                fit: BoxFit.fill,
-              ),
-              Positioned(
-                left: 170,
-                top: 10,
-                //bottom: 20, // Adjust the position as needed
-                child: Text(
-                  'উন্নয়ন ও সমৃদ্ধির পথে',
-                  style: TextStyle(
-                    color: Colors.cyan,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 170,
-                top: 40,
-                //bottom: 20, // Adjust the position as needed
-                child: Text(
-                  'গণতন্ত্র ও ন্যায়বিচার দ্বারা পরিচালিত \n '
-                  'আমরা একটি সমৃদ্ধ নিরাপদ এবং সবার জন্য \n'
-                  'সমান সুযোগসমৃদ্ধ বাংলাদেশের জন্য \n'
-                  'নিরলস কাজ করে যাচ্ছি। আমাদের লক্ষ্য একটি এমন \n'
-                  'বাংলাদেশ গঠন করা যেখানে প্রতিটি মানুষ তার \n'
-                  ' অধিকার,মর্যাদাও সম্ভাবনা অর্জনের সুযোগ পাবে।\n'
-                  ' সমৃদ্ধি, সাম্য এবং শান্তির ভিত্তিতে আমরা এমন \n'
-                  'একটি সমাজ গড়ে তুলতে প্রতিশ্রুতিবদ্ধ, যা আগামী\n'
-                  ' প্রজন্মের জন্য এক আদর্শ দৃষ্টান্ত হবে।',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 6,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(170, 118, 110, 0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Action when button is pressed
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LeadershipTrainingScreen(),
-                      ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.themeColor, // Button color
-                    padding: EdgeInsets.zero, // Padding inside button
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6), // Rounded corners
-                    ),
-                    minimumSize: Size(180, 20), // Minimum size of the button
-                  ),
-                  child: Text(
-                    'লিডারশিপ ট্রেনিং', // Text inside the button
-                    style: TextStyle(
-                      fontSize: 10,
-                      color: Colors.white,
-                    ), // Font size inside button
-                  ),
-                ),
-              ),
-            ],
-          ),
+          LeadershipTrainingSection(),
           SizedBox(height: 8),
           if (!authState.isAdmin) ...[
             eventListState.when(
@@ -729,7 +530,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               'আপনাদের মতামত',
               style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24),
             ),
-            SizedBox(height: 5,),
+            SizedBox(height: 5),
             discussionListState.when(
               data: (discussions) {
                 if (discussions == null || discussions.isEmpty) {
@@ -756,161 +557,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
           ],
           SizedBox(height: 8),
-          Container(
-            color: Colors.black,
-            child: Column(
-              children: [
-                SizedBox(height: 10),
-                Text(
-                  'যোগাযোগের তথ্য',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Row(
-                    children: [
-                      Column(
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.location_on_outlined,
-                                color: Colors.blue,
-                              ),
-                              SizedBox(width: 10),
-                              Text(
-                                'ঢাকা, বাংলাদেশ।',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 5),
-                          Row(
-                            children: [
-                              Icon(Icons.phone, color: Colors.blue),
-                              SizedBox(width: 14),
-                              Text(
-                                '০২-XXX-XXX',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 5),
-                          Row(
-                            children: [
-                              Icon(Icons.email_outlined, color: Colors.blue),
-                              SizedBox(width: 14),
-                              Text(
-                                'info@bjp.org',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(width: 85),
-                      Column(
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.video_collection_rounded,
-                                color: Colors.blue,
-                              ),
-                              TextButton(
-                                onPressed: () async {
-                                  final url = Uri.parse(
-                                    'https://www.youtube.com/@ArpPartho',
-                                  );
-                                  if (!await launchUrl(url)) {
-                                    throw Exception('Could not launch $url');
-                                  }
-                                },
-                                child: const Text(
-                                  'ইউটিউব',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.facebook_outlined,
-                                color: Colors.blue,
-                              ), // Add spacing between icon and button
-                              TextButton(
-                                onPressed: () async {
-                                  final url = Uri.parse(
-                                    'https://www.facebook.com/Andaleeve.Rahman',
-                                  );
-                                  if (!await launchUrl(url)) {
-                                    throw Exception('Could not launch $url');
-                                  }
-                                },
-                                child: const Text(
-                                  'ফেসবুক',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Icon(Icons.account_box, color: Colors.blue),
-
-                              TextButton(
-                                onPressed: () async {
-                                  final url = Uri.parse(
-                                    'https://www.instagram.com/andaleeve_rahman_partho',
-                                  );
-                                  if (!await launchUrl(url)) {
-                                    throw Exception('Could not launch $url');
-                                  }
-                                },
-                                child: const Text(
-                                  'ইনস্টাগ্রাম',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
+          contact_information_screen(),
         ],
       ),
     );
