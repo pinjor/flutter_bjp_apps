@@ -1,6 +1,7 @@
 import 'package:bjp_app/config/app_colors.dart';
 import 'package:bjp_app/core/ui/custom_loader.dart';
 import 'package:bjp_app/core/utils/utils.dart';
+import 'package:bjp_app/dataRepository/global.dart';
 import 'package:bjp_app/features/announcement/presentation/screens/announcement_screen.dart';
 import 'package:bjp_app/features/auth/domain/auth_state.dart';
 import 'package:bjp_app/features/auth/presentation/controllers/auth_controller.dart';
@@ -151,18 +152,28 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   void _logoutUser() {
-    ref.read(authControllerProvider.notifier).logout();
+    // ref.read(authControllerProvider.notifier).logout();
     //Navigator.pop(context);
     if (Navigator.canPop(context)) {
+      print("1");
       Navigator.pop(context);
-    } else {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => LoginScreen()),
       );
+      user = "";
+      token = "";
+    } else {
+      print("2");
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+      );
+      print("3");
       Navigator.pop(context);
     }
     if (Navigator.of(context, rootNavigator: true).canPop()) {
+      print("4");
       Navigator.of(context, rootNavigator: true).pop(); // Closes dialog
     }
 

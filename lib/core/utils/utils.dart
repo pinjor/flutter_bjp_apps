@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
+import '../../features/auth/domain/login_response_model.dart';
+
 final lgr = Logger();
 
 void showMessageToUser({
