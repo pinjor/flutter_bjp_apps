@@ -1,4 +1,4 @@
-import 'package:bjp_app/app.dart';
+
 import 'package:bjp_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
