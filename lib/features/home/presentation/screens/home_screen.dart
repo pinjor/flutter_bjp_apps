@@ -4,7 +4,6 @@ import 'package:bjp_app/core/utils/utils.dart';
 import 'package:bjp_app/features/announcement/presentation/screens/announcement_screen.dart';
 import 'package:bjp_app/features/auth/domain/auth_state.dart';
 import 'package:bjp_app/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:bjp_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:bjp_app/features/chat/presentation/screens/chat_list_screen.dart';
 import 'package:bjp_app/features/chat/presentation/screens/chat_screen.dart';
 import 'package:bjp_app/features/events/presentation/screens/event_scedule_screen.dart';
@@ -27,6 +26,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/ui/app_icon_widget.dart';
 import '../../../announcement/presentation/screens/create_announcement_screen.dart';
+import '../../../auth/presentation/screens/login_screen.dart';
 import '../../../events/domain/event_model.dart';
 import '../../../events/presentation/controllers/event_controller.dart';
 import '../../../our_discussion/domain/discussion_model.dart';
@@ -152,8 +152,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   void _logoutUser() {
     ref.read(authControllerProvider.notifier).logout();
-    //Navigator.pop(context);
-    if (Navigator.canPop(context)) {
+
+    print("going to login screen");
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+    );
+
+    /*if (Navigator.canPop(context)) {
       Navigator.pop(context);
     } else {
       Navigator.pushReplacement(
@@ -164,17 +171,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     }
     if (Navigator.of(context, rootNavigator: true).canPop()) {
       Navigator.of(context, rootNavigator: true).pop(); // Closes dialog
-    }
-
-    // Then perform logout
-    // ref.read(authControllerProvider.notifier).logout();
-    //
-    // // Navigate to login screen
-    // Navigator.pushAndRemoveUntil(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => const LoginScreen()),
-    //       (route) => false,
-    // );
+    }*/
   }
 
   // void _logoutUser() {

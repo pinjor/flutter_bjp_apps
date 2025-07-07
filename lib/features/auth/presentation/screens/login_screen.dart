@@ -39,6 +39,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   @override
+  void initState() {
+    _emailOrMobileController.text = '01712345678';
+    _passwordController.text = 'Arp@12345';
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authControllerProvider);
 
