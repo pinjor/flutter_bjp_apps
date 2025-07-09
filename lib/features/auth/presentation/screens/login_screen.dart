@@ -40,8 +40,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   void initState() {
-    _emailOrMobileController.text = '01712345678';
-    _passwordController.text = 'Arp@12345';
+    // _emailOrMobileController.text = '01712345678';
+    // _passwordController.text = 'Arp@12345';
     super.initState();
   }
 

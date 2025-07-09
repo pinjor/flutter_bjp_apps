@@ -1,0 +1,90 @@
+[33m722e3ab[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m setpassword nevigator issue solved
+[33m1f38149[m login failed message issue solved with registration navigator issue
+[33ma0d77de[m solve login issue
+[33ma334e2c[m Merge pull request #7 from pinjor/sanitized-to-minimum
+[33m06ed5e8[m[33m ([m[1;31morigin/sanitized-to-minimum[m[33m)[m all theme changed
+[33m05766a0[m minimized usage of expensive plugins , stream lined api calls
+[33m9e9d6a2[m backbutton problem solved
+[33m5bf8f93[m space adding in dashboard
+[33m01f2ecf[m subdistrict
+[33m9c7869e[m subdistrict all done
+[33mfd7574e[m subdistrict
+[33m72364fa[m floating chatting button addition
+[33me5c4d9b[m district added
+[33mdfc920b[m logout issue solved
+[33m53bd7f1[m profileediting and splash screen timing
+[33mc235407[m In profile editing email is readonly
+[33m5780e22[m sub district
+[33mfd9452e[m Merge remote-tracking branch 'origin/main'
+[33m9d4cac5[m merge fix
+[33mce43a2a[m git code
+[33m4ad2d17[m Merge branch 'main' of https://github.com/pinjor/flutter_bjp_apps
+[33m96bad8c[m subdistrict
+[33m6cb3613[m Merge pull request #6 from pinjor/develop
+[33m181cade[m[33m ([m[1;31morigin/develop[m[33m)[m Merge pull request #5 from pinjor/main
+[33mc059906[m some changes in home
+[33m34697bf[m last change
+[33md868131[m Merge pull request #4 from pinjor/develop
+[33m798f9f3[m Merge pull request #3 from pinjor/main
+[33m801bfbe[m last change
+[33m9c3eb70[m added recent chat list
+[33mfeef6e5[m recent notification list update
+[33m4216ccf[m notification list
+[33mf54b290[m announcement all
+[33m3c5167d[m sub district
+[33mbeba68b[m splash screen changes
+[33m0fa33f7[m profile editing hiding from admin
+[33me10aae9[m Merge branch 'main' of https://github.com/pinjor/flutter_bjp_apps
+[33m5c56e04[m id searching issue solution
+[33m2bd4291[m Merge pull request #2 from pinjor/develop
+[33mab111b8[m Merge pull request #1 from pinjor/main
+[33m6803fad[m chat box color change
+[33mf1f56d9[m new changes
+[33m5b1b2cf[m Merge branch 'develop' of https://github.com/pinjor/flutter_bjp_apps into develop
+[33m05e7f3f[m nothing important
+[33m9f57c55[m ui fix
+[33meb31946[m conflict resolve for apk release
+[33maed4d28[m memberlist overflowed issue fix
+[33madbe442[m chat list
+[33m38508ee[m Merge remote-tracking branch 'origin/develop'
+[33m1e8b1b6[m no change
+[33ma767e05[m Merge branch 'main' into develop
+[33m302cdaf[m implementing pusher chat
+[33m7f270b6[m added chat view and apis
+[33m27d976e[m recent announcement pop up design change
+[33m912f766[m contact Info
+[33mf46a463[m added recent announcement feature
+[33m6b53cad[m added media feature
+[33m0292e69[m logout change icon to text
+[33me8b03bf[m nochanges
+[33m93061d4[m Merge branch 'main' of https://github.com/MotiurRahmanSany/flutter_bjp_app
+[33m370a2ae[m new features
+[33m506647f[m added discussion
+[33me5b2081[m Merge branch 'main' of https://github.com/pinjor/flutter_bjp_apps
+[33md27666b[m new features
+[33m48a9aac[m added courses feature
+[33mda4a206[m merging changes
+[33m12b8bd4[m adding course api
+[33m1998521[m some feature change
+[33mefba4a2[m added media
+[33m343a4ab[m leadership
+[33md4ce4f7[m Discussion UI
+[33m3e5e014[m pdf file included
+[33m5d38411[m dashboard
+[33mc099a29[m dashboard edit
+[33mba4cbc8[m removed unused imports
+[33mbd59292[m added password reset feature
+[33mb83623a[m profile fetch, update added
+[33m42fb329[m first commit
+[33m33764a2[m bugs fixed
+[33m53fb25a[m added announcement feature
+[33mf237216[m added announcement UIs, memberlist functions
+[33md106c00[m added events feature
+[33m7b5f9df[m fixed login bug
+[33mdfa2d7f[m renamed files
+[33m804fd70[m signup done - err in routing
+[33ma5ec28e[m added proper app drawer (role based) working!
+[33mb22785c[m added role based drawer ui
+[33m7b1f50d[m auth routing completed
+[33md454222[m added home screen
+[33me9c7942[m initial commit
