@@ -23,10 +23,11 @@ import 'package:bjp_app/features/our_discussion/presentation/controllers/discuss
 import 'package:bjp_app/features/profile/presentation/screens/profile_editing_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../core/constants/route_path.dart';
 import '../../../../core/ui/app_icon_widget.dart';
 import '../../../announcement/presentation/screens/create_announcement_screen.dart';
-import '../../../auth/presentation/screens/login_screen.dart';
 import '../../../events/domain/event_model.dart';
 import '../../../events/presentation/controllers/event_controller.dart';
 import '../../../our_discussion/domain/discussion_model.dart';
@@ -152,42 +153,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   void _logoutUser() {
     ref.read(authControllerProvider.notifier).logout();
-
-    print("going to login screen");
-
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => LoginScreen()),
-    );
-
-    /*if (Navigator.canPop(context)) {
-      Navigator.pop(context);
-    } else {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
-      );
-      Navigator.pop(context);
-    }
-    if (Navigator.of(context, rootNavigator: true).canPop()) {
-      Navigator.of(context, rootNavigator: true).pop(); // Closes dialog
-    }*/
+    context.go(RoutePath.loginPath);
   }
-
-  // void _logoutUser() {
-  //   // Close the dialog using rootNavigator
-  //   Navigator.of(context, rootNavigator: true).pop();
-  //
-  //   // Perform logout once
-  //   ref.read(authControllerProvider.notifier).logout();
-  //
-  //   // Navigate to LoginScreen and remove all previous routes
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(builder: (context) => LoginScreen()),
-  //     // (route) => false,
-  //   );
-  // }
 
   void _showAnnouncementDialog(RecentAnnouncement announcement) {
     showDialog(

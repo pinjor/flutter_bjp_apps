@@ -56,7 +56,13 @@ void showLogoutDialog({
             },
             child: Text('বাতিল'),
           ),
-          TextButton(onPressed: onPressed, child: Text('লগআউট')),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              onPressed();
+            },
+            child: Text('লগআউট'),
+          ),
         ],
       );
     },
