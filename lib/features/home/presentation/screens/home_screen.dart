@@ -63,37 +63,37 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   List<Widget> _drawerOptions(
-    bool isAdmin,
-    AuthState authState, {
-    required AsyncValue<List<EventModel>?> events,
-    required AsyncValue<List<DiscussionModel>?> discussions,
-  }) {
+      bool isAdmin,
+      AuthState authState, {
+        required AsyncValue<List<EventModel>?> events,
+        required AsyncValue<List<DiscussionModel>?> discussions,
+      }) {
     return isAdmin
         ? [
-          _buildDashboard(
-            authState,
-            eventListState: events,
-            discussionListState: discussions,
-          ),
-          AnnouncementScreen(),
-          CreateAnnouncementScreen(),
-          MemberScreen(),
-          EventSceduleScreen(),
-          ChatListScreen(),
-        ]
+      _buildDashboard(
+        authState,
+        eventListState: events,
+        discussionListState: discussions,
+      ),
+      AnnouncementScreen(),
+      CreateAnnouncementScreen(),
+      MemberScreen(),
+      EventSceduleScreen(),
+      ChatListScreen(),
+    ]
         : [
-          _buildDashboard(
-            authState,
-            eventListState: events,
-            discussionListState: discussions,
-          ),
-          AnnouncementScreen(),
-          OurConstitution(),
-          PhotoAlbumScreen(),
-          VideoAlbumScreen(),
-          ProfileEditingScreen(),
-          ChatPage(userInfo: '1', name: "Admin"),
-        ];
+      _buildDashboard(
+        authState,
+        eventListState: events,
+        discussionListState: discussions,
+      ),
+      AnnouncementScreen(),
+      OurConstitution(),
+      PhotoAlbumScreen(),
+      VideoAlbumScreen(),
+      ProfileEditingScreen(),
+      ChatPage(userInfo: '1', name: "Admin"),
+    ];
   }
 
   void _onItemTapped(int index) {
@@ -104,14 +104,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           case 0:
             _appBarTitle = 'হোম';
             break;
-          // announcements
+        // announcements
           case 1:
             _appBarTitle = 'ঘোষণা';
             break;
           case 2:
             _appBarTitle = 'ঘোষণা তৈরি করুন';
             break;
-          // create announcements
+        // create announcements
           case 3:
             _appBarTitle = 'সদস্য';
             break;
@@ -127,7 +127,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           case 0:
             _appBarTitle = 'হোম';
             break;
-          // announcements
+        // announcements
           case 1:
             _appBarTitle = 'ঘোষণা';
             break;
@@ -282,9 +282,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             TextButton(
               onPressed:
                   () => showLogoutDialog(
-                    context: context,
-                    onPressed: () => _logoutUser(),
-                  ),
+                context: context,
+                onPressed: () => _logoutUser(),
+              ),
               child: Text(
                 'Logout',
                 style: TextStyle(color: AppColors.themeColor, fontSize: 14),
@@ -294,29 +294,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
         body: SafeArea(
           child:
-              _drawerOptions(
-                isAdmin,
-                authState,
-                events: eventListState,
-                discussions: discussionListState,
-              )[_selectedIndex],
+          _drawerOptions(
+            isAdmin,
+            authState,
+            events: eventListState,
+            discussions: discussionListState,
+          )[_selectedIndex],
         ),
         floatingActionButton:
-            _selectedIndex == 0
-                ? FloatingActionButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder:
-                            (context) => ChatPage(userInfo: '1', name: "Admin"),
-                      ),
-                    );
-                  },
-                  child: Icon(Icons.chat, color: Colors.white),
-                  backgroundColor: AppColors.themeColor,
-                )
-                : null,
+        _selectedIndex == 0
+            ? FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder:
+                    (context) => ChatPage(userInfo: '1', name: "Admin"),
+              ),
+            );
+          },
+          child: Icon(Icons.chat, color: Colors.white),
+          backgroundColor: AppColors.themeColor,
+        )
+            : null,
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         drawer: Drawer(
           width: 250,
@@ -456,10 +456,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Widget _buildDashboard(
-    AuthState authState, {
-    required AsyncValue<List<EventModel>?> eventListState,
-    required AsyncValue<List<DiscussionModel>?> discussionListState,
-  }) {
+      AuthState authState, {
+        required AsyncValue<List<EventModel>?> eventListState,
+        required AsyncValue<List<DiscussionModel>?> discussionListState,
+      }) {
     return SingleChildScrollView(
       child: Column(
         children: [
